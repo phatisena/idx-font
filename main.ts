@@ -149,6 +149,7 @@ namespace idxfont {
                 if (iwidt > 0) {
                     if (widt >= iwidt) {
                         heig += ligages[(ligs.indexOf(input.charAt(currentletter)))].height
+                        widt = 0
                     }
                 }
             }
@@ -190,7 +191,7 @@ namespace idxfont {
                 } else {
                     nwidt = 0
                 }
-                drawTransparentImage(ligages[(ligs.indexOf(input.charAt(currentletter3)))], output, curwidt - nwidt, hie + (heig - ligages[(ligs.indexOf(input.charAt(currentletter3)))].height))
+                drawTransparentImage(ligages[(ligs.indexOf(input.charAt(currentletter3)))], output, curwidt - nwidt, 0 + ((hie + hvi) - ligages[(ligs.indexOf(input.charAt(currentletter3)))].height))
                 if (ligwidth[(ligs.indexOf(input.charAt(currentletter3 + 1)))] == 0) {
                     swidt = nwidt
                 } else {
