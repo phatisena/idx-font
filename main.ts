@@ -82,8 +82,8 @@ namespace idxfont {
     //%scl.shadow=colorindexpicker
     //%group="create"
     export function setCharFromSheet(PngSheet: Image, GroupChar: string, StayChar: string, twidt: number, theig: number, bcl: number, scl: number) {
-        let gwidt = Math.floor(PngSheet.width / twidt)
-        let gheig = Math.floor(PngSheet.height / theig)
+        let gwidt = Math.round(PngSheet.width / twidt)
+        let gheig = Math.round(PngSheet.height / theig)
         let uig = image.create(twidt, theig)
         let txi = 0
         let tyi = 0
