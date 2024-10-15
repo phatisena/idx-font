@@ -17,14 +17,8 @@ namespace idxfont {
         if (cha.length != 1) {
             return false
         }
-        if (nva < tix.length && tix.charAt(nva) == " ") {
-            if (nva + 1 < tix.length && tix.charAt(nva + 1) == "\\") {
-                if (nva + 2 < tix.length && tix.charAt(nva + 2) == cha) {
-                    if (nva + 3 < tix.length && tix.charAt(nva + 3) == " ") {
-                        return true
-                    }
-                }
-            }
+        if (((nva < tix.length && tix.charAt(nva) == " ") && (nva + 1 < tix.length && tix.charAt(nva + 1) == "\\")) && ((nva + 2 < tix.length && tix.charAt(nva + 2) == cha) && (nva + 3 < tix.length && tix.charAt(nva + 3) == " "))) {
+            return true
         }
         return false
     }
