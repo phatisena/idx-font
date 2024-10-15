@@ -13,11 +13,11 @@ namespace idxfont {
         to.drawTransparentImage(src, x, y);
     }
 
-    //%group="Create"
     //%blockid=ixfont_setcharecter
     //%block="set $glyph to $imgi=screen_image_picker staying $notmove erase $bcol spacebar $scol"
     //%bcol.shadow=colorindexpicker
     //%scol.shadow=colorindexpicker
+    //%group="create"
     export function setCharecter(glyph: string, imgi: Image, notmove: boolean, bcol: number, scol: number) {
         let scnwidt = true
         let scwidt = false
@@ -76,11 +76,11 @@ namespace idxfont {
         }
     }
 
-    //%group="Create"
     //%blockid=ixfont_setcharfromimgsheet
-    //%block="set $PngSheet=srceen_image_picker with $GroupChar if has from $StayChar is not move and w $twidt h $theig and bcol $bcl scol $scl"
+    //%block="set $PngSheet=srceen_image_picker with $GroupChar and staying char $StayChar and w $twidt h $theig and bcol $bcl scol $scl"
     //%bcl.shadow=colorindexpicker
     //%scl.shadow=colorindexpicker
+    //%group="create"
     export function setCharFromSheet(PngSheet: Image, GroupChar: string, StayChar: string, twidt: number, theig: number, bcl: number, scl: number) {
         let gwidt = Math.floor(PngSheet.width / twidt)
         let gheig = Math.floor(PngSheet.height / theig)
@@ -108,24 +108,24 @@ namespace idxfont {
         return ligs.length
     }
 
-    //%group="ArrayData"
     //%blockid=ixfont_arrofgypimg
     //%block="array of glyph images"
+    //%group="datainfo"
     export function ImageArray(): Image[] {
         return ligages
     }
 
-    //%group="ArrayData"
     //%blockid=ixfont_arrofglyphs
     //%block="array of glyphs"
+    //%group="datainfo"
     export function GlyphArray(): String[] {
         return ligs
     }
 
-    //%group="Render"
-    //%blockid=ixfont_createimgfromtext
+    //%blockid=ixfont_setimgfromtext
     //%block="create the image of $input in $iwidt and fill $icol"
     //%icol.shadow=colorindexpicker
+    //%group="render"
     export function SetImage(input: string, iwidt: number, icol: number) {
         let heig = 0
         let widt = 0
@@ -226,16 +226,16 @@ namespace idxfont {
         return output
     }
 
-    //%group="Modify"
     //%blockid=ixfont_setletterspacing
     //%block="set letter spacing to $input"
+    //%group="modify"
     export function SetSpace(input: number) {
         letterspace = input
     }
 
-    //%group="Modify"
     //%blockid=ixfont_changeletterspacing
     //%block="change letter spacing by $input"
+    //%group="modify"
     export function ChangeSpace(input: number) {
         letterspace += input
     }
