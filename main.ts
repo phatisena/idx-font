@@ -85,16 +85,12 @@ namespace idxfont {
         let gwidt = Math.floor(PngSheet.width / twidt)
         let gheig = Math.floor(PngSheet.height / theig)
         let uig = image.create(twidt, theig)
-        let xi = 0
-        let yi = 0
         let txi = 0
         let tyi = 0
         for (let tvn = 0; tvn < GroupChar.length; tvn++) {
             uig = image.create(twidt, theig)
-            xi = tvn % gwidt
-            yi = Math.floor(tvn / gwidt)
-            txi = xi * twidt
-            tyi = yi * theig
+            txi = twidt * (tvn % gwidt)
+            tyi = theig * Math.floor(tvn / gwidt)
             drawTransparentImage(PngSheet, uig, 0 - txi, 0 - tyi)
             setCharecter(GroupChar.charAt(tvn), uig, StayChar.includes(GroupChar.charAt(tvn)), bcl, scl)
 
