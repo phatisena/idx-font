@@ -205,7 +205,7 @@ namespace idxfont {
         hie = 0
         let currentletter3 = 0
         let output = image.create(widt, heig)
-        for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
+        while (currentletter3 < input.length) {
             if (!(ligs.indexOf(input.charAt(currentletter3)) == -1)) {
                 hvi = ligages[(ligs.indexOf(input.charAt(currentletter3)))].height
                 uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter3)))]
