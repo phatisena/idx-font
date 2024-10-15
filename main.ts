@@ -145,10 +145,11 @@ namespace idxfont {
                 if (uwidt > 0) {
                     widt += Math.abs(uwidt - swidt)
                 }
-                heig = Math.max(heig, ligages[(ligs.indexOf(input.charAt(currentletter)))].height)
+                heig += Math.max(heig, hie + ligages[(ligs.indexOf(input.charAt(currentletter)))].height)
                 if (iwidt > 0) {
                     if (widt >= iwidt) {
                         heig += ligages[(ligs.indexOf(input.charAt(currentletter)))].height
+                        hie += ligages[(ligs.indexOf(input.charAt(currentletter)))].height
                         widt = 0
                     }
                 }
