@@ -1,4 +1,4 @@
-// meta={"simUrl":"https://trg-arcade.userpxt.io/v1.12.56/---simulator","cdnUrl":"https://pxt.azureedge.net","version":"0.2.4","target":"arcade","targetVersion":"1.12.56","repo":"phatisena/idx-font"}
+// meta={"simUrl":"https://trg-arcade.userpxt.io/v1.12.56/---simulator","cdnUrl":"https://pxt.azureedge.net","version":"0.2.5","target":"arcade","targetVersion":"1.12.56","repo":"phatisena/idx-font"}
 // total=1242520 new=5.85% cached=88.49% other=5.66%
 (function (ectx) {
 'use strict';
