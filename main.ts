@@ -181,6 +181,7 @@ namespace idxfont {
                 }
             }
         }
+        wie = 0
         hie = 0
         let output = image.create(widt, heig)
         for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
@@ -208,8 +209,8 @@ namespace idxfont {
                 curwidt += 3 * letterspace
             }
             if (iwidt > 0) {
-                if (widt >= iwidt) {
-                    widt = 0
+                if (curwidt >= iwidt) {
+                    curwidt = 0
                     hie += hvi
                 }
             }
