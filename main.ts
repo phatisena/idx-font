@@ -208,10 +208,12 @@ namespace idxfont {
             } else if (input.charAt(currentletter3) == " ") {
                 curwidt += 3 * letterspace
             }
-            if (iwidt > 0) {
-                if (curwidt >= iwidt) {
-                    curwidt = 0
-                    hie += hvi
+            if (ligwidth[(ligs.indexOf(input.charAt(currentletter3)))] > 0) {
+                if (iwidt > 0) {
+                    if (curwidt >= iwidt) {
+                        curwidt = 0
+                        hie += hvi
+                    }
                 }
             }
         }
