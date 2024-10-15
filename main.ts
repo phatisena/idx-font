@@ -77,7 +77,7 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_setcharfromimgsheet
-    //%block="set $PngSheet=srceen_image_picker with $GroupChar and staying char $StayChar and w $twidt h $theig and bcol $bcl scol $scl"
+    //%block="set $PngSheet=screen_image_picker with $GroupChar and staying char $StayChar and w $twidt h $theig and bcol $bcl scol $scl"
     //%bcl.shadow=colorindexpicker
     //%scl.shadow=colorindexpicker
     //%group="create"
