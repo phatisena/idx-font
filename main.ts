@@ -101,9 +101,9 @@ namespace idxfont {
         }
     }
 
-    //%group="ArrayData"
     //%blockid=ixfont_numofglyphs
     //%block="number of glyphs"
+    //%group="datainfo"
     export function NumOfGlyphs(): number {
         return ligs.length
     }
