@@ -95,7 +95,7 @@ namespace idxfont {
             yi = Math.floor(tvn / gwidt)
             txi = xi * twidt
             tyi = yi * theig
-            drawTransparentImage(PngSheet, uig, txi, tyi)
+            drawTransparentImage(PngSheet, uig, 0 - txi, 0 - tyi)
             setCharecter(GroupChar.charAt(tvn), uig, StayChar.includes(GroupChar.charAt(tvn)), bcl, scl)
 
         }
