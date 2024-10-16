@@ -169,7 +169,7 @@ namespace idxfont {
                     nwidt = 0
                 }
                 drawTransparentImage(ligages[(ligs.indexOf(input.charAt(currentletter3)))], output, curwidt - nwidt, 0 + ((hie + hvi) - ligages[(ligs.indexOf(input.charAt(currentletter3)))].height))
-                if (uwidt <= 0) {
+                if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] <= 0) {
                     swidt = uwidt
                 } else {
                     swidt = 0
