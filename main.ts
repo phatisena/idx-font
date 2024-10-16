@@ -110,7 +110,7 @@ namespace idxfont {
     export function SetImage(input: string, iwidt: number, icol: number) {
         let heig: number = 0; let widt: number = 0; let curwidt: number = 0; let uwidt: number = 0; let swidt: number = 0; let nwidt: number = 0; let wie: number = 0; let hie: number = 0; let hvi: number = 0;
         for (let currentletter = 0; currentletter < input.length; currentletter++) {
-            if (ligs.indexOf(input.charAt(currentletter)) >= 0) {
+            if (!(ligs.indexOf(input.charAt(currentletter)) < 0)) {
                 uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter)))]; nwidt = ligages[(ligs.indexOf(input.charAt(currentletter)))].width;
                 if (uwidt > 0) {
                     swidt = uwidt
@@ -136,7 +136,7 @@ namespace idxfont {
         }
         wie = 0; widt = 0;
         for (let currentletter2 = 0; currentletter2 < input.length; currentletter2++) {
-            if (ligs.indexOf(input.charAt(currentletter2)) >= 0) {
+            if (!(ligs.indexOf(input.charAt(currentletter2)) < 0)) {
                 uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter2)))]; nwidt = ligages[(ligs.indexOf(input.charAt(currentletter2)))].width;
                 if (uwidt > 0) {
                     swidt = uwidt
@@ -164,7 +164,7 @@ namespace idxfont {
         }
         wie = 0; hie = 0; let output = image.create(widt, heig);
         for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
-            if (ligs.indexOf(input.charAt(currentletter3)) >= 0) {
+            if (!(ligs.indexOf(input.charAt(currentletter3)) >= 0)) {
                 hvi = ligages[(ligs.indexOf(input.charAt(currentletter3)))].height; uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter3)))];
                 if (ligwidth[(ligs.indexOf(input.charAt(currentletter3)))] <= 0) {
                     nwidt = ligages[(ligs.indexOf(input.charAt(currentletter3)))].width
