@@ -8,7 +8,7 @@ namespace idxfont {
         to.drawTransparentImage(src, x, y);
     }
 
-    export function findCommand(tvi: string ,chi: string ,nvi: number): boolean {
+    export function findCommand(tvi: string, chi: string, nvi: number): boolean {
         if (chi.length != 1) { return false }
         if (((nvi < tvi.length && tvi.charAt(nvi) == " ") && (nvi + 1 < tvi.length && tvi.charAt(nvi + 1) == "\\")) && ((nvi + 2 < tvi.length && tvi.charAt(nvi + 2) == chi) && (nvi + 3 < tvi.length && tvi.charAt(nvi + 3) == " "))) { return true }
         return false
@@ -140,7 +140,7 @@ namespace idxfont {
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] > 0) {
                     wie += Math.abs(uwidt - swidt)
                 }
-                if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] > 0){   
+                if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] > 0) {
                     wie += letterspace
                 }
             } else if (input.charAt(currentletter2) == " ") {
