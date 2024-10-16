@@ -117,7 +117,7 @@ namespace idxfont {
                 } else {
                     swidt = 0
                 }
-                if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter + 1, input.length - 1))))] > 0) {
+                if (ligwidth[(ligs.indexOf(input.charAt(currentletter)))] > 0) {
                     widt += Math.abs(uwidt - swidt); widt += letterspace;
                 }
                 heig += Math.max(heig, hie + ligages[(ligs.indexOf(input.charAt(currentletter)))].height)
@@ -140,7 +140,7 @@ namespace idxfont {
                 } else {
                     swidt = 0
                 }
-                if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] > 0) {
+                if (ligwidth[(ligs.indexOf(input.charAt(currentletter2)))] > 0) {
                     wie += Math.abs(uwidt - swidt); wie += letterspace;
                 }
             } else if (input.charAt(currentletter2) == " ") {
@@ -171,7 +171,7 @@ namespace idxfont {
                 } else {
                     swidt = 0
                 }
-                if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] > 0) {
+                if (ligwidth[(ligs.indexOf(input.charAt(currentletter3)))] > 0) {
                     curwidt += letterspace; curwidt += Math.abs(uwidt - swidt);
                 }
             } else if (input.charAt(currentletter3) == " ") {
