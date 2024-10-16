@@ -67,7 +67,7 @@ namespace idxfont {
         if (scol > 0 && scol < 16) {
             imgj.replace(scol, 0)
         }
-        if (ligs.indexOf(glyph) == -1) {
+        if (ligs.indexOf(glyph) < 0) {
             ligs.push(glyph)
             ligages.push(imgj)
             if (notmove) {
@@ -102,8 +102,11 @@ namespace idxfont {
             txi = twidt * (tvn % gwidt)
             tyi = theig * Math.floor(tvn / gwidt)
             drawTransparentImage(PngSheet, uig, 0 - txi, 0 - tyi)
-            setCharecter(GroupChar.charAt(tvn), uig, StayChar.includes(GroupChar.charAt(tvn)), bcl, scl)
-
+            if (StayChar.length > 0) {
+                setCharecter(GroupChar.charAt(tvn), uig, StayChar.includes(GroupChar.charAt(tvn)), bcl, scl)
+            } else {
+                setCharecter(GroupChar.charAt(tvn), uig, false, bcl, scl)
+            }
         }
     }
 
@@ -143,7 +146,7 @@ namespace idxfont {
         let hie = 0
         let hvi = 0
         for (let currentletter = 0; currentletter < input.length; currentletter++) {
-            if (!(ligs.indexOf(input.charAt(currentletter)) < 0)) {
+            if (ligs.indexOf(input.charAt(currentletter)) >= 0) {
                 uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter)))]
                 nwidt = ligages[(ligs.indexOf(input.charAt(currentletter)))].width
                 if (uwidt > 0) {
@@ -173,7 +176,7 @@ namespace idxfont {
         wie = 0
         widt = 0
         for (let currentletter2 = 0; currentletter2 < input.length; currentletter2++) {
-            if (!(ligs.indexOf(input.charAt(currentletter2)) < 0)) {
+            if (ligs.indexOf(input.charAt(currentletter2)) >= 0) {
                 uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter2)))]
                 nwidt = ligages[(ligs.indexOf(input.charAt(currentletter2)))].width
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] == 0) {
@@ -181,7 +184,7 @@ namespace idxfont {
                 } else {
                     swidt = 0
                 }
-                if (uwidt > 0) {
+                if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] > 0) {
                     wie += Math.abs(uwidt - swidt)
                 }
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] > 0){   
@@ -204,7 +207,7 @@ namespace idxfont {
         hie = 0
         let output = image.create(widt, heig)
         for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
-            if (!(ligs.indexOf(input.charAt(currentletter3)) < 0)) {
+            if (ligs.indexOf(input.charAt(currentletter3)) >= 0) {
                 hvi = ligages[(ligs.indexOf(input.charAt(currentletter3)))].height
                 uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter3)))]
                 if (ligwidth[(ligs.indexOf(input.charAt(currentletter3)))] == 0) {
