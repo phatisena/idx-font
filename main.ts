@@ -113,12 +113,12 @@ namespace idxfont {
             if (ligs.indexOf(input.charAt(currentletter)) >= 0) {
                 uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter)))]; nwidt = ligages[(ligs.indexOf(input.charAt(currentletter)))].width;
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter + 1, input.length - 1))))] <= 0) {
-                    swidt = nwidt
+                    swidt = uwidt
                 } else {
                     swidt = 0
                 }
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter + 1, input.length - 1))))] > 0) {
-                    widt += Math.abs(nwidt - swidt)
+                    widt += Math.abs(uwidt - swidt)
                 }
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter + 1, input.length - 1))))] > 0) {
                     widt += letterspace
@@ -139,12 +139,12 @@ namespace idxfont {
             if (ligs.indexOf(input.charAt(currentletter2)) >= 0) {
                 uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter2)))]; nwidt = ligages[(ligs.indexOf(input.charAt(currentletter2)))].width;
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] <= 0) {
-                    swidt = nwidt
+                    swidt = uwidt
                 } else {
                     swidt = 0
                 }
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] > 0) {
-                    wie += Math.abs(nwidt - swidt)
+                    wie += Math.abs(uwidt - swidt)
                 }
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] > 0) {
                     wie += letterspace
@@ -173,7 +173,7 @@ namespace idxfont {
                 }
                 drawTransparentImage(ligages[(ligs.indexOf(input.charAt(currentletter3)))], output, curwidt - nwidt, 0 + ((hie + hvi) - ligages[(ligs.indexOf(input.charAt(currentletter3)))].height))
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] <= 0) {
-                    swidt = nwidt
+                    swidt = uwidt
                 } else {
                     swidt = 0
                 }
@@ -181,7 +181,7 @@ namespace idxfont {
                     curwidt += letterspace
                 }
                 if (ligwidth[(ligs.indexOf(input.charAt(currentletter3)))] > 0) {
-                    curwidt += Math.abs(nwidt - nwidt)
+                    curwidt += Math.abs(uwidt - swidt)
                 }
             } else if (input.charAt(currentletter3) == " ") {
                 curwidt += 3 * letterspace
