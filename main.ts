@@ -119,11 +119,10 @@ namespace idxfont {
                 }
                 heig += Math.max(heig, hie + ligages[(ligs.indexOf(input.charAt(currentletter)))].height)
                 if (iwidt > 0) {
-                    if (widt >= iwidt || findCommand(input, "n", currentletter)) {
+                    if (widt >= iwidt) {
                         heig += ligages[(ligs.indexOf(input.charAt(currentletter)))].height; hie += ligages[(ligs.indexOf(input.charAt(currentletter)))].height; widt = 0;
-                        if (findCommand(input, "n", currentletter)) {
-                            currentletter += 3
-                        }
+                    } else if (findCommand(input, "n", currentletter)) {
+                        heig += ligages[(ligs.indexOf(input.charAt(currentletter)))].height; hie += ligages[(ligs.indexOf(input.charAt(currentletter)))].height; widt = 0; currentletter += 3;
                     }
                 }
             }
@@ -148,11 +147,10 @@ namespace idxfont {
             }
             widt = Math.max(widt, wie)
             if (iwidt > 0) {
-                if (wie >= iwidt || findCommand(input, "n", currentletter2)) {
-                    wie = 0
-                    if (findCommand(input, "n", currentletter2)) {
-                        currentletter2 += 3
-                    }
+                if (wie >= iwidt ) {
+                    wie = 0;
+                } else if (findCommand(input, "n", currentletter2)) {
+                    wie = 0; currentletter2 += 3;
                 }
             }
         }
@@ -182,21 +180,16 @@ namespace idxfont {
             }
             if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] > 0) {
                 if (iwidt > 0) {
-                    if (curwidt >= iwidt || findCommand(input, "n", currentletter3)) {
+                    if (curwidt >= iwidt ) {
                         curwidt = 0; hie += hvi;
-                        if (findCommand(input, "n", currentletter3)) {
-                            currentletter3 += 3
-                        }
+                    } else if (findCommand(input, "n", currentletter3)) {
+                        curwidt = 0; hie += hvi; currentletter3 += 3;
                     }
                 }
             }
         }
         if (icol > 0) {
-            for (let ico = 0; ico < 16; ico++) {
-                if (ico > 0) {
-                    output.replace(ico, icol)
-                }
-            }
+            for (let ico = 0; ico < 16; ico++) { if (ico > 0) { output.replace(ico, icol) } }
         }
         return output
     }
