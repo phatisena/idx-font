@@ -134,7 +134,7 @@ namespace idxfont {
                     if (scwidt) {
                         if (si <= 0) {
                             wj = xw
-                        scnwidt = false
+                            scnwidt = false
                         }
                     } else {
                         if (si > 0) {
@@ -165,6 +165,7 @@ namespace idxfont {
                     ligwidth[ligs.indexOf(glyph)] = imgj.width
                 }
             }
+        
         }
         ixfontst = true
     }
