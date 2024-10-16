@@ -118,10 +118,7 @@ namespace idxfont {
                     swidt = 0
                 }
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter + 1, input.length - 1))))] > 0) {
-                    widt += Math.abs(uwidt - swidt)
-                }
-                if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter + 1, input.length - 1))))] > 0) {
-                    widt += letterspace
+                    widt += Math.abs(uwidt - swidt); widt += letterspace;
                 }
                 heig += Math.max(heig, hie + ligages[(ligs.indexOf(input.charAt(currentletter)))].height)
                 if (iwidt > 0) {
@@ -144,10 +141,7 @@ namespace idxfont {
                     swidt = 0
                 }
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] > 0) {
-                    wie += Math.abs(uwidt - swidt)
-                }
-                if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] > 0) {
-                    wie += letterspace
+                    wie += Math.abs(uwidt - swidt); wie += letterspace;
                 }
             } else if (input.charAt(currentletter2) == " ") {
                 wie += 3 * letterspace
@@ -178,10 +172,7 @@ namespace idxfont {
                     swidt = 0
                 }
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] > 0) {
-                    curwidt += letterspace
-                }
-                if (ligwidth[(ligs.indexOf(input.charAt(currentletter3)))] > 0) {
-                    curwidt += Math.abs(uwidt - swidt)
+                    curwidt += letterspace; curwidt += Math.abs(uwidt - swidt);
                 }
             } else if (input.charAt(currentletter3) == " ") {
                 curwidt += 3 * letterspace
