@@ -120,15 +120,16 @@ namespace idxfont {
                 if (uwidt > 0) {
                     widt += Math.abs(uwidt - swidt)
                 }
-                if (ligwidth[(ligs.indexOf(input.charAt(currentletter + 1)))] > 0) {
+                if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter + 1, input.length - 1))))] > 0) {
                     widt += letterspace
                 }
                 heig += Math.max(heig, hie + ligages[(ligs.indexOf(input.charAt(currentletter)))].height)
                 if (iwidt > 0) {
-                    if (widt >= iwidt) {
+                    if (widt >= iwidt || findCommand(input, "n", currentletter)) {
                         heig += ligages[(ligs.indexOf(input.charAt(currentletter)))].height; hie += ligages[(ligs.indexOf(input.charAt(currentletter)))].height; widt = 0;
-                    } else if (findCommand(input, "n", currentletter)) {
-                        heig += ligages[(ligs.indexOf(input.charAt(currentletter)))].height; hie += ligages[(ligs.indexOf(input.charAt(currentletter)))].height; widt = 0; currentletter += 3;
+                        if (findCommand(input, "n", currentletter)) {
+                            currentletter += 3;
+                        }
                     }
                 }
             }
@@ -138,7 +139,7 @@ namespace idxfont {
             if (ligs.indexOf(input.charAt(currentletter2)) >= 0) {
                 uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter2)))]; nwidt = ligages[(ligs.indexOf(input.charAt(currentletter2)))].width;
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] == 0) {
-                    swidt = uwidt
+                    swidt = nwidt
                 } else {
                     swidt = 0
                 }
@@ -153,10 +154,11 @@ namespace idxfont {
             }
             widt = Math.max(widt, wie)
             if (iwidt > 0) {
-                if (wie >= iwidt ) {
+                if (wie >= iwidt || findCommand(input, "n", currentletter2)) {
                     wie = 0;
-                } else if (findCommand(input, "n", currentletter2)) {
-                    wie = 0; currentletter2 += 3;
+                    if (findCommand(input, "n", currentletter2)) {
+                        currentletter2 += 3;
+                    }
                 }
             }
         }
@@ -186,10 +188,11 @@ namespace idxfont {
             }
             if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] > 0) {
                 if (iwidt > 0) {
-                    if (curwidt >= iwidt ) {
+                    if (curwidt >= iwidt || findCommand(input, "n", currentletter3)) {
                         curwidt = 0; hie += hvi;
-                    } else if (findCommand(input, "n", currentletter3)) {
-                        curwidt = 0; hie += hvi; currentletter3 += 3;
+                        if (findCommand(input, "n", currentletter3)) {
+                            currentletter3 += 3;
+                        }
                     }
                 }
             }
