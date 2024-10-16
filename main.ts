@@ -24,8 +24,8 @@ namespace idxfont {
     //%scol.shadow=colorindexpicker
     //%group="create"
     export function setCharecter(glyph: string, imgi: Image, notmove: boolean, bcol: number, scol: number) {
-        let scnwidt: boolean = true; let scwidt: boolean = false; let wi: number = 0; let wj: number = 0; let si: number = 0; let imgj: Image = null;
-        runsep ( function () {
+        runsep( function () {
+            let scnwidt: boolean = true; let scwidt: boolean = false; let wi: number = 0; let wj: number = 0; let si: number = 0; let imgj: Image = null;
             if (bcol > 0 && bcol < 16) {
                 imgi.replace(bcol, 0)
             }
@@ -76,8 +76,8 @@ namespace idxfont {
     //%scl.shadow=colorindexpicker
     //%group="create"
     export function setCharFromSheet(PngSheet: Image, GroupChar: string, StayChar: string, twidt: number, theig: number, bcl: number, scl: number) {
-        let gwidt: number = Math.round(PngSheet.width / twidt); let uig: Image = null; let txi: number = 0; let tyi: number = 0;
-        runsep( function () {
+        runsep ( function () {
+            let gwidt: number = Math.round(PngSheet.width / twidt); let uig: Image = null; let txi: number = 0; let tyi: number = 0;
             for (let tvn = 0; tvn < GroupChar.length; tvn++) {
                 uig = image.create(twidt, theig); txi = twidt * (tvn % gwidt); tyi = theig * Math.floor(tvn / gwidt); drawTransparentImage(PngSheet, uig, 0 - txi, 0 - tyi); setCharecter(GroupChar.charAt(tvn), uig, StayChar.includes(GroupChar.charAt(tvn)), bcl, scl);
             }
