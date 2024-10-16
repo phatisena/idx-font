@@ -118,7 +118,7 @@ namespace idxfont {
                     swidt = 0
                 }
                 if (ligwidth[(ligs.indexOf(input.charAt(currentletter)))] > 0) {
-                    widt += Math.abs(uwidt - swidt)
+                    widt += Math.abs(uwidt - nwidt)
                 }
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter + 1, input.length - 1))))] > 0) {
                     widt += letterspace
@@ -144,7 +144,7 @@ namespace idxfont {
                     swidt = 0
                 }
                 if (ligwidth[(ligs.indexOf(input.charAt(currentletter2)))] > 0) {
-                    wie += Math.abs(uwidt - swidt)
+                    wie += Math.abs(uwidt - nwidt)
                 }
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] > 0) {
                     wie += letterspace
