@@ -139,7 +139,6 @@ namespace idxfont {
         let uwidt = 0
         let swidt = 0
         let nwidt = 0
-        let lwidt: number[] = []
         let wie = 0
         let hie = 0
         let hvi = 0
@@ -177,7 +176,6 @@ namespace idxfont {
             if (!(ligs.indexOf(input.charAt(currentletter2)) == -1)) {
                 uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter2)))]
                 nwidt = ligages[(ligs.indexOf(input.charAt(currentletter2)))].width
-                lwidt.push(uwidt)
                 if (ligwidth[(ligs.indexOf(input.charAt(currentletter2) + 1))] == 0) {
                     swidt = uwidt
                 } else {
