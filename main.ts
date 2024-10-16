@@ -175,7 +175,7 @@ namespace idxfont {
                     swidt = 0
                 }
                 if (ligwidth[(ligs.indexOf(input.charAt(currentletter3)))] > 0) {
-                    curwidt += Math.abs(uwidt - swidt);
+                    curwidt += Math.abs(uwidt - nwidt);
                 }
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] > 0) {
                     curwidt += letterspace
