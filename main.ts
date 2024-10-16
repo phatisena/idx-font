@@ -14,6 +14,10 @@ namespace idxfont {
         return false
     }
 
+    export function runInParallel(handler: () => void) {
+        control.runInParallel(handler);      
+    }
+
     //%blockid=ixfont_setcharecter
     //%block="set $glyph to $imgi=screen_image_picker staying $notmove erase $bcol spacebar $scol"
     //%bcol.shadow=colorindexpicker
@@ -70,10 +74,12 @@ namespace idxfont {
     //%scl.shadow=colorindexpicker
     //%group="create"
     export function setCharFromSheet(PngSheet: Image, GroupChar: string, StayChar: string, twidt: number, theig: number, bcl: number, scl: number) {
-        let gwidt: number = Math.round(PngSheet.width / twidt); let uig: Image = null; let txi: number = 0; let tyi: number = 0;
-        for (let tvn = 0; tvn < GroupChar.length; tvn++) {
-            uig = image.create(twidt, theig); txi = twidt * (tvn % gwidt); tyi = theig * Math.floor(tvn / gwidt); drawTransparentImage(PngSheet, uig, 0 - txi, 0 - tyi); setCharecter(GroupChar.charAt(tvn), uig, StayChar.includes(GroupChar.charAt(tvn)), bcl, scl);
-        }
+        runInParallel( function () {
+            let gwidt: number = Math.round(PngSheet.width / twidt); let uig: Image = null; let txi: number = 0; let tyi: number = 0;
+            for (let tvn = 0; tvn < GroupChar.length; tvn++) {
+                uig = image.create(twidt, theig); txi = twidt * (tvn % gwidt); tyi = theig * Math.floor(tvn / gwidt); drawTransparentImage(PngSheet, uig, 0 - txi, 0 - tyi); setCharecter(GroupChar.charAt(tvn), uig, StayChar.includes(GroupChar.charAt(tvn)), bcl, scl);
+            }
+        })
     }
 
     //%blockid=ixfont_numofglyphs
