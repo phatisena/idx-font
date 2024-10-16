@@ -34,7 +34,7 @@ namespace idxfont {
         let wi = 0
         let wj = 0
         let si = 0
-        let imgj = image.create(1, 1)
+        let imgj: Image = null
         if (bcol > 0 && bcol < 16) {
             imgi.replace(bcol, 0)
         }
@@ -89,7 +89,7 @@ namespace idxfont {
     //%group="create"
     export function setCharFromSheet(PngSheet: Image, GroupChar: string, StayChar: string, twidt: number, theig: number, bcl: number, scl: number) {
         let gwidt = Math.round(PngSheet.width / twidt)
-        let uig = image.create(twidt, theig)
+        let uig: Image = null
         let txi = 0
         let tyi = 0
         for (let tvn = 0; tvn < GroupChar.length; tvn++) {
