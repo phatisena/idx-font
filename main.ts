@@ -91,6 +91,7 @@ namespace idxfont {
     export function setCharFromSheet(PngSheet: Image, GroupChar: string, StayChar: string, twidt: number, theig: number, bcl: number, scl: number) {
         ixfontst = false
         let scwidt = false
+        let scnwidt = false
         let wi = 0
         let wj = 0
         let si = 0
@@ -104,6 +105,7 @@ namespace idxfont {
         let glyph = ""
         let bcol = bcl
         let scol = scl
+        let imgi = image.create(2, 2)
         for (let tvn = 0; tvn < GroupChar.length; tvn++) {
             uig = image.create(twidt, theig)
             txi = twidt * (tvn % gwidt)
@@ -113,6 +115,7 @@ namespace idxfont {
             imgi = uig
             notmove = StayChar.includes(GroupChar.charAt(tvn))
             scwidt = false
+            scnwidt = false 
             wi = 0
             wj = 0
             si = 0
