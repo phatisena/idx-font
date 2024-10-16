@@ -142,8 +142,7 @@ namespace idxfont {
         let wie = 0
         let hie = 0
         let hvi = 0
-        let currentletter = 0
-        while (currentletter < input.length) {
+        for (let currentletter = 0; currentletter < input.length; currentletter++) {
             if (!(ligs.indexOf(input.charAt(currentletter)) == -1)) {
                 uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter)))]
                 nwidt = ligages[(ligs.indexOf(input.charAt(currentletter)))].width
@@ -167,12 +166,10 @@ namespace idxfont {
                     }
                 }
             }
-            currentletter += 1
         }
         wie = 0
         widt = 0
-        let currentletter2 = 0
-        while (currentletter2 < input.length) {
+        for (let currentletter2 = 0; currentletter2 < input.length; currentletter2++) {
             if (!(ligs.indexOf(input.charAt(currentletter2)) == -1)) {
                 uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter2)))]
                 nwidt = ligages[(ligs.indexOf(input.charAt(currentletter2)))].width
@@ -197,13 +194,11 @@ namespace idxfont {
                     }
                 }
             }
-            currentletter2 += 1
         }
         wie = 0
         hie = 0
-        let currentletter3 = 0
         let output = image.create(widt, heig)
-        while (currentletter3 < input.length) {
+        for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
             if (!(ligs.indexOf(input.charAt(currentletter3)) == -1)) {
                 hvi = ligages[(ligs.indexOf(input.charAt(currentletter3)))].height
                 uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter3)))]
@@ -238,7 +233,6 @@ namespace idxfont {
                     }
                 }
             }
-            currentletter3 += 1
         }
         if (icol > 0) {
             for (let ico = 0; ico < 16; ico++) {
