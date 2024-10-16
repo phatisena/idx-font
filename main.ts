@@ -89,7 +89,6 @@ namespace idxfont {
     //%group="create"
     export function setCharFromSheet(PngSheet: Image, GroupChar: string, StayChar: string, twidt: number, theig: number, bcl: number, scl: number) {
         let gwidt = Math.round(PngSheet.width / twidt)
-        let gheig = Math.round(PngSheet.height / theig)
         let uig = image.create(twidt, theig)
         let txi = 0
         let tyi = 0
