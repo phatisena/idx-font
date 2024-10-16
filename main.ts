@@ -110,8 +110,8 @@ namespace idxfont {
     //%icol.shadow=colorindexpicker
     //%group="render"
     export function SetImage(input: string, iwidt: number, icol: number) {
-        let heig: number = 0; let widt: number = 0; let curwidt: number = 0; let uwidt: number = 0; let swidt: number = 0; let nwidt: number = 0; let wie: number = 0; let hie: number = 0; let hvi: number = 0;
         runsep ( function () {
+            let heig: number = 0; let widt: number = 0; let curwidt: number = 0; let uwidt: number = 0; let swidt: number = 0; let nwidt: number = 0; let wie: number = 0; let hie: number = 0; let hvi: number = 0;
             for (let currentletter = 0; currentletter < input.length; currentletter++) {
                 if (ligs.indexOf(input.charAt(currentletter)) >= 0) {
                     uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter)))]; nwidt = ligages[(ligs.indexOf(input.charAt(currentletter)))].width;
