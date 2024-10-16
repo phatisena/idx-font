@@ -162,7 +162,7 @@ namespace idxfont {
                 }
             }
         }
-        wie = 0; hie = 0; let output = image.create(widt, heig);
+        hie = 0; let output = image.create(widt, heig);
         for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
             if (!(ligs.indexOf(input.charAt(currentletter3)) >= 0)) {
                 hvi = ligages[(ligs.indexOf(input.charAt(currentletter3)))].height; uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter3)))];
