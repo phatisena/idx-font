@@ -128,7 +128,7 @@ namespace idxfont {
                     if (widt >= iwidt || findCommand(input, "n", currentletter)) {
                         heig += ligages[(ligs.indexOf(input.charAt(currentletter)))].height; hie += ligages[(ligs.indexOf(input.charAt(currentletter)))].height; widt = 0;
                         if (findCommand(input, "n", currentletter)) {
-                            currentletter += 3;
+                            currentletter += 3
                         }
                     }
                 }
@@ -155,9 +155,9 @@ namespace idxfont {
             widt = Math.max(wie, widt)
             if (iwidt > 0) {
                 if (wie >= iwidt || findCommand(input, "n", currentletter2)) {
-                    wie = 0;
+                    wie = 0
                     if (findCommand(input, "n", currentletter2)) {
-                        currentletter2 += 3;
+                        currentletter2 += 3
                     }
                 }
             }
@@ -191,7 +191,7 @@ namespace idxfont {
                     if (curwidt >= iwidt || findCommand(input, "n", currentletter3)) {
                         curwidt = 0; hie += hvi;
                         if (findCommand(input, "n", currentletter3)) {
-                            currentletter3 += 3;
+                            currentletter3 += 3
                         }
                     }
                 }
