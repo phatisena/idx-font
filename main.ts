@@ -152,7 +152,7 @@ namespace idxfont {
             } else if (input.charAt(currentletter2) == " ") {
                 wie += 3 * letterspace
             }
-            widt = Math.max(widt, wie)
+            if (wie > widt) { widt = wie }
             if (iwidt > 0) {
                 if (wie >= iwidt || findCommand(input, "n", currentletter2)) {
                     wie = 0;
