@@ -112,13 +112,13 @@ namespace idxfont {
         for (let currentletter = 0; currentletter < input.length; currentletter++) {
             if (ligs.indexOf(input.charAt(currentletter)) >= 0) {
                 uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter)))]; nwidt = ligages[(ligs.indexOf(input.charAt(currentletter)))].width;
-                if (uwidt > 0) {
-                    swidt = uwidt
+                if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter + 1, input.length - 1))))] <= 0) {
+                    swidt = nwidt
                 } else {
                     swidt = 0
                 }
-                if (uwidt > 0) {
-                    widt += Math.abs(uwidt - swidt)
+                if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter + 1, input.length - 1))))] > 0) {
+                    widt += Math.abs(nwidt - swidt)
                 }
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter + 1, input.length - 1))))] > 0) {
                     widt += letterspace
@@ -138,13 +138,13 @@ namespace idxfont {
         for (let currentletter2 = 0; currentletter2 < input.length; currentletter2++) {
             if (ligs.indexOf(input.charAt(currentletter2)) >= 0) {
                 uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter2)))]; nwidt = ligages[(ligs.indexOf(input.charAt(currentletter2)))].width;
-                if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] == 0) {
+                if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] <= 0) {
                     swidt = nwidt
                 } else {
                     swidt = 0
                 }
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] > 0) {
-                    wie += Math.abs(uwidt - swidt)
+                    wie += Math.abs(nwidt - swidt)
                 }
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] > 0) {
                     wie += letterspace
@@ -166,13 +166,13 @@ namespace idxfont {
         for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
             if (ligs.indexOf(input.charAt(currentletter3)) >= 0) {
                 hvi = ligages[(ligs.indexOf(input.charAt(currentletter3)))].height; uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter3)))];
-                if (ligwidth[(ligs.indexOf(input.charAt(currentletter3)))] == 0) {
+                if (ligwidth[(ligs.indexOf(input.charAt(currentletter3)))] <= 0) {
                     nwidt = ligages[(ligs.indexOf(input.charAt(currentletter3)))].width
                 } else {
                     nwidt = 0
                 }
                 drawTransparentImage(ligages[(ligs.indexOf(input.charAt(currentletter3)))], output, curwidt - nwidt, 0 + ((hie + hvi) - ligages[(ligs.indexOf(input.charAt(currentletter3)))].height))
-                if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] == 0) {
+                if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] <= 0) {
                     swidt = nwidt
                 } else {
                     swidt = 0
@@ -181,7 +181,7 @@ namespace idxfont {
                     curwidt += letterspace
                 }
                 if (ligwidth[(ligs.indexOf(input.charAt(currentletter3)))] > 0) {
-                    curwidt += Math.abs(uwidt - nwidt)
+                    curwidt += Math.abs(nwidt - nwidt)
                 }
             } else if (input.charAt(currentletter3) == " ") {
                 curwidt += 3 * letterspace
