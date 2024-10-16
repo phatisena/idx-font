@@ -5,7 +5,6 @@ namespace idxfont {
     let ligages: Image[] = []
     let ligwidth: number[] = []
     let letterspace: number = 1
-    let ixfontst: boolean = true
 
     export function drawTransparentImage(src: Image, to: Image, x: number, y: number) {
         if (!src || !to) {
@@ -89,7 +88,6 @@ namespace idxfont {
     //%scl.shadow=colorindexpicker
     //%group="create"
     export function setCharFromSheet(PngSheet: Image, GroupChar: string, StayChar: string, twidt: number, theig: number, bcl: number, scl: number) {
-        ixfontst = false
         let scwidt = false
         let scnwidt = false
         let wi = 0
@@ -165,9 +163,7 @@ namespace idxfont {
                     ligwidth[ligs.indexOf(glyph)] = imgj.width
                 }
             }
-        
         }
-        ixfontst = true
     }
 
     //%blockid=ixfont_numofglyphs
@@ -196,9 +192,6 @@ namespace idxfont {
     //%icol.shadow=colorindexpicker
     //%group="render"
     export function SetImage(input: string, iwidt: number, icol: number) {
-        if (!(ixfontst)) {
-            return image.create(1, 1)
-        }
         let heig = 0
         let widt = 0
         let curwidt = 0
