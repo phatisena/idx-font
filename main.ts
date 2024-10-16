@@ -13,11 +13,11 @@ namespace idxfont {
         to.drawTransparentImage(src, x, y);
     }
 
-    export function findCommand(tix: string,cha: string ,nva: number): boolean {
-        if (cha.length != 1) {
+    export function findCommand(tvi: string ,chi: string ,nvi: number): boolean {
+        if (chi.length != 1) {
             return false
         }
-        if (((nva < tix.length && tix.charAt(nva) == " ") && (nva + 1 < tix.length && tix.charAt(nva + 1) == "\\")) && ((nva + 2 < tix.length && tix.charAt(nva + 2) == cha) && (nva + 3 < tix.length && tix.charAt(nva + 3) == " "))) {
+        if (((nvi < tvi.length && tvi.charAt(nvi) == " ") && (nvi + 1 < tvi.length && tvi.charAt(nvi + 1) == "\\")) && ((nvi + 2 < tvi.length && tvi.charAt(nvi + 2) == chi) && (nvi + 3 < tvi.length && tvi.charAt(nvi + 3) == " "))) {
             return true
         }
         return false
@@ -143,7 +143,7 @@ namespace idxfont {
         let hie = 0
         let hvi = 0
         for (let currentletter = 0; currentletter < input.length; currentletter++) {
-            if (!(ligs.indexOf(input.charAt(currentletter)) == -1)) {
+            if (!(ligs.indexOf(input.charAt(currentletter)) < 0)) {
                 uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter)))]
                 nwidt = ligages[(ligs.indexOf(input.charAt(currentletter)))].width
                 if (uwidt > 0) {
@@ -153,6 +153,9 @@ namespace idxfont {
                 }
                 if (uwidt > 0) {
                     widt += Math.abs(uwidt - swidt)
+                }
+                if (ligwidth[(ligs.indexOf(input.charAt(currentletter + 1)))] > 0) {
+                    widt += letterspace
                 }
                 heig += Math.max(heig, hie + ligages[(ligs.indexOf(input.charAt(currentletter)))].height)
                 if (iwidt > 0) {
@@ -170,10 +173,10 @@ namespace idxfont {
         wie = 0
         widt = 0
         for (let currentletter2 = 0; currentletter2 < input.length; currentletter2++) {
-            if (!(ligs.indexOf(input.charAt(currentletter2)) == -1)) {
+            if (!(ligs.indexOf(input.charAt(currentletter2)) < 0)) {
                 uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter2)))]
                 nwidt = ligages[(ligs.indexOf(input.charAt(currentletter2)))].width
-                if (ligwidth[(ligs.indexOf(input.charAt(currentletter2) + 1))] == 0) {
+                if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] == 0) {
                     swidt = uwidt
                 } else {
                     swidt = 0
@@ -181,10 +184,12 @@ namespace idxfont {
                 if (uwidt > 0) {
                     wie += Math.abs(uwidt - swidt)
                 }
+                if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] > 0){   
+                    wie += letterspace
+                }
             } else if (input.charAt(currentletter2) == " ") {
                 wie += 3 * letterspace
             }
-            wie += 1
             widt = Math.max(widt, wie)
             if (iwidt > 0) {
                 if (wie >= iwidt || findCommand(input, "n", currentletter2)) {
@@ -199,7 +204,7 @@ namespace idxfont {
         hie = 0
         let output = image.create(widt, heig)
         for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
-            if (!(ligs.indexOf(input.charAt(currentletter3)) == -1)) {
+            if (!(ligs.indexOf(input.charAt(currentletter3)) < 0)) {
                 hvi = ligages[(ligs.indexOf(input.charAt(currentletter3)))].height
                 uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter3)))]
                 if (ligwidth[(ligs.indexOf(input.charAt(currentletter3)))] == 0) {
@@ -208,12 +213,12 @@ namespace idxfont {
                     nwidt = 0
                 }
                 drawTransparentImage(ligages[(ligs.indexOf(input.charAt(currentletter3)))], output, curwidt - nwidt, 0 + ((hie + hvi) - ligages[(ligs.indexOf(input.charAt(currentletter3)))].height))
-                if (ligwidth[(ligs.indexOf(input.charAt(currentletter3 + 1)))] == 0) {
+                if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] == 0) {
                     swidt = nwidt
                 } else {
                     swidt = 0
                 }
-                if (ligwidth[(ligs.indexOf(input.charAt(currentletter3 + 1)))] > 0) {
+                if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] > 0) {
                     curwidt += letterspace
                 }
                 if (ligwidth[(ligs.indexOf(input.charAt(currentletter3)))] > 0) {
@@ -222,7 +227,7 @@ namespace idxfont {
             } else if (input.charAt(currentletter3) == " ") {
                 curwidt += 3 * letterspace
             }
-            if (ligwidth[(ligs.indexOf(input.charAt(currentletter3)))] > 0) {
+            if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] > 0) {
                 if (iwidt > 0) {
                     if (curwidt >= iwidt || findCommand(input, "n", currentletter3)) {
                         curwidt = 0
