@@ -1,16 +1,25 @@
 //% color="#2dbded" icon="\uf249"
 namespace idxfont {
 
-    let ligs: string[] = []; let ligages: Image[] = []; let ligwidth: number[] = []; let letterspace: number = 1;
+    let ligs: string[] = []
+    let ligages: Image[] = []
+    let ligwidth: number[] = []
+    let letterspace: number = 1
 
     export function drawTransparentImage(src: Image, to: Image, x: number, y: number) {
-        if (!src || !to) { return; }
-        to.drawTransparentImage(src, x, y);
+        if (!src || !to) {
+            return;
+        }
+        to.drawTransparentImage(src, x, y)
     }
 
     export function findCommand(tvi: string, chi: string, nvi: number): boolean {
-        if (chi.length != 1) { return false }
-        if (((nvi < tvi.length && tvi.charAt(nvi) == " ") && (nvi + 1 < tvi.length && tvi.charAt(nvi + 1) == "\\")) && ((nvi + 2 < tvi.length && tvi.charAt(nvi + 2) == chi) && (nvi + 3 < tvi.length && tvi.charAt(nvi + 3) == " "))) { return true }
+        if (chi.length != 1) {
+            return false
+        }
+        if (((nvi < tvi.length && tvi.charAt(nvi) == " ") && (nvi + 1 < tvi.length && tvi.charAt(nvi + 1) == "\\")) && ((nvi + 2 < tvi.length && tvi.charAt(nvi + 2) == chi) && (nvi + 3 < tvi.length && tvi.charAt(nvi + 3) == " "))) {
+            return true
+        }
         return false
     }
 
@@ -24,7 +33,12 @@ namespace idxfont {
     //%scol.shadow=colorindexpicker
     //%group="create"
     export function setCharecter(glyph: string, imgi: Image, notmove: boolean, bcol: number, scol: number) {
-        let scnwidt: boolean = true; let scwidt: boolean = false; let wi: number = 0; let wj: number = 0; let si: number = 0; let imgj: Image = null;
+        let scnwidt: boolean = true
+        let scwidt: boolean = false
+        let wi: number = 0
+        let wj: number = 0
+        let si: number = 0
+        let imgj: Image = null
         if (bcol > 0 && bcol < 16) {
             imgi.replace(bcol, 0)
         }
@@ -38,21 +52,25 @@ namespace idxfont {
             if (scnwidt) {
                 if (scwidt) {
                     if (si <= 0) {
-                        wj = xw; scnwidt = false;
+                        wj = xw
+                        scnwidt = false
                     }
                 } else {
                     if (si > 0) {
-                        wi = xw; scwidt = true;
+                        wi = xw
+                        scwidt = true
                     }
                 }
             }
         }
-        imgj = image.create(Math.abs(wj - wi), imgi.height); drawTransparentImage(imgi, imgj, 0 - wi, 0);
+        imgj = image.create(Math.abs(wj - wi), imgi.height)
+        drawTransparentImage(imgi, imgj, 0 - wi, 0)
         if (scol > 0 && scol < 16) {
             imgj.replace(scol, 0)
         }
         if (ligs.indexOf(glyph) < 0) {
-            ligs.push(glyph); ligages.push(imgj);
+            ligs.push(glyph)
+            ligages.push(imgj)
             if (notmove) {
                 ligwidth.push(0)
             } else {
@@ -75,9 +93,16 @@ namespace idxfont {
     //%group="create"
     export function setCharFromSheet(PngSheet: Image, GroupChar: string, StayChar: string, twidt: number, theig: number, bcl: number, scl: number) {
         runInParallel( function () {
-            let gwidt: number = Math.round(PngSheet.width / twidt); let uig: Image = null; let txi: number = 0; let tyi: number = 0;
+            let gwidt: number = Math.round(PngSheet.width / twidt)
+            let uig: Image = null
+            let txi: number = 0
+            let tyi: number = 0
             for (let tvn = 0; tvn < GroupChar.length; tvn++) {
-                uig = image.create(twidt, theig); txi = twidt * (tvn % gwidt); tyi = theig * Math.floor(tvn / gwidt); drawTransparentImage(PngSheet, uig, 0 - txi, 0 - tyi); setCharecter(GroupChar.charAt(tvn), uig, StayChar.includes(GroupChar.charAt(tvn)), bcl, scl);
+                uig = image.create(twidt, theig)
+                txi = twidt * (tvn % gwidt)
+                tyi = theig * Math.floor(tvn / gwidt)
+                drawTransparentImage(PngSheet, uig, 0 - txi, 0 - tyi)
+                setCharecter(GroupChar.charAt(tvn), uig, StayChar.includes(GroupChar.charAt(tvn)), bcl, scl)
             }
         })
     }
@@ -108,11 +133,19 @@ namespace idxfont {
     //%icol.shadow=colorindexpicker
     //%group="render"
     export function SetImage(input: string, iwidt: number, icol: number) {
-        let heig: number = 0; let widt: number = 0; let curwidt: number = 0; let uwidt: number = 0; let swidt: number = 0; let nwidt: number = 0; let wie: number = 0; let hie: number = 0; let hvi: number = 0;
+        let heig: number = 0
+        let widt: number = 0
+        let curwidt: number = 0
+        let uwidt: number = 0
+        let swidt: number = 0
+        let nwidt: number = 0
+        let wie: number = 0
+        let hie: number = 0
+        let hvi: number = 0
         for (let currentletter = 0; currentletter < input.length; currentletter++) {
             if (!(ligs.indexOf(input.charAt(currentletter)) < 0)) {
                 uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter)))]; nwidt = ligages[(ligs.indexOf(input.charAt(currentletter)))].width;
-                if (uwidt > 0) {
+                if (uwidt <= 0) {
                     swidt = uwidt
                 } else {
                     swidt = 0
@@ -123,10 +156,12 @@ namespace idxfont {
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter + 1, input.length - 1))))] > 0) {
                     widt += letterspace
                 }
-                heig += Math.max(heig, hie + ligages[(ligs.indexOf(input.charAt(currentletter)))].height)
+                heig = Math.max(heig, hie + ligages[(ligs.indexOf(input.charAt(currentletter)))].height)
                 if (iwidt > 0) {
                     if (widt >= iwidt || findCommand(input, "n", currentletter)) {
-                        heig += ligages[(ligs.indexOf(input.charAt(currentletter)))].height; hie += ligages[(ligs.indexOf(input.charAt(currentletter)))].height; widt = 0;
+                        heig += ligages[(ligs.indexOf(input.charAt(currentletter)))].height
+                        hie += ligages[(ligs.indexOf(input.charAt(currentletter)))].height
+                        widt = 0
                         if (findCommand(input, "n", currentletter)) {
                             currentletter += 3
                         }
@@ -134,11 +169,13 @@ namespace idxfont {
                 }
             }
         }
-        wie = 0; widt = 0;
+        wie = 0
+        widt = 0
         for (let currentletter2 = 0; currentletter2 < input.length; currentletter2++) {
             if (!(ligs.indexOf(input.charAt(currentletter2)) < 0)) {
-                uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter2)))]; nwidt = ligages[(ligs.indexOf(input.charAt(currentletter2)))].width;
-                if (uwidt > 0) {
+                uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter2)))]
+                nwidt = ligages[(ligs.indexOf(input.charAt(currentletter2)))].width
+                if (uwidt <= 0) {
                     swidt = uwidt
                 } else {
                     swidt = 0
@@ -152,7 +189,7 @@ namespace idxfont {
             } else if (input.charAt(currentletter2) == " ") {
                 wie += 3 * letterspace
             }
-            widt += Math.max(widt, wie)
+            widt = Math.max(widt, wie)
             if (iwidt > 0) {
                 if (wie >= iwidt || findCommand(input, "n", currentletter2)) {
                     wie = 0
@@ -162,10 +199,12 @@ namespace idxfont {
                 }
             }
         }
-        hie = 0; let output = image.create(widt, heig);
+        hie = 0
+        let output = image.create(widt, heig)
         for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
             if (!(ligs.indexOf(input.charAt(currentletter3)) >= 0)) {
-                hvi = ligages[(ligs.indexOf(input.charAt(currentletter3)))].height; uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter3)))];
+                hvi = ligages[(ligs.indexOf(input.charAt(currentletter3)))].height
+                uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter3)))]
                 if (ligwidth[(ligs.indexOf(input.charAt(currentletter3)))] <= 0) {
                     nwidt = ligages[(ligs.indexOf(input.charAt(currentletter3)))].width
                 } else {
@@ -178,7 +217,7 @@ namespace idxfont {
                     swidt = 0
                 }
                 if (ligwidth[(ligs.indexOf(input.charAt(currentletter3)))] > 0) {
-                    curwidt += Math.abs(uwidt - nwidt);
+                    curwidt += Math.abs(uwidt - nwidt)
                 }
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] > 0) {
                     curwidt += letterspace
@@ -189,7 +228,8 @@ namespace idxfont {
             if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] > 0) {
                 if (iwidt > 0) {
                     if (curwidt >= iwidt || findCommand(input, "n", currentletter3)) {
-                        curwidt = 0; hie += hvi;
+                        curwidt = 0
+                        hie += hvi
                         if (findCommand(input, "n", currentletter3)) {
                             currentletter3 += 3
                         }
@@ -198,7 +238,11 @@ namespace idxfont {
             }
         }
         if (icol > 0) {
-            for (let ico = 0; ico < 16; ico++) { if (ico > 0) { output.replace(ico, icol) } }
+            for (let ico = 0; ico < 16; ico++) {
+                if (ico > 0) {
+                    output.replace(ico, icol)
+                }
+            }
         }
         return output
     }
