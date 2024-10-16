@@ -88,81 +88,17 @@ namespace idxfont {
     //%scl.shadow=colorindexpicker
     //%group="create"
     export function setCharFromSheet(PngSheet: Image, GroupChar: string, StayChar: string, twidt: number, theig: number, bcl: number, scl: number) {
-        let scwidt = false
-        let scnwidt = false
-        let wi = 0
-        let wj = 0
-        let si = 0
-        let imgj = image.create(1, 1)
         let gwidt = Math.round(PngSheet.width / twidt)
         let gheig = Math.round(PngSheet.height / theig)
         let uig = image.create(twidt, theig)
         let txi = 0
         let tyi = 0
-        let notmove = false
-        let glyph = ""
-        let bcol = bcl
-        let scol = scl
-        let imgi = image.create(2, 2)
         for (let tvn = 0; tvn < GroupChar.length; tvn++) {
             uig = image.create(twidt, theig)
             txi = twidt * (tvn % gwidt)
             tyi = theig * Math.floor(tvn / gwidt)
             drawTransparentImage(PngSheet, uig, 0 - txi, 0 - tyi)
-            glyph = GroupChar.charAt(tvn)
-            imgi = uig
-            notmove = StayChar.includes(GroupChar.charAt(tvn))
-            scwidt = false
-            scnwidt = false 
-            wi = 0
-            wj = 0
-            si = 0
-            imgj = image.create(1, 1)
-            if (bcol > 0 && bcol < 16) {
-                imgi.replace(bcol, 0)
-            }
-            for (let xw = 0; xw < imgi.width; xw++) {
-                si = 0
-                for (let yh = 0; yh < imgi.height; yh++) {
-                    if (scnwidt && (imgi.getPixel(xw, yh) != 0 || (scwidt && imgi.getPixel(xw + 1, yh) != 0))) {
-                        si += 1
-                    }
-                }
-                if (scnwidt) {
-                    if (scwidt) {
-                        if (si <= 0) {
-                            wj = xw
-                            scnwidt = false
-                        }
-                    } else {
-                        if (si > 0) {
-                            wi = xw
-                            scwidt = true
-                        }
-                    }
-                }
-            }
-            imgj = image.create(Math.abs(wj - wi), imgi.height)
-            drawTransparentImage(imgi, imgj, 0 - wi, 0)
-            if (scol > 0 && scol < 16) {
-                imgj.replace(scol, 0)
-            }
-            if (ligs.indexOf(glyph) < 0) {
-                ligs.push(glyph)
-                ligages.push(imgj)
-                if (notmove) {
-                    ligwidth.push(0)
-                } else {
-                    ligwidth.push(imgj.width)
-                }
-            } else {
-                ligages[ligs.indexOf(glyph)] = imgj
-                if (notmove) {
-                    ligwidth[ligs.indexOf(glyph)] = 0
-                } else {
-                    ligwidth[ligs.indexOf(glyph)] = imgj.width
-                }
-            }
+            setCharecter(GroupChar.charAt(tvn), uig, StayChar.includes(GroupChar.charAt(tvn)), bcl, scl)
         }
     }
 
