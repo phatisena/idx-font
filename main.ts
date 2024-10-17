@@ -146,7 +146,7 @@ namespace idxfont {
             if (!(ligs.indexOf(input.charAt(currentletter)) < 0)) {
                 uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter)))]; nwidt = ligages[(ligs.indexOf(input.charAt(currentletter)))].width;
                 if (ligwidth[(ligs.indexOf(input.charAt(currentletter)))] <= 0) {
-                    nwidt = ligages[(ligs.indexOf(input.charAt(currentletter3)))].width
+                    nwidt = ligages[(ligs.indexOf(input.charAt(currentletter)))].width
                 } else {
                     nwidt = 0
                 }
@@ -155,7 +155,7 @@ namespace idxfont {
                 } else {
                     swidt = 0
                 }
-                if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter))))] > 0) {
+                if (ligwidth[(ligs.indexOf(input.charAt(currentletter)))] > 0) {
                     widt += Math.abs(uwidt - nwidt)
                 }
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter + 1, input.length - 1))))] > 0) {
@@ -181,7 +181,7 @@ namespace idxfont {
                 uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter2)))]
                 nwidt = ligages[(ligs.indexOf(input.charAt(currentletter2)))].width
                 if (ligwidth[(ligs.indexOf(input.charAt(currentletter2)))] <= 0) {
-                    nwidt = ligages[(ligs.indexOf(input.charAt(currentletter3)))].width
+                    nwidt = ligages[(ligs.indexOf(input.charAt(currentletter2)))].width
                 } else {
                     nwidt = 0
                 }
@@ -190,7 +190,7 @@ namespace idxfont {
                 } else {
                     swidt = 0
                 }
-                if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter2))))] > 0) {
+                if (ligwidth[(ligs.indexOf(input.charAt(currentletter2)))] > 0) {
                     wie += Math.abs(uwidt - nwidt)
                 }
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] > 0) {
