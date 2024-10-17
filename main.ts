@@ -194,17 +194,15 @@ namespace idxfont {
             } else if (input.charAt(currentletter3) == " ") {
                 curwidt += 3 * letterspace
             }
-            if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] > 0) {
-                if (iwidt > 0) {
-                    if (curwidt >= iwidt || findCommand(input, "n", currentletter3)) {
-                        curwidt = 0; hie += hvi;
-                        if (findCommand(input, "n", currentletter3)) {
-                            currentletter3 += 3
-                        }
+            if (iwidt > 0) {
+                if (curwidt >= iwidt || findCommand(input, "n", currentletter3)) {
+                    curwidt = 0; hie += hvi;
+                    if (findCommand(input, "n", currentletter3)) {
+                        currentletter3 += 3
                     }
-                } else if (findCommand(input, "n", currentletter3)) {
-                    currentletter3 += 3
                 }
+            } else if (findCommand(input, "n", currentletter3)) {
+                currentletter3 += 3
             }
         }
         if (icol > 0) {
