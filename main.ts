@@ -38,7 +38,7 @@ namespace idxfont {
         let wi: number = 0
         let wj: number = 0
         let si: number = 0
-        let imgj: Image = null
+        let imgj: Image = image.create(imgi.width, imgi.height)
         if (bcol > 0 && bcol < 16) {
             imgi.replace(bcol, 0)
         }
@@ -94,7 +94,7 @@ namespace idxfont {
     export function setCharFromSheet(PngSheet: Image, GroupChar: string, StayChar: string, twidt: number, theig: number, bcl: number, scl: number) {
         runInParallel( function () {
             let gwidt: number = Math.round(PngSheet.width / twidt)
-            let uig: Image = null
+            let uig: Image = image.create(twidt, theig)
             let txi: number = 0
             let tyi: number = 0
             for (let tvn = 0; tvn < GroupChar.length; tvn++) {
@@ -150,7 +150,7 @@ namespace idxfont {
                 } else {
                     nwidt = 0
                 }
-                if (uwidt <= 0) {
+                if (ligwidth[(ligs.indexOf(input.charAt(currentletter)))] <= 0) {
                     swidt = uwidt
                 } else {
                     swidt = 0
@@ -185,7 +185,7 @@ namespace idxfont {
                 } else {
                     nwidt = 0
                 }
-                if (uwidt <= 0) {
+                if (ligwidth[(ligs.indexOf(input.charAt(currentletter2)))] <= 0) {
                     swidt = uwidt
                 } else {
                     swidt = 0
