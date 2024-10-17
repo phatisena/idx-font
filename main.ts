@@ -145,13 +145,18 @@ namespace idxfont {
         for (let currentletter = 0; currentletter < input.length; currentletter++) {
             if (!(ligs.indexOf(input.charAt(currentletter)) < 0)) {
                 uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter)))]; nwidt = ligages[(ligs.indexOf(input.charAt(currentletter)))].width;
+                if (ligwidth[(ligs.indexOf(input.charAt(currentletter)))] <= 0) {
+                    nwidt = ligages[(ligs.indexOf(input.charAt(currentletter3)))].width
+                } else {
+                    nwidt = 0
+                }
                 if (uwidt <= 0) {
                     swidt = uwidt
                 } else {
                     swidt = 0
                 }
-                if (uwidt > 0) {
-                    widt += Math.abs(uwidt - swidt)
+                if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter))))] > 0) {
+                    widt += Math.abs(uwidt - nwidt)
                 }
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter + 1, input.length - 1))))] > 0) {
                     widt += letterspace
@@ -175,13 +180,18 @@ namespace idxfont {
             if (!(ligs.indexOf(input.charAt(currentletter2)) < 0)) {
                 uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter2)))]
                 nwidt = ligages[(ligs.indexOf(input.charAt(currentletter2)))].width
+                if (ligwidth[(ligs.indexOf(input.charAt(currentletter2)))] <= 0) {
+                    nwidt = ligages[(ligs.indexOf(input.charAt(currentletter3)))].width
+                } else {
+                    nwidt = 0
+                }
                 if (uwidt <= 0) {
                     swidt = uwidt
                 } else {
                     swidt = 0
                 }
-                if (uwidt > 0) {
-                    wie += Math.abs(uwidt - swidt)
+                if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter2))))] > 0) {
+                    wie += Math.abs(uwidt - nwidt)
                 }
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] > 0) {
                     wie += letterspace
