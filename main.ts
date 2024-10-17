@@ -122,17 +122,19 @@ namespace idxfont {
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter + 1, input.length - 1))))] > 0) {
                     wie += letterspace
                 }
-                hvi = hie + ligages[(ligs.indexOf(input.charAt(currentletter)))].height; heig = Math.max(heig, hvi);
-                if (iwidt > 0) {
-                    if (wie >= iwidt || findCommand(input, "n", currentletter)) {
-                        hie += ligages[(ligs.indexOf(input.charAt(currentletter)))].height; wie = 0;
-                        if (findCommand(input, "n", currentletter)) {
-                            currentletter += 3
-                        }
+            } else if (input.charAt(currentletter) == " ") {
+                wie += 3 * letterspace
+            }
+            hvi = hie + ligages[(ligs.indexOf(input.charAt(currentletter)))].height; heig = Math.max(heig, hvi);
+            if (iwidt > 0) {
+                if (wie >= iwidt || findCommand(input, "n", currentletter)) {
+                    hie += ligages[(ligs.indexOf(input.charAt(currentletter)))].height; wie = 0;
+                    if (findCommand(input, "n", currentletter)) {
+                        currentletter += 3
                     }
-                } else if (findCommand(input, "n", currentletter)) {
-                    currentletter += 3
                 }
+            } else if (findCommand(input, "n", currentletter)) {
+                    currentletter += 3
             }
         }
         wie = 0; widt = 0;
