@@ -33,12 +33,12 @@ namespace idxfont {
     //%scol.shadow=colorindexpicker
     //%group="create"
     export function setCharecter(glyph: string, imgi: Image, notmove: boolean, bcol: number, scol: number) {
-        let scnwidt: boolean = true
-        let scwidt: boolean = false
-        let wi: number = 0
-        let wj: number = 0
-        let si: number = 0
-        let imgj: Image = image.create(imgi.width, imgi.height)
+        let scnwidt = true
+        let scwidt = false
+        let wi = 0
+        let wj = 0
+        let si = 0
+        let imgj = image.create(imgi.width, imgi.height)
         if (bcol > 0 && bcol < 16) {
             imgi.replace(bcol, 0)
         }
@@ -93,10 +93,10 @@ namespace idxfont {
     //%group="create"
     export function setCharFromSheet(PngSheet: Image, GroupChar: string, StayChar: string, twidt: number, theig: number, bcl: number, scl: number) {
         runInParallel( function () {
-            let gwidt: number = Math.round(PngSheet.width / twidt)
-            let uig: Image = image.create(twidt, theig)
-            let txi: number = 0
-            let tyi: number = 0
+            let gwidt = Math.round(PngSheet.width / twidt)
+            let uig = image.create(twidt, theig)
+            let txi = 0
+            let tyi = 0
             for (let tvn = 0; tvn < GroupChar.length; tvn++) {
                 uig = image.create(twidt, theig)
                 txi = twidt * (tvn % gwidt)
@@ -133,15 +133,15 @@ namespace idxfont {
     //%icol.shadow=colorindexpicker
     //%group="render"
     export function SetImage(input: string, iwidt: number, icol: number) {
-        let heig: number = 0
-        let widt: number = 0
-        let curwidt: number = 0
-        let uwidt: number = 0
-        let swidt: number = 0
-        let nwidt: number = 0
-        let wie: number = 0
-        let hie: number = 0
-        let hvi: number = 0
+        let heig = 0
+        let widt = 0
+        let curwidt = 0
+        let uwidt = 0
+        let swidt = 0
+        let nwidt = 0
+        let wie = 0
+        let hie = 0
+        let hvi = 0
         for (let currentletter = 0; currentletter < input.length; currentletter++) {
             if (!(ligs.indexOf(input.charAt(currentletter)) < 0)) {
                 uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter)))]; nwidt = ligages[(ligs.indexOf(input.charAt(currentletter)))].width;
@@ -156,7 +156,8 @@ namespace idxfont {
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter + 1, input.length - 1))))] > 0) {
                     wie += letterspace
                 }
-                heig = Math.max(heig, hie + ligages[(ligs.indexOf(input.charAt(currentletter)))].height)
+                hvi = hie + ligages[(ligs.indexOf(input.charAt(currentletter)))].height
+                heig = Math.max(hvi, heig)
                 if (iwidt > 0) {
                     if (wie >= iwidt || findCommand(input, "n", currentletter)) {
                         hie += ligages[(ligs.indexOf(input.charAt(currentletter)))].height
