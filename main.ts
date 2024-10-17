@@ -156,17 +156,16 @@ namespace idxfont {
                     swidt = 0
                 }
                 if (ligwidth[(ligs.indexOf(input.charAt(currentletter)))] > 0) {
-                    widt += Math.abs(uwidt - nwidt)
+                    wie += Math.abs(uwidt - nwidt)
                 }
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter + 1, input.length - 1))))] > 0) {
-                    widt += letterspace
+                    wie += letterspace
                 }
                 heig = Math.max(heig, hie + ligages[(ligs.indexOf(input.charAt(currentletter)))].height)
                 if (iwidt > 0) {
-                    if (widt >= iwidt || findCommand(input, "n", currentletter)) {
-                        heig += ligages[(ligs.indexOf(input.charAt(currentletter)))].height
+                    if (wie >= iwidt || findCommand(input, "n", currentletter)) {
                         hie += ligages[(ligs.indexOf(input.charAt(currentletter)))].height
-                        widt = 0
+                        wie = 0
                         if (findCommand(input, "n", currentletter)) {
                             currentletter += 3
                         }
@@ -209,8 +208,9 @@ namespace idxfont {
                 }
             }
         }
-        hie = 0
         let output = image.create(widt, heig)
+        hie = 0
+        wie = 0
         for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
             if (!(ligs.indexOf(input.charAt(currentletter3)) >= 0)) {
                 hvi = ligages[(ligs.indexOf(input.charAt(currentletter3)))].height
