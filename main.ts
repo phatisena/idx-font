@@ -220,7 +220,7 @@ namespace idxfont {
                                 sc += 1
                             }
                         }
-                        if (sc == 0) {
+                        if (sc == 0 && wie < 0) {
                             wie -= 1
                         } else if (sc > 0) {
                             wie -= 1
