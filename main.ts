@@ -177,7 +177,7 @@ namespace idxfont {
                 currentletter2 += 3
             }
         }
-        let output = image.create(widt, heig); hie = 0; wie = 0; curwidt = 0;
+        let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); hie = 0; wie = 0; curwidt = 0;
         for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
             if (!(ligs.indexOf(input.charAt(currentletter3)) < 0)) {
                 hvi = ligages[(ligs.indexOf(input.charAt(currentletter3)))].height; uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter3)))];
@@ -186,7 +186,19 @@ namespace idxfont {
                 } else {
                     nwidt = 0
                 }
-                drawTransparentImage(ligages[(ligs.indexOf(input.charAt(currentletter3)))], output, curwidt - nwidt, hie + (hvi - ligages[(ligs.indexOf(input.charAt(currentletter3)))].height))
+                scnwidt = false; wie = 0; rimg = ligages[(ligs.indexOf(input.charAt(currentletter3)))];
+                if (ligwidth[(ligs.indexOf(input.charAt(currentletter3)))] == 0) {
+                    scnwidt = true
+                    while (scnwidt) {
+                        sc = 0
+                        for (let yh = 0; yh < rimg.height; yh++) {
+                            if (output.getPixel((curwidt + rimg.width) - wie, hie + yh) != 0) { sc += 1 }
+                        }
+                        if (sc >= 0) { scnwidt = false ; if (wie < 0) { wie -= 2 } } else { wie -= 1}
+                    }
+                }
+                if (wie != 0) { wie = Math.abs(wie) }
+                drawTransparentImage( rimg, output, curwidt - (nwidt + wie), hie + (hvi - ligages[(ligs.indexOf(input.charAt(currentletter3)))].height))
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] == 0) {
                     swidt = uwidt
                 } else {
