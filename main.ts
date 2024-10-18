@@ -1,7 +1,7 @@
 //% color="#2dbded" icon="\uf249"
 namespace idxfont {
 
-    let ligs: string[] = []; let ligages: Image[] = []; let ligwidth: number[] = []; let letterspace: number = 1;
+    let ligs: string[] = []; let ligages: Image[] = []; let ligwidth: number[] = []; let ligdir: number[] = []; let letterspace: number = 1;
 
     export function drawTransparentImage(src: Image, to: Image, x: number, y: number) {
         if (!src || !to) { return; }
@@ -20,11 +20,11 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_setcharecter
-    //%block="set $glyph to $imgi=screen_image_picker staying $notmove erase $bcol spacebar $scol"
+    //%block="set $glyph to $imgi=screen_image_picker staying $notmove stay on or under $on erase $bcol spacebar $scol"
     //%bcol.shadow=colorindexpicker
     //%scol.shadow=colorindexpicker
     //%group="create"
-    export function setCharecter(glyph: string, imgi: Image, notmove: boolean, bcol: number, scol: number) {
+    export function setCharecter(glyph: string, imgi: Image, notmove: boolean, on: boolean, bcol: number, scol: number) {
         let scnwidt = true; let scwidt = false; let wi = 0; let wj = 0; let si = 0; let imgj = image.create(imgi.width, imgi.height);
         if (bcol > 0 && bcol < 16) {
             imgi.replace(bcol, 0)
@@ -50,29 +50,41 @@ namespace idxfont {
         if (ligs.indexOf(glyph) < 0) {
             ligs.push(glyph); ligages.push(imgj);
             if (notmove) {
+                if (on) {
+                    ligdir.push(-1)
+                } else {
+                    ligdir.push(1)
+                }
                 ligwidth.push(0)
             } else {
                 ligwidth.push(imgj.width)
+                ligdir.push(0)
             }
         } else {
             ligages[ligs.indexOf(glyph)] = imgj
             if (notmove) {
+                if (on) {
+                    ligdir[ligs.indexOf(glyph)] = -1
+                } else {
+                    ligdir[ligs.indexOf(glyph)] = 1
+                }
                 ligwidth[ligs.indexOf(glyph)] = 0
             } else {
                 ligwidth[ligs.indexOf(glyph)] = imgj.width
+                ligdir[ligs.indexOf(glyph)] = 0
             }
         }
     }
 
     //%blockid=ixfont_setcharfromimgsheet
-    //%block="set $PngSheet=screen_image_picker with $GroupChar staying char $StayChar w $twid h $thei bcol $bcl scol $scl"
+    //%block="set $PngSheet=screen_image_picker with $GroupChar staying char $StayChar char on char $CharOnChar w $twid h $thei bcol $bcl scol $scl"
     //%bcl.shadow=colorindexpicker
     //%scl.shadow=colorindexpicker
     //%group="create"
-    export function setCharFromSheet(PngSheet: Image, GroupChar: string, StayChar: string, twid: number, thei: number, bcl: number, scl: number) {
+    export function setCharFromSheet(PngSheet: Image, GroupChar: string, StayChar: string, CharOnChar: string, twid: number, thei: number, bcl: number, scl: number) {
         let gwid = Math.round(PngSheet.width / twid); let uig = image.create(twid, thei); let txi = 0; let tyi = 0;
         for (let tvn = 0; tvn < GroupChar.length; tvn++) {
-            uig = image.create(twid, thei); txi = twid * (tvn % gwid); tyi = thei * Math.floor(tvn / gwid); drawTransparentImage(PngSheet, uig, 0 - txi, 0 - tyi); setCharecter(GroupChar.charAt(tvn), uig, StayChar.includes(GroupChar.charAt(tvn)), bcl, scl);
+            uig = image.create(twid, thei); txi = twid * (tvn % gwid); tyi = thei * Math.floor(tvn / gwid); drawTransparentImage(PngSheet, uig, 0 - txi, 0 - tyi); setCharecter(GroupChar.charAt(tvn), uig, StayChar.includes(GroupChar.charAt(tvn)),CharOnChar.includes(GroupChar.charAt(tvn)), bcl, scl);
         }
     }
 
@@ -191,15 +203,15 @@ namespace idxfont {
                     scwidt = true
                     clist = []
                     for (let xw = 0; xw < rimg.width; xw++) {
-                        for (let yh = rimg.height - 1; yh >= 0; yh--) {
+                        for (let yh = 0; yh < rimg.height; yh++) {
                             if (scwidt && rimg.getPixel(xw, yh) != 0 ) {
-                                if (yh < Math.floor(rimg.height / 2) + Math.floor((rimg.height / 2) / 2.1)) { underc = false } else { underc = true }; scwidt = false;
+                                if (ligdir[ligs.indexOf(input.charAt(currentletter3))] > 0) { underc = true } else { underc = false }; scwidt = false;
                             } else if (!(scwidt) && (output.getPixel(curwidt + xw, hie + yh) != 0 && clist.indexOf(output.getPixel(curwidt + xw, hie + yh)) < 0)) {
                                 clist.unshift(output.getPixel(curwidt + xw, hie + yh))
                             }
                         }
                     }
-                    if (clist.length > 0) {output.replace(clist[0], 0)}
+                    if (clist.length > 0 && underc) {output.replace(clist[0], 0)}
                     scnwidt = true
                     while (scnwidt) { sc = 0; for (let yh = 0; yh < rimg.height; yh++) { if (output.getPixel((curwidt + rimg.width) - wie, hie + yh) != 0) { sc += 1 } } if (sc >= 0) { scnwidt = false ; if (wie < 0) { wie -= 2 } } else { wie -= 1} }
                 } else {
