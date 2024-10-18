@@ -216,14 +216,14 @@ namespace idxfont {
                     while (sc > 0) {
                         sc = 0
                         for (let yh = 0; yh < rimg.height; yh++) {
-                            if (output.getPixel((curwidt + rimg.width) - wie, hie + yh) != 0) {
+                            if (output.getPixel((curwidt + rimg.width) - wie, hie + yh) != 0 || output.getPixel(((curwidt - 1) + rimg.width) - wie, hie - yh) != 0) {
                                 sc += 1
                             }
                         }
                         if (sc == 0 && wie < 0) {
-                            wie -= 1
+                            wie += 1
                         } else if (sc > 0) {
-                            wie -= 1
+                            wie += 1
                         } 
                     }
                 }
