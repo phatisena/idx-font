@@ -227,7 +227,7 @@ namespace idxfont {
                                 sc += 1
                             }
                         }
-                        if (sc == 0 && wie < 0) {
+                        if (sc == 0 && wie > 0) {
                             wie += 1
                         }
                         wie += 1
@@ -239,7 +239,7 @@ namespace idxfont {
                     rimg.replace(ligul[ligs.indexOf(input.charAt(currentletter3))], ligcol[ligs.indexOf(input.charAt(currentletter3))])
                 }
                 if (wie != 0) { wie = Math.abs(wie) }
-                drawTransparentImage( rimg, output, curwidt - (nwidt - wie), hie + (hvi - ligages[(ligs.indexOf(input.charAt(currentletter3)))].height))
+                drawTransparentImage( rimg, output, curwidt - (nwidt + wie), hie + (hvi - ligages[(ligs.indexOf(input.charAt(currentletter3)))].height))
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] == 0) {
                     swidt = uwidt
                 } else {
