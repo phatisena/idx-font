@@ -1,7 +1,7 @@
 //% color="#2dbded" icon="\uf249"
 namespace idxfont {
 
-    let ligs: string[] = []; let ligages: Image[] = []; let ligwidth: number[] = []; let ligdir: number[] = []; let ligcol: number[] = []; let letterspace: number = 1;
+    let ligs: string[] = []; let ligages: Image[] = []; let ligwidth: number[] = []; let ligdir: number[] = []; let ligcol: number[] = []; let ligul: number[] = []; let letterspace: number = 1;
 
     export function drawTransparentImage(src: Image, to: Image, x: number, y: number) {
         if (!src || !to) { return; }
@@ -20,11 +20,13 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_setcharecter
-    //%block="set $glyph to $imgi=screen_image_picker and $notmove to stay on or under the char $on erase col $bcol spacebar col $scol base col $mcol"
+    //%block="set $glyph to $imgi=screen_image_picker and $notmove to stay on or under the char $on erase col $bcol spacebar col $scol base col $mcol g col $ncol"
     //%bcol.shadow=colorindexpicker
     //%scol.shadow=colorindexpicker
+    //%mcol.shadow=colorindexpicker
+    //%ncol.shadow=colorindexpicker
     //%group="create"
-    export function setCharecter(glyph: string, imgi: Image, notmove: boolean, on: boolean, bcol: number, scol: number, mcol: number) {
+    export function setCharecter(glyph: string, imgi: Image, notmove: boolean, on: boolean, bcol: number, scol: number, mcol: number, ncol: number) {
         let sncol = true ;let scnwidt = true; let scwidt = false; let wi = 0; let wj = 0; let si = 0; let imgj = image.create(imgi.width, imgi.height);
         if (bcol > 0 && bcol < 16) {
             imgi.replace(bcol, 0)
@@ -48,6 +50,7 @@ namespace idxfont {
             imgj.replace(scol, 0)
         }
         if (ligs.indexOf(glyph) < 0) {
+            ligul.push(ncol)
             ligcol.push(mcol)
             ligs.push(glyph); ligages.push(imgj);
             if (notmove) {
@@ -62,6 +65,7 @@ namespace idxfont {
                 ligdir.push(0)
             }
         } else {
+            ligul[ligs.indexOf(glyph)] = ncol
             ligcol[ligs.indexOf(glyph)] = mcol
             ligages[ligs.indexOf(glyph)] = imgj
             if (notmove) {
@@ -79,15 +83,16 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_setcharfromimgsheet
-    //%block="set $PngSheet=screen_image_picker with $GroupChar staying char $StayChar char on char $CharOnChar w $twid h $thei erase col $bcl space col $scl base col $mcl"
+    //%block="set $PngSheet=screen_image_picker with $GroupChar staying char $StayChar char on char $CharOnChar w $twid h $thei erase col $bcl space col $scl base col $mcl g col $ncl"
     //%bcl.shadow=colorindexpicker
     //%scl.shadow=colorindexpicker
     //%mcl.shadow=colorindexpicker
+    //%ncl.shadow=colorindexpicker
     //%group="create"
-    export function setCharFromSheet(PngSheet: Image, GroupChar: string, StayChar: string, CharOnChar: string, twid: number, thei: number, bcl: number, scl: number, mcl: number) {
+    export function setCharFromSheet(PngSheet: Image, GroupChar: string, StayChar: string, CharOnChar: string, twid: number, thei: number, bcl: number, scl: number, mcl: number, ncl: number) {
         let gwid = Math.round(PngSheet.width / twid); let uig = image.create(twid, thei); let txi = 0; let tyi = 0;
         for (let tvn = 0; tvn < GroupChar.length; tvn++) {
-            uig = image.create(twid, thei); txi = twid * (tvn % gwid); tyi = thei * Math.floor(tvn / gwid); drawTransparentImage(PngSheet, uig, 0 - txi, 0 - tyi); setCharecter(GroupChar.charAt(tvn), uig, StayChar.includes(GroupChar.charAt(tvn)),CharOnChar.includes(GroupChar.charAt(tvn)), bcl, scl, mcl);
+            uig = image.create(twid, thei); txi = twid * (tvn % gwid); tyi = thei * Math.floor(tvn / gwid); drawTransparentImage(PngSheet, uig, 0 - txi, 0 - tyi); setCharecter(GroupChar.charAt(tvn), uig, StayChar.includes(GroupChar.charAt(tvn)),CharOnChar.includes(GroupChar.charAt(tvn)), bcl, scl, mcl, ncl);
         }
     }
 
@@ -212,7 +217,8 @@ namespace idxfont {
                             }
                         }
                     }
-                } else if (ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] < 0) {
+                }
+                if (ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] < 0) {
                     scnwidt = true; sc = 1; wie = 0;
                     while (sc > 0) {
                         sc = 0
@@ -228,24 +234,10 @@ namespace idxfont {
                         } 
                     }
                 }
-                if (Math.abs(ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))]) > 0) {
-                    if (clist.length > 0) {
-                        if (ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] > 0) {
-                            rimg.replace(clist[0], 0)
-                        } else if (ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] < 0) {
-                            rimg.replace(clist[0], ligcol[ligs.indexOf(input.charAt(currentletter3))])
-                        }
-                    }
-                } else if (Math.abs(ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))]) == 0) {
-                    scnwidt = true
-                    for (let xw = 0; xw < rimg.width; xw++) {
-                        for (let yh = rimg.height - 1; yh >= 0; yh--) {
-                            if (scnwidt) {
-                                if (rimg.getPixel(xw, yh) != 0 && clist.length == 0) { clist.unshift(rimg.getPixel(xw, yh)) } ; if (clist.length > 0) { scnwidt = false }
-                            }
-                        }
-                    }
-                    rimg.replace(clist[0], ligcol[ligs.indexOf(input.charAt(currentletter3))])
+                if (ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] > 0) {
+                    rimg.replace(ligul[ligs.indexOf(input.charAt(currentletter3))], 0)
+                } else if (ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] <= 0) {
+                    rimg.replace(ligul[ligs.indexOf(input.charAt(currentletter3))], ligcol[ligs.indexOf(input.charAt(currentletter3))])
                 }
                 if (wie != 0) { wie = Math.abs(wie) }
                 drawTransparentImage( rimg, output, curwidt - (nwidt + wie), hie + (hvi - ligages[(ligs.indexOf(input.charAt(currentletter3)))].height))
