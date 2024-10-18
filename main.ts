@@ -177,7 +177,7 @@ namespace idxfont {
                 currentletter2 += 3
             }
         }
-        let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); hie = 0; wie = 0; curwidt = 0;
+        let clist: number[] = []; let scwidt = true;  let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); hie = 0; wie = 0; curwidt = 0;
         for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
             if (!(ligs.indexOf(input.charAt(currentletter3)) < 0)) {
                 hvi = ligages[(ligs.indexOf(input.charAt(currentletter3)))].height; uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter3)))];
@@ -186,8 +186,25 @@ namespace idxfont {
                 } else {
                     nwidt = 0
                 }
-                scnwidt = false; wie = 0; rimg = ligages[(ligs.indexOf(input.charAt(currentletter3)))];
+                scwidt = false; scnwidt = false; wie = 0; rimg = ligages[(ligs.indexOf(input.charAt(currentletter3)))];
                 if (ligwidth[(ligs.indexOf(input.charAt(currentletter3)))] == 0) {
+                    scwidt = true
+                    clist = []
+                    for (let xw = 0; xw < rimg.width; xw++) {
+                        for (let yh = 0; yh < rimg.height; yh++) {
+                            if (scwidt && rimg.getPixel(xw, yh) != 0) {
+                                if (yh > Math.floor(rimg.height / 2)) {
+                                    underc = false
+                                } else {
+                                    underc = true
+                                }
+                                scwidt = false
+                            } else if (!(scwidt) && output.getPixel(curwidt + xw, hie + yh) != 0) {
+                                clist.unshift(output.getPixel(curwidt + xw, hie + yh))
+                            }
+                        }
+                    }
+                    if (underc) {output.replace(clist[0], 0)}
                     scnwidt = true
                     while (scnwidt) {
                         sc = 0
