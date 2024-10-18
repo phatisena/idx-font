@@ -203,51 +203,49 @@ namespace idxfont {
                     nwidt = 0
                 }
                 scwidt = false; scnwidt = false; wie = 0; rimg = ligages[(ligs.indexOf(input.charAt(currentletter3)))];
-                if (ligwidth[ligs.indexOf(input.charAt(Math.max(currentletter3 - 1, 0)))] > 0) {
-                    if (Math.abs(ligdir[(ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))]) > 0) {
-                        scwidt = true; clist = [];
-                        for (let xw = 0; xw < rimg.width; xw++) {
-                            for (let yh = rimg.height - 1; yh >= 0; yh--) {
-                                if (rimg.getPixel(xw, yh) != ligcol[ligs.indexOf(input.charAt(currentletter3))] && (rimg.getPixel(xw, yh) != 0 && clist.length == 0)) {
-                                    clist.push(rimg.getPixel(xw, yh))
-                                }
+                if (Math.abs(ligdir[(ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))]) > 0) {
+                    scwidt = true; clist = [];
+                    for (let xw = 0; xw < rimg.width; xw++) {
+                        for (let yh = rimg.height - 1; yh >= 0; yh--) {
+                            if (rimg.getPixel(xw, yh) != ligcol[ligs.indexOf(input.charAt(currentletter3))] && (rimg.getPixel(xw, yh) != 0 && clist.length == 0)) {
+                                clist.push(rimg.getPixel(xw, yh))
                             }
-                        }
-                    } else if (Math.abs(ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))]) > 0) {
-                        scnwidt = true; sc = 1; wie = 0;
-                        while (sc > 0) {
-                            sc = 0
-                            for (let yh = 0; yh < rimg.height; yh++) {
-                                if (output.getPixel((curwidt + rimg.width) - wie, hie + yh) != 0 || output.getPixel(((curwidt - 1) + rimg.width) - wie, hie - yh) != 0) {
-                                    sc += 1
-                                }
-                            }
-                            if (sc == 0 && wie < 0) {
-                                wie += 1
-                            } else if (sc > 0) {
-                                wie += 1
-                            } 
                         }
                     }
-                    if (Math.abs(ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))]) > 0) {
-                        if (clist.length > 0) {
-                            if (ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] > 0) {
-                                rimg.replace(clist[0], 0)
-                            } else if (ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] < 0) {
-                                rimg.replace(clist[0], ligcol[ligs.indexOf(input.charAt(currentletter3))])
+                } else if (ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] < 0) {
+                    scnwidt = true; sc = 1; wie = 0;
+                    while (sc > 0) {
+                        sc = 0
+                        for (let yh = 0; yh < rimg.height; yh++) {
+                            if (output.getPixel((curwidt + (rimg.width - 1)) - wie, hie + yh) == rimg.getPixel( rimg.width - 1, yh) ) {
+                                sc += 1
                             }
                         }
-                    } else if (Math.abs(ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))]) == 0) {
-                        scnwidt = true
-                        for (let xw = 0; xw < rimg.width; xw++) {
-                            for (let yh = rimg.height - 1; yh >= 0; yh--) {
-                                if (scnwidt) {
-                                    if (rimg.getPixel(xw, yh) != 0 && clist.length == 0) { clist.unshift(rimg.getPixel(xw, yh)) } ; if (clist.length > 0) { scnwidt = false }
-                                }
-                            }
-                        }
-                        rimg.replace(clist[0], ligcol[ligs.indexOf(input.charAt(currentletter3))])
+                        if (sc == 0 && wie < 0) {
+                            wie += 1
+                        } else if (sc > 0) {
+                            wie += 1
+                        } 
                     }
+                }
+                if (Math.abs(ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))]) > 0) {
+                    if (clist.length > 0) {
+                        if (ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] > 0) {
+                            rimg.replace(clist[0], 0)
+                        } else if (ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] < 0) {
+                            rimg.replace(clist[0], ligcol[ligs.indexOf(input.charAt(currentletter3))])
+                        }
+                    }
+                } else if (Math.abs(ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))]) == 0) {
+                    scnwidt = true
+                    for (let xw = 0; xw < rimg.width; xw++) {
+                        for (let yh = rimg.height - 1; yh >= 0; yh--) {
+                            if (scnwidt) {
+                                if (rimg.getPixel(xw, yh) != 0 && clist.length == 0) { clist.unshift(rimg.getPixel(xw, yh)) } ; if (clist.length > 0) { scnwidt = false }
+                            }
+                        }
+                    }
+                    rimg.replace(clist[0], ligcol[ligs.indexOf(input.charAt(currentletter3))])
                 }
                 if (wie != 0) { wie = Math.abs(wie) }
                 drawTransparentImage( rimg, output, curwidt - (nwidt + wie), hie + (hvi - ligages[(ligs.indexOf(input.charAt(currentletter3)))].height))
