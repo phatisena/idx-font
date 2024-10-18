@@ -218,7 +218,7 @@ namespace idxfont {
                         }
                     }
                 }
-                if (ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] < 0) {
+                if (Math.abs(ligdir[ligs.indexOf(input.charAt(currentletter3))]) > 0 && Math.abs(ligdir[ligs.indexOf(input.charAt(Math.max(currentletter3 - 1, 0)))]) == 0) {
                     sc = 1; wie = 0;
                     while (sc > 0) {
                         sc = 0
@@ -239,7 +239,7 @@ namespace idxfont {
                     rimg.replace(ligul[ligs.indexOf(input.charAt(currentletter3))], ligcol[ligs.indexOf(input.charAt(currentletter3))])
                 }
                 if (wie != 0) { wie = Math.abs(wie) }
-                drawTransparentImage( rimg, output, curwidt - (nwidt + wie), hie + (hvi - ligages[(ligs.indexOf(input.charAt(currentletter3)))].height))
+                drawTransparentImage( rimg, output, curwidt - (nwidt - wie), hie + (hvi - ligages[(ligs.indexOf(input.charAt(currentletter3)))].height))
                 if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] == 0) {
                     swidt = uwidt
                 } else {
