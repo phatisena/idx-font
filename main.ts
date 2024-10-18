@@ -20,11 +20,11 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_setcharecter
-    //%block="set $glyph to $imgi=screen_image_picker staying $notmove stay on or under $on erase $bcol spacebar $scol"
+    //%block="set $glyph to $imgi=screen_image_picker and $notmove to stay on or under the char $on erase col $bcol spacebar col $scol base col $mcol"
     //%bcol.shadow=colorindexpicker
     //%scol.shadow=colorindexpicker
     //%group="create"
-    export function setCharecter(glyph: string, imgi: Image, notmove: boolean, on: boolean, bcol: number, scol: number) {
+    export function setCharecter(glyph: string, imgi: Image, notmove: boolean, on: boolean, bcol: number, scol: number, mcol: number) {
         let sncol = true ;let scnwidt = true; let scwidt = false; let wi = 0; let wj = 0; let si = 0; let imgj = image.create(imgi.width, imgi.height);
         if (bcol > 0 && bcol < 16) {
             imgi.replace(bcol, 0)
@@ -32,7 +32,7 @@ namespace idxfont {
         for (let xw = 0; xw < imgi.width; xw++) {
             si = 0
             for (let yh = 0; yh < imgi.height; yh++) {
-                if (imgi.getPixel(xw, yh) != 0 || (scwidt && imgi.getPixel(xw + 1, yh) != 0)) {if(sncol) {if (ligcol[ligs.indexOf(glyph)] < 0) { ligcol.push(imgi.getPixel(xw, yh))} else {ligcol[ligs.indexOf(glyph)] = imgi.getPixel(xw, yh) } sncol = false} si += 1 }
+                if (imgi.getPixel(xw, yh) != 0 || (scwidt && imgi.getPixel(xw + 1, yh) != 0)) { si += 1 }
             }
             if (scnwidt) {
                 if (scwidt) {
@@ -48,6 +48,7 @@ namespace idxfont {
             imgj.replace(scol, 0)
         }
         if (ligs.indexOf(glyph) < 0) {
+            ligcol.push(mcol)
             ligs.push(glyph); ligages.push(imgj);
             if (notmove) {
                 if (on) {
@@ -61,6 +62,7 @@ namespace idxfont {
                 ligdir.push(0)
             }
         } else {
+            ligcol[ligs.indexOf(glyph)] = mcol
             ligages[ligs.indexOf(glyph)] = imgj
             if (notmove) {
                 if (on) {
@@ -77,14 +79,15 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_setcharfromimgsheet
-    //%block="set $PngSheet=screen_image_picker with $GroupChar staying char $StayChar char on char $CharOnChar w $twid h $thei bcol $bcl scol $scl"
+    //%block="set $PngSheet=screen_image_picker with $GroupChar staying char $StayChar char on char $CharOnChar w $twid h $thei erase col $bcl space col $scl base col $mcl"
     //%bcl.shadow=colorindexpicker
     //%scl.shadow=colorindexpicker
+    //%mcl.shadow=colorindexpicker
     //%group="create"
-    export function setCharFromSheet(PngSheet: Image, GroupChar: string, StayChar: string, CharOnChar: string, twid: number, thei: number, bcl: number, scl: number) {
+    export function setCharFromSheet(PngSheet: Image, GroupChar: string, StayChar: string, CharOnChar: string, twid: number, thei: number, bcl: number, scl: number, mcl: number) {
         let gwid = Math.round(PngSheet.width / twid); let uig = image.create(twid, thei); let txi = 0; let tyi = 0;
         for (let tvn = 0; tvn < GroupChar.length; tvn++) {
-            uig = image.create(twid, thei); txi = twid * (tvn % gwid); tyi = thei * Math.floor(tvn / gwid); drawTransparentImage(PngSheet, uig, 0 - txi, 0 - tyi); setCharecter(GroupChar.charAt(tvn), uig, StayChar.includes(GroupChar.charAt(tvn)),CharOnChar.includes(GroupChar.charAt(tvn)), bcl, scl);
+            uig = image.create(twid, thei); txi = twid * (tvn % gwid); tyi = thei * Math.floor(tvn / gwid); drawTransparentImage(PngSheet, uig, 0 - txi, 0 - tyi); setCharecter(GroupChar.charAt(tvn), uig, StayChar.includes(GroupChar.charAt(tvn)),CharOnChar.includes(GroupChar.charAt(tvn)), bcl, scl, mcl);
         }
     }
 
