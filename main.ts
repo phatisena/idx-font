@@ -1,7 +1,7 @@
 //% color="#2dbded" icon="\uf249"
 namespace idxfont {
 
-    let ligs: string[] = []; let ligages: Image[] = []; let ligwidth: number[] = []; let ligdir: number[] = []; let letterspace: number = 1;
+    let ligs: string[] = []; let ligages: Image[] = []; let ligwidth: number[] = []; let ligdir: number[] = []; let ligcol: number[] = []; let letterspace: number = 1;
 
     export function drawTransparentImage(src: Image, to: Image, x: number, y: number) {
         if (!src || !to) { return; }
@@ -25,14 +25,14 @@ namespace idxfont {
     //%scol.shadow=colorindexpicker
     //%group="create"
     export function setCharecter(glyph: string, imgi: Image, notmove: boolean, on: boolean, bcol: number, scol: number) {
-        let scnwidt = true; let scwidt = false; let wi = 0; let wj = 0; let si = 0; let imgj = image.create(imgi.width, imgi.height);
+        let sncol = true ;let scnwidt = true; let scwidt = false; let wi = 0; let wj = 0; let si = 0; let imgj = image.create(imgi.width, imgi.height);
         if (bcol > 0 && bcol < 16) {
             imgi.replace(bcol, 0)
         }
         for (let xw = 0; xw < imgi.width; xw++) {
             si = 0
             for (let yh = 0; yh < imgi.height; yh++) {
-                if (scnwidt && (imgi.getPixel(xw, yh) != 0 || (scwidt && imgi.getPixel(xw + 1, yh) != 0))) { si += 1 }
+                if (scnwidt && (imgi.getPixel(xw, yh) != 0 || (scwidt && imgi.getPixel(xw + 1, yh) != 0))) {if(sncol) {if (ligcol[ligs.indexOf(glyph)] < 0) { ligcol.push(imgi.getPixel(xw, yh))} else {ligcol[ligs.indexOf(glyph)] = imgi.getPixel(xw, yh) } sncol = false} si += 1 }
             }
             if (scnwidt) {
                 if (scwidt) {
@@ -203,7 +203,7 @@ namespace idxfont {
                     scwidt = true
                     clist = []
                     for (let xw = 0; xw < rimg.width; xw++) {
-                        for (let yh = 0; yh < rimg.height; yh++) {
+                        for (let yh = rimg.height; yh >= 0; yh--) {
                             if (scwidt && rimg.getPixel(xw, yh) != 0 ) {
                                 if (ligdir[ligs.indexOf(input.charAt(currentletter3))] > 0) { underc = true } else { underc = false }; scwidt = false;
                             } else if (!(scwidt) && (output.getPixel(curwidt + xw, hie + yh) != 0 && clist.indexOf(output.getPixel(curwidt + xw, hie + yh)) < 0)) {
@@ -223,7 +223,7 @@ namespace idxfont {
                             }
                         }
                     }
-                    output.replace(clist[0], clist[1])
+                    output.replace(clist[0], ligcol[ligs.indexOf(input.charAt(currentletter3))])
                 }
                 if (wie != 0) { wie = Math.abs(wie) }
                 drawTransparentImage( rimg, output, curwidt - (nwidt + wie), hie + (hvi - ligages[(ligs.indexOf(input.charAt(currentletter3)))].height))
