@@ -211,9 +211,26 @@ namespace idxfont {
                             }
                         }
                     }
-                    if (clist.length > 0 && underc) {rimg.replace(clist[0], 0)}
-                    scnwidt = true
-                    while (scnwidt) { sc = 0; for (let yh = 0; yh < rimg.height; yh++) { if (output.getPixel((curwidt + rimg.width) - wie, hie + yh) != 0 || output.getPixel((curwidt + rimg.width) - (wie + 1), hie + yh) != 0) { sc += 1 } } if (sc > 0) { scnwidt = false ; if (wie < 0) { wie -= 2 } } else { wie -= 1} }
+                    if (!(scwidt)) {
+                        if (clist.length > 0 && underc) {rimg.replace(clist[0], 0)}
+                        scnwidt = true
+                        while (scnwidt) {
+                            sc = 0
+                            for (let yh = 0; yh < rimg.height; yh++) {
+                                if (output.getPixel((curwidt + rimg.width) - wie, hie + yh) != 0) {
+                                    sc += 1
+                                }
+                            }
+                            if (sc > 0) {
+                                scnwidt = false 
+                                if (wie < 0) {
+                                    wie -= 2
+                                } 
+                            } else {
+                                wie -= 1
+                            } 
+                        }
+                    }
                 } else {
                     scnwidt = true
                     for (let xw = 0; xw < rimg.width; xw++) {
