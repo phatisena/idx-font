@@ -32,7 +32,7 @@ namespace idxfont {
         for (let xw = 0; xw < imgi.width; xw++) {
             si = 0
             for (let yh = 0; yh < imgi.height; yh++) {
-                if (scnwidt && (imgi.getPixel(xw, yh) != 0 || (scwidt && imgi.getPixel(xw + 1, yh) != 0))) {if(sncol) {if (ligcol[ligs.indexOf(glyph)] < 0) { ligcol.push(imgi.getPixel(xw, yh))} else {ligcol[ligs.indexOf(glyph)] = imgi.getPixel(xw, yh) } sncol = false} si += 1 }
+                if (imgi.getPixel(xw, yh) != 0 || (scwidt && imgi.getPixel(xw + 1, yh) != 0)) {if(sncol) {if (ligcol[ligs.indexOf(glyph)] < 0) { ligcol.push(imgi.getPixel(xw, yh))} else {ligcol[ligs.indexOf(glyph)] = imgi.getPixel(xw, yh) } sncol = false} si += 1 }
             }
             if (scnwidt) {
                 if (scwidt) {
