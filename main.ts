@@ -193,7 +193,7 @@ namespace idxfont {
                     for (let xw = 0; xw < rimg.width; xw++) {
                         for (let yh = 0; yh < rimg.height; yh++) {
                             if (scwidt && rimg.getPixel(xw, yh) != 0 ) {
-                                if (yh > Math.floor(rimg.height / 2)) {
+                                if (yh < Math.floor(rimg.height / 2)) {
                                     underc = false
                                 } else {
                                     underc = true
