@@ -223,22 +223,22 @@ namespace idxfont {
                     while (sc > 0) {
                         sc = 0
                         for (let yh = 0; yh < rimg.height; yh++) {
-                            if (output.getPixel((curwidt + rimg.width) - wie, hie + yh) == rimg.getPixel(rimg.width - 1, yh) && (output.getPixel((curwidt + rimg.width) - wie, hie + yh) != 0 && output.getPixel((curwidt + (rimg.width - 1)) - wie, hie + yh) != 0)) {
+                            if (output.getPixel((curwidt + rimg.width) - wie, hie + yh) == rimg.getPixel(rimg.width - 1, yh) || (output.getPixel((curwidt + rimg.width) - wie, hie + yh) != 0 && output.getPixel((curwidt + (rimg.width - 1)) - wie, hie + yh) != 0)) {
                                 sc += 1
                             }
                         }
                         if (sc == 0 && wie > 0) {
-                            wie += 1
+                            wie += 2
                         }
                         if (sc > 0) {
-                        wie += 1
+                            wie += 1
                         }
                     }
                 }
-                if (ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] > 0) {
-                    rimg.replace(ligul[ligs.indexOf(input.charAt(currentletter3))], 0)
-                } else if (ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] <= 0) {
+                if (ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] <= 0) {
                     rimg.replace(ligul[ligs.indexOf(input.charAt(currentletter3))], ligcol[ligs.indexOf(input.charAt(currentletter3))])
+                } else if (ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] > 0) {
+                    rimg.replace(ligul[ligs.indexOf(input.charAt(currentletter3))], 0)
                 }
                 if (wie != 0) { wie = Math.abs(wie) }
                 drawTransparentImage( rimg, output, curwidt - (nwidt + wie), hie + (hvi - ligages[(ligs.indexOf(input.charAt(currentletter3)))].height))
