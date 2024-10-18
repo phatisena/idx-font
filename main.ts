@@ -218,12 +218,12 @@ namespace idxfont {
                         }
                     }
                 }
-                if (Math.abs(ligdir[ligs.indexOf(input.charAt(currentletter3))]) > 0 && Math.abs(ligdir[ligs.indexOf(input.charAt(Math.max(currentletter3 - 1, 0)))]) == 0) {
+                if (Math.abs(ligdir[ligs.indexOf(input.charAt(currentletter3))]) != 0 && Math.abs(ligdir[ligs.indexOf(input.charAt(Math.max(currentletter3 - 1, 0)))]) != 0) {
                     sc = 1; wie = 0;
                     while (sc > 0) {
                         sc = 0
                         for (let yh = 0; yh < rimg.height; yh++) {
-                            if (output.getPixel((curwidt + rimg.width) - wie, hie + yh) == rimg.getPixel(rimg.width - 1, yh) || (output.getPixel((curwidt + rimg.width) - wie, hie + yh) != 0 && output.getPixel((curwidt + (rimg.width - 1)) - wie, hie + yh) != 0)) {
+                            if (output.getPixel((curwidt + (rimg.width - 1)) - wie, hie + yh) == rimg.getPixel(rimg.width - 1, yh) && (output.getPixel((curwidt + rimg.width) - wie, hie + yh) != 0 && output.getPixel((curwidt + (rimg.width - 1)) - wie, hie + yh) != 0)) {
                                 sc += 1
                             }
                         }
