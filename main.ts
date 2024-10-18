@@ -199,7 +199,7 @@ namespace idxfont {
                     nwidt = 0
                 }
                 scwidt = false; scnwidt = false; wie = 0; rimg = ligages[(ligs.indexOf(input.charAt(currentletter3)))];
-                if (Math.abs(ligdir[(ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))]) != 0) {
+                if (Math.abs(ligdir[(ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))]) > 0) {
                     scwidt = true
                     clist = []
                     for (let xw = 0; xw < rimg.width; xw++) {
@@ -214,8 +214,7 @@ namespace idxfont {
                     if (!(scwidt)) {
                         if (clist.length > 0 && underc) {rimg.replace(clist[0], 0)}
                         scnwidt = true
-                        sc = 1
-                        while (sc > 0) {
+                        while (scnwidt) {
                             sc = 0
                             for (let yh = 0; yh < rimg.height; yh++) {
                                 if (output.getPixel((curwidt + rimg.width) - wie, hie + yh) != 0) {
@@ -223,17 +222,13 @@ namespace idxfont {
                                 }
                             }
                             if (sc > 0) {
-                                wie -= 1
-                            } else if (sc == 0 ||output.getPixel((curwidt + rimg.width) - wie, hie + yh) == 0) {
+                                scnwidt = false 
+                                if (wie < 0) {
+                                    wie -= 2
+                                } 
+                            } else {
                                 wie -= 1
                             } 
-                        }
-                    }
-                    if (clist.length > 0)
-                        if (ligdir[ligs.indexOf(input.charAt(currentletter3))] > 0) {
-                            rimg.replace(clist[0], 0)
-                        } else {
-                            rimg.replace(clist[0], ligcol[ligs.indexOf(input.charAt(currentletter3))])
                         }
                     }
                 } else {
