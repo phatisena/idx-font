@@ -219,19 +219,18 @@ namespace idxfont {
                     }
                 }
                 if (ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] < 0) {
-                    scnwidt = true; sc = 1; wie = 0;
+                    sc = 1; wie = 0;
                     while (sc > 0) {
                         sc = 0
                         for (let yh = 0; yh < rimg.height; yh++) {
-                            if (output.getPixel((curwidt + (rimg.width - 1)) - wie, hie + yh) == rimg.getPixel( rimg.width - 1, yh) ) {
+                            if (output.getPixel((curwidt + rimg.width) - wie, hie + yh) != 0 && output.getPixel((curwidt + (rimg.width - 1)) - wie, hie + yh) != 0) {
                                 sc += 1
                             }
                         }
                         if (sc == 0 && wie < 0) {
                             wie += 1
-                        } else if (sc > 0) {
-                            wie += 1
-                        } 
+                        }
+                        wie += 1
                     }
                 }
                 if (ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] > 0) {
