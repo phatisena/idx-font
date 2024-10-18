@@ -199,31 +199,31 @@ namespace idxfont {
                     nwidt = 0
                 }
                 scwidt = false; scnwidt = false; wie = 0; rimg = ligages[(ligs.indexOf(input.charAt(currentletter3)))];
-                if (ligwidth[(ligs.indexOf(input.charAt(currentletter3)))] == 0) {
+                if (Math.abs(ligdir[(ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))]) > 0) {
                     scwidt = true
                     clist = []
                     for (let xw = 0; xw < rimg.width; xw++) {
-                        for (let yh = rimg.height; yh >= 0; yh--) {
+                        for (let yh = rimg.height - 1; yh >= 0; yh--) {
                             if (scwidt && rimg.getPixel(xw, yh) != 0 ) {
                                 if (ligdir[ligs.indexOf(input.charAt(currentletter3))] > 0) { underc = true } else { underc = false }; scwidt = false;
-                            } else if (!(scwidt) && (output.getPixel(curwidt + xw, hie + yh) != 0 && clist.indexOf(output.getPixel(curwidt + xw, hie + yh)) < 0)) {
-                                clist.unshift(output.getPixel(curwidt + xw, hie + yh))
+                            } else if (!(scwidt) && (rimg.getPixel(curwidt + xw, hie + yh) != 0 && clist.length == 0)) {
+                                clist.push(rimg.getPixel(curwidt + xw, hie + yh))
                             }
                         }
                     }
-                    if (clist.length > 0 && underc) {output.replace(clist[0], 0)}
+                    if (clist.length > 0 && underc) {rimg.replace(clist[0], 0)}
                     scnwidt = true
                     while (scnwidt) { sc = 0; for (let yh = 0; yh < rimg.height; yh++) { if (output.getPixel((curwidt + rimg.width) - wie, hie + yh) != 0) { sc += 1 } } if (sc >= 0) { scnwidt = false ; if (wie < 0) { wie -= 2 } } else { wie -= 1} }
                 } else {
                     scnwidt = true
                     for (let xw = 0; xw < rimg.width; xw++) {
-                        for (let yh = 0; yh < rimg.height; yh++) {
+                        for (let yh = rimg.height - 1; yh >= 0; yh--) {
                             if (scnwidt) {
-                                if (output.getPixel(curwidt + xw, hie + yh) != 0 && clist.indexOf(output.getPixel(curwidt + xw, hie + yh)) < 0) { clist.unshift(output.getPixel(curwidt + xw, hie + yh)) } ; if (clist.length >= 2) { scnwidt = false }
+                                if (rimg.getPixel(xw, yh) != 0 && clist.length == 0) { clist.unshift(rimg.getPixel(xw, yh)) } ; if (clist.length > 0) { scnwidt = false }
                             }
                         }
                     }
-                    output.replace(clist[0], ligcol[ligs.indexOf(input.charAt(currentletter3))])
+                    rimg.replace(clist[0], ligcol[ligs.indexOf(input.charAt(currentletter3))])
                 }
                 if (wie != 0) { wie = Math.abs(wie) }
                 drawTransparentImage( rimg, output, curwidt - (nwidt + wie), hie + (hvi - ligages[(ligs.indexOf(input.charAt(currentletter3)))].height))
