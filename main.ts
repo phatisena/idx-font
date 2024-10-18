@@ -191,20 +191,15 @@ namespace idxfont {
                     scwidt = true
                     clist = []
                     for (let xw = 0; xw < rimg.width; xw++) {
-                        for (let yh = 0; yh < rimg.height; yh++) {
+                        for (let yh = rimg.height - 1; yh >= 0; yh--) {
                             if (scwidt && rimg.getPixel(xw, yh) != 0 ) {
-                                if (yh < Math.floor(rimg.height / 2)) {
-                                    underc = false
-                                } else {
-                                    underc = true
-                                }
-                                scwidt = false
+                                if (yh < Math.floor(rimg.height / 2)) { underc = false } else { underc = true }; scwidt = false;
                             } else if (!(scwidt) && (output.getPixel(curwidt + xw, hie + yh) != 0 && clist.indexOf(output.getPixel(curwidt + xw, hie + yh)) < 0)) {
                                 clist.unshift(output.getPixel(curwidt + xw, hie + yh))
                             }
                         }
                     }
-                    if (underc) {output.replace(clist[0], 0)}
+                    if (clist.length > 0) {output.replace(clist[0], 0)}
                     scnwidt = true
                     while (scnwidt) { sc = 0; for (let yh = 0; yh < rimg.height; yh++) { if (output.getPixel((curwidt + rimg.width) - wie, hie + yh) != 0) { sc += 1 } } if (sc >= 0) { scnwidt = false ; if (wie < 0) { wie -= 2 } } else { wie -= 1} }
                 } else {
