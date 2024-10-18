@@ -218,7 +218,7 @@ namespace idxfont {
                         }
                     }
                 }
-                if (Math.abs(ligdir[ligs.indexOf(input.charAt(currentletter3))]) != 0 && Math.abs(ligdir[ligs.indexOf(input.charAt(Math.max(currentletter3 - 1, 0)))]) != 0) {
+                if (Math.abs(ligdir[ligs.indexOf(input.charAt(currentletter3))]) > 0 && Math.abs(ligdir[ligs.indexOf(input.charAt(Math.max(currentletter3 - 1, 0)))]) == 0) {
                     sc = 1; wie = 0;
                     while (sc > 0) {
                         sc = 0
@@ -235,10 +235,14 @@ namespace idxfont {
                         }
                     }
                 }
-                if (ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] <= 0) {
-                    rimg.replace(ligul[ligs.indexOf(input.charAt(currentletter3))], ligcol[ligs.indexOf(input.charAt(currentletter3))])
-                } else if (ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] > 0) {
-                    rimg.replace(ligul[ligs.indexOf(input.charAt(currentletter3))], 0)
+                for (let ccol = 1; ccol < 16; ccol++) {
+                    if (ccol == ligul[ligs.indexOf(input.charAt(currentletter3))]) {
+                        if (ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] > 0) {
+                            rimg.replace(ccol, 0)
+                        } else if (ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] <= 0) {
+                            rimg.replace(ccol, ligcol[ligs.indexOf(input.charAt(currentletter3))])
+                        }
+                    }
                 }
                 if (wie != 0) { wie = Math.abs(wie) }
                 drawTransparentImage( rimg, output, curwidt - (nwidt + wie), hie + (hvi - ligages[(ligs.indexOf(input.charAt(currentletter3)))].height))
@@ -270,10 +274,8 @@ namespace idxfont {
             }
         }
         if (icol > 0) {
-            for (let ico = 0; ico < 16; ico++) {
-                if (ico > 0) {
-                    output.replace(ico, icol)
-                }
+            for (let ico = 1; ico < 16; ico++) {
+                output.replace(ico, icol)
             }
         }
         return output
