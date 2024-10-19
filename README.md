@@ -1,8 +1,6 @@
 
 > Visit the credit from my repo at
 [https://github.com/rishiporwal/custom-fonts](https://github.com/rishiporwal/custom-fonts)
- 
----
 
 > Open this page at [https://phatisena.github.io/idx-font/](https://phatisena.github.io/idx-font/)
 
@@ -15,7 +13,8 @@ This repository can be added as an **extension** in MakeCode.
 * click on **Extensions** under the gearwheel menu
 * search for **https://github.com/phatisena/idx-font** and import
 
-## Edit this project ![Build status badge](https://github.com/phatisena/idx-font/workflows/MakeCode/badge.svg)
+## Edit this project 
+![Build status badge](https://github.com/phatisena/idx-font/workflows/MakeCode/badge.svg)
 
 To edit this repository in MakeCode.
 
