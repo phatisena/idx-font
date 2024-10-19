@@ -234,7 +234,7 @@ namespace idxfont {
                     while (sc > 0) {
                         sc = 0
                         for (let yh = 0; yh < rimg.height; yh++) {
-                            if (output.getPixel((curwidt + (rimg.width - 1)) - wie, hie + yh) == rimg.getPixel(rimg.width - 1, yh) && (output.getPixel((curwidt + rimg.width) - wie, hie + yh) != 0 && output.getPixel((curwidt + (rimg.width - 1)) - wie, hie + yh) != 0)) {
+                            if (output.getPixel((curwidt - letterspace) - wie, hie + yh) == rimg.getPixel(rimg.width - 1, yh) && (output.getPixel((curwidt - letterspace) - wie, hie + yh) != 0 && output.getPixel((curwidt - letterspace) - wie, hie + yh) != 0)) {
                                 sc += 1
                             }
                         }
