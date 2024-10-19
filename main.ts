@@ -24,13 +24,13 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_setcharecter
-    //%block="set table id $gid and set letter $glyph to img $imgi=screen_image_picker and the letter can move? $notmove and stay on or under the letter? $on erase col $bcol spacebar col $scol base col $mcol guard col $ncol"
+    //%block="set table id $gid and set letter $glyph to img $imgi=screen_image_picker and the letter can move? $notmove and stay on or under the letter? $onthechar erase col $bcol spacebar col $scol base col $mcol guard col $ncol"
     //%bcol.shadow=colorindexpicker
     //%scol.shadow=colorindexpicker
     //%mcol.shadow=colorindexpicker
     //%ncol.shadow=colorindexpicker
     //%group="create"
-    export function setCharecter(gid: number,glyph: string, imgi: Image, notmove: boolean, on: boolean, bcol: number, scol: number, mcol: number, ncol: number) {
+    export function setCharecter(gid: number,glyph: string, imgi: Image, notmove: boolean, onthechar: boolean, bcol: number, scol: number, mcol: number, ncol: number) {
         let tid = 0
         if (storeid.indexOf(gid) < 0) {
             tid = newtableid()
@@ -65,7 +65,7 @@ namespace idxfont {
             ligcol[tid].push(mcol)
             ligs[tid].push(glyph); ligages[tid].push(imgj);
             if (notmove) {
-                if (on) {
+                if (onthechar) {
                     ligdir[tid].push(1)
                 } else {
                     ligdir[tid].push(-1)
@@ -80,7 +80,7 @@ namespace idxfont {
             ligcol[tid][ligs[tid].indexOf(glyph)] = mcol
             ligages[tid][ligs[tid].indexOf(glyph)] = imgj
             if (notmove) {
-                if (on) {
+                if (onthechar) {
                     ligdir[tid][ligs[tid].indexOf(glyph)] = 1
                 } else {
                     ligdir[tid][ligs[tid].indexOf(glyph)] = -1
@@ -220,9 +220,9 @@ namespace idxfont {
                 }
                 scwidt = false; scnwidt = false; wie = 0; rimg = ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))];
                 let ccol = ligul[tid][ligs[tid].indexOf(input.charAt(currentletter3))]
-                if (ligdir[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] < 0) {
+                if (ligdir[tid][ligs[tid].indexOf(input.charAt(currentletter3))] == 0 && ligdir[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] < 0) {
                     rimg.replace(ccol, 0)
-                } else if (!(ligdir[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] < 0)) {
+                } else if (ligdir[tid][ligs[tid].indexOf(input.charAt(currentletter3))] == 0 && ligdir[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] >= 0) {
                     rimg.replace(ccol, ligcol[tid][ligs[tid].indexOf(input.charAt(currentletter3))])
                 }
                 if (Math.abs(ligdir[tid][ligs[tid].indexOf(input.charAt(currentletter3))]) > 0 && Math.abs(ligdir[tid][ligs[tid].indexOf(input.charAt(Math.max(currentletter3 - 1, 0)))]) == 0) {
