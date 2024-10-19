@@ -1,6 +1,6 @@
 
 > Visit the credit from my repo at
-[https://github.com/rishiporwal/custom-fonts](https://github.com/rishiporwal/custom-fonts)
+[rishiporwal/custom-fonts](https://github.com/rishiporwal/custom-fonts)
 
 > Open this page at [https://phatisena.github.io/idx-font/](https://phatisena.github.io/idx-font/)
 
