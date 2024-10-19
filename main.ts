@@ -24,7 +24,7 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_setcharecter
-    //%block="set group $gid and set $glyph to $imgi=screen_image_picker and $notmove to stay on or under the char $on erase col $bcol spacebar col $scol base col $mcol g col $ncol"
+    //%block="set table id $gid and set letter $glyph to img $imgi=screen_image_picker and the letter can move? $notmove and stay on or under the letter? $on erase col $bcol spacebar col $scol base col $mcol guard col $ncol"
     //%bcol.shadow=colorindexpicker
     //%scol.shadow=colorindexpicker
     //%mcol.shadow=colorindexpicker
@@ -94,7 +94,7 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_setcharfromimgsheet
-    //%block="set table $tid and set $PngSheet=screen_image_picker with $GroupChar staying char $StayChar char on char $CharOnChar w $twid h $thei erase col $bcl space col $scl base col $mcl g col $ncl"
+    //%block="set table id $tid and set img sheet $PngSheet=screen_image_picker with letters $GroupChar staying letters $StayChar letters on the letters $CharOnChar width $twid height $thei erase col $bcl space col $scl base col $mcl guard col $ncl"
     //%bcl.shadow=colorindexpicker
     //%scl.shadow=colorindexpicker
     //%mcl.shadow=colorindexpicker
@@ -108,28 +108,28 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_numofglyphs
-    //%block="number of glyphs in $tid"
+    //%block="number of glyphs in table id $tid"
     //%group="datainfo"
     export function NumOfGlyphs(tid: number): number {
         return ligs[tid].length
     }
 
     //%blockid=ixfont_arrofgypimg
-    //%block="array of glyph images in $tid"
+    //%block="array of glyph images in table id $tid"
     //%group="datainfo"
     export function ImageArray(tid: number): Image[] {
         return ligages[tid]
     }
 
     //%blockid=ixfont_arrofglyphs
-    //%block="array of glyphs in $tid"
+    //%block="array of glyphs in table id $tid"
     //%group="datainfo"
     export function GlyphArray(tid: number): String[] {
         return ligs[tid]
     }
 
     //%blockid=ixfont_setimgfromtext
-    //%block="create the image of $input in $iwidt from $tid and fill $icol"
+    //%block="create the image of text $input in page width $iwidt from table id $tid and fill col $icol"
     //%icol.shadow=colorindexpicker
     //%group="render"
     export function SetImage(input: string, iwidt: number,tid: number, icol: number) {
