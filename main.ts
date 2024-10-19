@@ -1,7 +1,11 @@
 //% color="#2dbded" icon="\uf249"
 namespace idxfont {
 
-    let ligs: string[] = []; let ligages: Image[] = []; let ligwidth: number[] = []; let ligdir: number[] = []; let ligcol: number[] = []; let ligul: number[] = []; let letterspace: number = 1;
+    let ligs: string[][] = []; let ligages: Image[][] = []; let ligwidth: number[][] = []; let ligdir: number[][] = []; let ligcol: number[][] = []; let ligul: number[][] = []; let storeid: number[] = []; let letterspace: number = 1; let curid = 0;
+    
+    export function newtableid() {
+        storeid.push(curid); ligs.push([]); ligages.push([]); ligwidth.push([]); ligdir.push([]); ligcol.push([]); ligul.push([]); curid += 1; return storeid.length - 1;
+    }
 
     export function drawTransparentImage(src: Image, to: Image, x: number, y: number) {
         if (!src || !to) { return; }
@@ -20,13 +24,20 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_setcharecter
-    //%block="set $glyph to $imgi=screen_image_picker and $notmove to stay on or under the char $on erase col $bcol spacebar col $scol base col $mcol g col $ncol"
+    //%block="set group $gid and set $glyph to $imgi=screen_image_picker and $notmove to stay on or under the char $on erase col $bcol spacebar col $scol base col $mcol g col $ncol"
     //%bcol.shadow=colorindexpicker
     //%scol.shadow=colorindexpicker
     //%mcol.shadow=colorindexpicker
     //%ncol.shadow=colorindexpicker
     //%group="create"
-    export function setCharecter(glyph: string, imgi: Image, notmove: boolean, on: boolean, bcol: number, scol: number, mcol: number, ncol: number) {
+    export function setCharecter(gid: number,glyph: string, imgi: Image, notmove: boolean, on: boolean, bcol: number, scol: number, mcol: number, ncol: number) {
+        let tid = 0
+        if (storeid.indexOf(gid) < 0) {
+            tid = newtableid()
+        } else {
+            tid = gid
+        }
+        
         let sncol = true ;let scnwidt = true; let scwidt = false; let wi = 0; let wj = 0; let si = 0; let imgj = image.create(imgi.width, imgi.height);
         if (bcol > 0 && bcol < 16) {
             imgi.replace(bcol, 0)
@@ -49,85 +60,85 @@ namespace idxfont {
         if (scol > 0 && scol < 16) {
             imgj.replace(scol, 0)
         }
-        if (ligs.indexOf(glyph) < 0) {
-            ligul.push(ncol)
-            ligcol.push(mcol)
-            ligs.push(glyph); ligages.push(imgj);
+        if (ligs[tid].indexOf(glyph) < 0) {
+            ligul[tid].push(ncol)
+            ligcol[tid].push(mcol)
+            ligs[tid].push(glyph); ligages[tid].push(imgj);
             if (notmove) {
                 if (on) {
-                    ligdir.push(-1)
+                    ligdir[tid].push(-1)
                 } else {
-                    ligdir.push(1)
+                    ligdir[tid].push(1)
                 }
-                ligwidth.push(0)
+                ligwidth[tid].push(0)
             } else {
-                ligwidth.push(imgj.width)
-                ligdir.push(0)
+                ligwidth[tid].push(imgj.width)
+                ligdir[tid].push(0)
             }
         } else {
-            ligul[ligs.indexOf(glyph)] = ncol
-            ligcol[ligs.indexOf(glyph)] = mcol
-            ligages[ligs.indexOf(glyph)] = imgj
+            ligul[tid][ligs[tid].indexOf(glyph)] = ncol
+            ligcol[tid][ligs[tid].indexOf(glyph)] = mcol
+            ligages[tid][ligs[tid].indexOf(glyph)] = imgj
             if (notmove) {
                 if (on) {
-                    ligdir[ligs.indexOf(glyph)] = -1
+                    ligdir[tid][ligs[tid].indexOf(glyph)] = -1
                 } else {
-                    ligdir[ligs.indexOf(glyph)] = 1
+                    ligdir[tid][ligs[tid].indexOf(glyph)] = 1
                 }
-                ligwidth[ligs.indexOf(glyph)] = 0
+                ligwidth[tid][ligs[tid].indexOf(glyph)] = 0
             } else {
-                ligwidth[ligs.indexOf(glyph)] = imgj.width
-                ligdir[ligs.indexOf(glyph)] = 0
+                ligwidth[tid][ligs[tid].indexOf(glyph)] = imgj.width
+                ligdir[tid][ligs[tid].indexOf(glyph)] = 0
             }
         }
     }
 
     //%blockid=ixfont_setcharfromimgsheet
-    //%block="set $PngSheet=screen_image_picker with $GroupChar staying char $StayChar char on char $CharOnChar w $twid h $thei erase col $bcl space col $scl base col $mcl g col $ncl"
+    //%block="set table $tid and set $PngSheet=screen_image_picker with $GroupChar staying char $StayChar char on char $CharOnChar w $twid h $thei erase col $bcl space col $scl base col $mcl g col $ncl"
     //%bcl.shadow=colorindexpicker
     //%scl.shadow=colorindexpicker
     //%mcl.shadow=colorindexpicker
     //%ncl.shadow=colorindexpicker
     //%group="create"
-    export function setCharFromSheet(PngSheet: Image, GroupChar: string, StayChar: string, CharOnChar: string, twid: number, thei: number, bcl: number, scl: number, mcl: number, ncl: number) {
+    export function setCharFromSheet(tid: number, PngSheet: Image, GroupChar: string, StayChar: string, CharOnChar: string, twid: number, thei: number, bcl: number, scl: number, mcl: number, ncl: number) {
         let gwid = Math.round(PngSheet.width / twid); let uig = image.create(twid, thei); let txi = 0; let tyi = 0;
         for (let tvn = 0; tvn < GroupChar.length; tvn++) {
-            uig = image.create(twid, thei); txi = twid * (tvn % gwid); tyi = thei * Math.floor(tvn / gwid); drawTransparentImage(PngSheet, uig, 0 - txi, 0 - tyi); setCharecter(GroupChar.charAt(tvn), uig, StayChar.includes(GroupChar.charAt(tvn)),CharOnChar.includes(GroupChar.charAt(tvn)), bcl, scl, mcl, ncl);
+            uig = image.create(twid, thei); txi = twid * (tvn % gwid); tyi = thei * Math.floor(tvn / gwid); drawTransparentImage(PngSheet, uig, 0 - txi, 0 - tyi); setCharecter(tid, GroupChar.charAt(tvn), uig, StayChar.includes(GroupChar.charAt(tvn)),CharOnChar.includes(GroupChar.charAt(tvn)), bcl, scl, mcl, ncl);
         }
     }
 
     //%blockid=ixfont_numofglyphs
-    //%block="number of glyphs"
+    //%block="number of glyphs in $tid"
     //%group="datainfo"
-    export function NumOfGlyphs(): number {
-        return ligs.length
+    export function NumOfGlyphs(tid: number): number {
+        return ligs[tid].length
     }
 
     //%blockid=ixfont_arrofgypimg
-    //%block="array of glyph images"
+    //%block="array of glyph images in $tid"
     //%group="datainfo"
-    export function ImageArray(): Image[] {
-        return ligages
+    export function ImageArray(tid: number): Image[] {
+        return ligages[tid]
     }
 
     //%blockid=ixfont_arrofglyphs
-    //%block="array of glyphs"
+    //%block="array of glyphs in $tid"
     //%group="datainfo"
-    export function GlyphArray(): String[] {
-        return ligs
+    export function GlyphArray(tid: number): String[] {
+        return ligs[tid]
     }
 
     //%blockid=ixfont_setimgfromtext
-    //%block="create the image of $input in $iwidt and fill $icol"
+    //%block="create the image of $input in $iwidt from $tid and fill $icol"
     //%icol.shadow=colorindexpicker
     //%group="render"
-    export function SetImage(input: string, iwidt: number, icol: number) {
+    export function SetImage(input: string, iwidt: number,tid: number, icol: number) {
         let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
         for (let currentletter = 0; currentletter < input.length; currentletter++) {
-            if (!(ligs.indexOf(input.charAt(currentletter)) < 0)) {
-                uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter)))]
-                if (ligwidth[(ligs.indexOf(input.charAt(currentletter)))] <= 0) {
-                    nwidt = ligages[(ligs.indexOf(input.charAt(currentletter)))].width
+            if (!(ligs[tid].indexOf(input.charAt(currentletter)) < 0)) {
+                uwidt = ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter)))]
+                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter)))] <= 0) {
+                    nwidt = ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter)))].width
                 } else {
                     nwidt = 0
                 }
@@ -136,13 +147,13 @@ namespace idxfont {
                 } else {
                     swidt = 0
                 }
-                if (ligwidth[(ligs.indexOf(input.charAt(currentletter)))] > 0) {
+                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter)))] > 0) {
                     wie += Math.abs(uwidt - nwidt)
                 }
-                if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter + 1, input.length - 1))))] > 0) {
+                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(Math.min(currentletter + 1, input.length - 1))))] > 0) {
                     wie += letterspace
                 }
-                hvi = ligages[(ligs.indexOf(input.charAt(currentletter)))].height
+                hvi = ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter)))].height
             } else if (input.charAt(currentletter) == " ") {
                 wie += 3 * letterspace
             } else {
@@ -162,22 +173,22 @@ namespace idxfont {
         }
         wie = 0; widt = 0;
         for (let currentletter2 = 0; currentletter2 < input.length; currentletter2++) {
-            if (!(ligs.indexOf(input.charAt(currentletter2)) < 0)) {
-                uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter2)))]
-                if (ligwidth[(ligs.indexOf(input.charAt(currentletter2)))] <= 0) {
-                    nwidt = ligages[(ligs.indexOf(input.charAt(currentletter2)))].width
+            if (!(ligs[tid].indexOf(input.charAt(currentletter2)) < 0)) {
+                uwidt = ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter2)))]
+                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter2)))] <= 0) {
+                    nwidt = ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter2)))].width
                 } else {
                     nwidt = 0
                 }
-                if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] <= 0) {
+                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] <= 0) {
                     swidt = uwidt
                 } else {
                     swidt = 0
                 }
-                if (ligwidth[(ligs.indexOf(input.charAt(currentletter2)))] > 0) {
+                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter2)))] > 0) {
                     wie += Math.abs(uwidt - nwidt)
                 }
-                if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] > 0) {
+                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] > 0) {
                     wie += letterspace
                 }
             } else if (input.charAt(currentletter2) == " ") {
@@ -200,25 +211,25 @@ namespace idxfont {
         let clist: number[] = []; let scwidt = true;  let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); hie = 0; wie = 0; curwidt = 0;
         for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
             wie = 0
-            if (!(ligs.indexOf(input.charAt(currentletter3)) < 0)) {
-                hvi = ligages[(ligs.indexOf(input.charAt(currentletter3)))].height; uwidt = ligwidth[(ligs.indexOf(input.charAt(currentletter3)))];
-                if (ligwidth[(ligs.indexOf(input.charAt(currentletter3)))] <= 0) {
-                    nwidt = ligages[(ligs.indexOf(input.charAt(currentletter3)))].width
+            if (!(ligs[tid].indexOf(input.charAt(currentletter3)) < 0)) {
+                hvi = ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))].height; uwidt = ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))];
+                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))] <= 0) {
+                    nwidt = ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))].width
                 } else {
                     nwidt = 0
                 }
-                scwidt = false; scnwidt = false; wie = 0; rimg = ligages[(ligs.indexOf(input.charAt(currentletter3)))];
-                if (Math.abs(ligdir[(ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))]) > 0) {
+                scwidt = false; scnwidt = false; wie = 0; rimg = ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))];
+                if (Math.abs(ligdir[tid][(ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))]) > 0) {
                     scwidt = true; clist = [];
                     for (let xw = 0; xw < rimg.width; xw++) {
                         for (let yh = rimg.height - 1; yh >= 0; yh--) {
-                            if (rimg.getPixel(xw, yh) != ligcol[ligs.indexOf(input.charAt(currentletter3))] && (rimg.getPixel(xw, yh) != 0 && clist.length == 0)) {
+                            if (rimg.getPixel(xw, yh) != ligcol[tid][ligs[tid].indexOf(input.charAt(currentletter3))] && (rimg.getPixel(xw, yh) != 0 && clist.length == 0)) {
                                 clist.push(rimg.getPixel(xw, yh))
                             }
                         }
                     }
                 }
-                if (Math.abs(ligdir[ligs.indexOf(input.charAt(currentletter3))]) > 0 && Math.abs(ligdir[ligs.indexOf(input.charAt(Math.max(currentletter3 - 1, 0)))]) == 0) {
+                if (Math.abs(ligdir[tid][ligs[tid].indexOf(input.charAt(currentletter3))]) > 0 && Math.abs(ligdir[tid][ligs[tid].indexOf(input.charAt(Math.max(currentletter3 - 1, 0)))]) == 0) {
                     sc = 1; wie = 0;
                     while (sc > 0) {
                         sc = 0
@@ -236,25 +247,25 @@ namespace idxfont {
                     }
                 }
                 for (let ccol = 1; ccol < 16; ccol++) {
-                    if (ccol == ligul[ligs.indexOf(input.charAt(currentletter3))]) {
-                        if (ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] > 0) {
+                    if (ccol == ligul[tid][ligs[tid].indexOf(input.charAt(currentletter3))]) {
+                        if (ligdir[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] > 0) {
                             rimg.replace(ccol, 0)
-                        } else if (ligdir[ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] <= 0) {
-                            rimg.replace(ccol, ligcol[ligs.indexOf(input.charAt(currentletter3))])
+                        } else if (ligdir[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] <= 0) {
+                            rimg.replace(ccol, ligcol[tid][ligs[tid].indexOf(input.charAt(currentletter3))])
                         }
                     }
                 }
                 if (wie != 0) { wie = Math.abs(wie) }
-                drawTransparentImage( rimg, output, curwidt - (nwidt + wie), hie + (hvi - ligages[(ligs.indexOf(input.charAt(currentletter3)))].height))
-                if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] == 0) {
+                drawTransparentImage( rimg, output, curwidt - (nwidt + wie), hie + (hvi - ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))].height))
+                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] == 0) {
                     swidt = uwidt
                 } else {
                     swidt = 0
                 }
-                if (ligwidth[(ligs.indexOf(input.charAt(currentletter3)))] > 0) {
+                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))] > 0) {
                     curwidt += Math.abs(uwidt - nwidt)
                 }
-                if (ligwidth[(ligs.indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] > 0) {
+                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] > 0) {
                     curwidt += letterspace
                 }
             } else if (input.charAt(currentletter3) == " ") {
