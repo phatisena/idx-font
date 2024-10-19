@@ -12,7 +12,8 @@
         "assets.json",
         "tilemap.g.jres",
         "tilemap.g.ts",
-        "tutorial-info-cache.json"
+        "tutorial-info-cache.json",
+        "icon.png"
     ],
     "testFiles": [
         "test.ts"
