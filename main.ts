@@ -219,16 +219,6 @@ namespace idxfont {
                     nwidt = 0
                 }
                 scwidt = false; scnwidt = false; wie = 0; rimg = ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))];
-                if (Math.abs(ligdir[tid][(ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))]) > 0) {
-                    scwidt = true; clist = [];
-                    for (let xw = 0; xw < rimg.width; xw++) {
-                        for (let yh = rimg.height - 1; yh >= 0; yh--) {
-                            if (rimg.getPixel(xw, yh) != ligcol[tid][ligs[tid].indexOf(input.charAt(currentletter3))] && (rimg.getPixel(xw, yh) != 0 && clist.length == 0)) {
-                                clist.push(rimg.getPixel(xw, yh))
-                            }
-                        }
-                    }
-                }
                 if (Math.abs(ligdir[tid][ligs[tid].indexOf(input.charAt(currentletter3))]) > 0 && Math.abs(ligdir[tid][ligs[tid].indexOf(input.charAt(Math.max(currentletter3 - 1, 0)))]) == 0) {
                     sc = 1; wie = 0;
                     while (sc > 0) {
