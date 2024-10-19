@@ -1,4 +1,6 @@
-//% color="#2dbded" icon="\uf249"
+//% block=IdxFont
+//% color="#2dbded" 
+//% icon="\uf249"
 namespace idxfont {
 
     let ligs: string[][] = []; let ligages: Image[][] = []; let ligwidth: number[][] = []; let ligdir: number[][] = []; let ligcol: number[][] = []; let ligul: number[][] = []; let storeid: number[] = []; let letterspace: number = 1; let curid = 0;
