@@ -66,9 +66,9 @@ namespace idxfont {
             ligs[tid].push(glyph); ligages[tid].push(imgj);
             if (notmove) {
                 if (on) {
-                    ligdir[tid].push(-1)
-                } else {
                     ligdir[tid].push(1)
+                } else {
+                    ligdir[tid].push(-1)
                 }
                 ligwidth[tid].push(0)
             } else {
@@ -81,9 +81,9 @@ namespace idxfont {
             ligages[tid][ligs[tid].indexOf(glyph)] = imgj
             if (notmove) {
                 if (on) {
-                    ligdir[tid][ligs[tid].indexOf(glyph)] = -1
-                } else {
                     ligdir[tid][ligs[tid].indexOf(glyph)] = 1
+                } else {
+                    ligdir[tid][ligs[tid].indexOf(glyph)] = -1
                 }
                 ligwidth[tid][ligs[tid].indexOf(glyph)] = 0
             } else {
@@ -208,7 +208,7 @@ namespace idxfont {
                 currentletter2 += 3
             }
         }
-        let clist: number[] = []; let scwidt = true;  let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); hie = 0; wie = 0; curwidt = 0;
+        let scwidt = true;  let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); hie = 0; wie = 0; curwidt = 0;
         for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
             wie = 0
             if (!(ligs[tid].indexOf(input.charAt(currentletter3)) < 0)) {
@@ -219,14 +219,11 @@ namespace idxfont {
                     nwidt = 0
                 }
                 scwidt = false; scnwidt = false; wie = 0; rimg = ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))];
-                for (let ccol = 1; ccol < 16; ccol++) {
-                    if (ccol == ligul[tid][ligs[tid].indexOf(input.charAt(currentletter3))]) {
-                        if (ligdir[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] > 0) {
-                            rimg.replace(ccol, 0)
-                        } else if (ligdir[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] <= 0) {
-                            rimg.replace(ccol, ligcol[tid][ligs[tid].indexOf(input.charAt(currentletter3))])
-                        }
-                    }
+                let ccol = ligul[tid][ligs[tid].indexOf(input.charAt(currentletter3))]
+                if (ligdir[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] < 0) {
+                    rimg.replace(ccol, 0)
+                } else if (!(ligdir[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] < 0)) {
+                    rimg.replace(ccol, ligcol[tid][ligs[tid].indexOf(input.charAt(currentletter3))])
                 }
                 if (Math.abs(ligdir[tid][ligs[tid].indexOf(input.charAt(currentletter3))]) > 0 && Math.abs(ligdir[tid][ligs[tid].indexOf(input.charAt(Math.max(currentletter3 - 1, 0)))]) == 0) {
                     sc = 1; wie = 0;
