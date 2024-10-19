@@ -220,10 +220,14 @@ namespace idxfont {
                 }
                 scwidt = false; scnwidt = false; wie = 0; rimg = ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))];
                 let ccol = ligul[tid][ligs[tid].indexOf(input.charAt(currentletter3))]
-                if (ligdir[tid][ligs[tid].indexOf(input.charAt(currentletter3))] == 0 && ligdir[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] < 0) {
-                    rimg.replace(ccol, 0)
-                } else if (ligdir[tid][ligs[tid].indexOf(input.charAt(currentletter3))] == 0 && ligdir[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] >= 0) {
+                if (ligdir[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] == 0) {
                     rimg.replace(ccol, ligcol[tid][ligs[tid].indexOf(input.charAt(currentletter3))])
+                } else {
+                    if (ligdir[tid][ligs[tid].indexOf(input.charAt(currentletter3))] == 0 && ligdir[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] < 0) {
+                        rimg.replace(ccol, 0)
+                    } else if (ligdir[tid][ligs[tid].indexOf(input.charAt(currentletter3))] == 0 && ligdir[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] > 0) {
+                        rimg.replace(ccol, ligcol[tid][ligs[tid].indexOf(input.charAt(currentletter3))])
+                    }
                 }
                 if (Math.abs(ligdir[tid][ligs[tid].indexOf(input.charAt(currentletter3))]) > 0 && Math.abs(ligdir[tid][ligs[tid].indexOf(input.charAt(Math.max(currentletter3 - 1, 0)))]) == 0) {
                     sc = 1; wie = 0;
