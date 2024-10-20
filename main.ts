@@ -294,4 +294,31 @@ namespace idxfont {
     }
 
 
+    SetSpace(1)
+    setCharFromSheet(
+    0,
+    assets.image`myImage1`,
+    "§!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~°©®",
+    "",
+    "",
+    8,
+    16,
+    1,
+    0,
+    15,
+    3
+    )
+    setCharFromSheet(
+    0,
+    assets.image`myImage2`,
+    "กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรลวศษสหฬอฮะาเแโใไฤฦๅั็ํิีึืุู์่้๊๋ำ฿๐๑๒๓๔๕๖๗๘๙",
+    "ั็ํิีึืุู์่้๊๋",
+    "ั็ํิีึื์่้๊๋",
+    8,
+    16,
+    1,
+    0,
+    15,
+    3
+    )
 }
