@@ -110,28 +110,28 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_numofglyphs
-    //%block="number of glyphs || in table id $tid"
+    //%block="number of glyphs ||in table id $tid ||"
     //%group="datainfo"
     export function NumOfGlyphs(tid: number = 0): number {
         return ligs[tid].length
     }
 
     //%blockid=ixfont_arrofgypimg
-    //%block="array of glyph images || in table id $tid"
+    //%block="array of glyph images ||in table id $tid ||"
     //%group="datainfo"
     export function ImageArray(tid: number = 0): Image[] {
         return ligages[tid]
     }
 
     //%blockid=ixfont_arrofglyphs
-    //%block="array of glyphs || in table id $tid"
+    //%block="array of glyphs ||in table id $tid ||"
     //%group="datainfo"
     export function GlyphArray(tid: number = 0): String[] {
         return ligs[tid]
     }
 
     //%blockid=ixfont_setimgfromtext
-    //%block="create the image of text $input || in page width $iwidt from table id $tid || and fill col $icol || and got alignment $alm"
+    //%block="create the image of text $input ||in page width $iwidt from table id $tid ||and fill col $icol ||and got alignment $alm ||"
     //%alm.min=-1 alm.max=1
     //%icol.shadow=colorindexpicker
     //%group="render"
