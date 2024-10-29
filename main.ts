@@ -265,9 +265,9 @@ namespace idxfont {
             }
             if (iwidt > 0) {
                 if (curwidt >= iwidt || findCommand(input, "n", currentletter3)) {
-                    if (alm > 0) {
+                    if (alm < 0) {
                         drawTransparentImage(limg.clone(), output, 0, hie)
-                    } else if (alm < 0) {
+                    } else if (alm > 0) {
                         drawTransparentImage(limg.clone(), output, Math.abs(output.width - limg.width), hie)
                     } else if (alm == 0) {
                         drawTransparentImage(limg.clone(), output, Math.abs((Math.floor(output.width / 2)) - (Math.floor(limg.width / 2))), hie)
@@ -282,9 +282,9 @@ namespace idxfont {
                 currentletter3 += 3
             }
         }
-        if (alm > 0) {
+        if (alm < 0) {
             drawTransparentImage(limg.clone(), output, 0, hie)
-        } else if (alm < 0) {
+        } else if (alm > 0) {
             drawTransparentImage(limg.clone(), output, Math.abs(output.width - limg.width), hie)
         } else if (alm == 0) {
             drawTransparentImage(limg.clone(), output, Math.abs((Math.floor(output.width / 2)) - (Math.floor(limg.width / 2))), hie)
