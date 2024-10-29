@@ -110,29 +110,29 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_numofglyphs
-    //%block="number of glyphs ||in table id $tid ||"
+    //%block="number of glyphs in table id $tid ||"
     //%group="datainfo"
     export function NumOfGlyphs(tid: number = 0): number {
         return ligs[tid].length
     }
 
     //%blockid=ixfont_arrofgypimg
-    //%block="array of glyph images ||in table id $tid ||"
+    //%block="array of glyph images in table id $tid ||"
     //%group="datainfo"
     export function ImageArray(tid: number = 0): Image[] {
         return ligages[tid]
     }
 
     //%blockid=ixfont_arrofglyphs
-    //%block="array of glyphs ||in table id $tid ||"
+    //%block="array of glyphs in table id $tid ||"
     //%group="datainfo"
     export function GlyphArray(tid: number = 0): String[] {
         return ligs[tid]
     }
 
     //%blockid=ixfont_setimgfromtext
-    //%block="create the image of text $input ||in page width $iwidt from table id $tid ||and fill col $icol ||and got alignment $alm ||"
-    //%alm.min=-1 alm.max=1
+    //%block="create the image of text $input in page width $iwidt from table id $tid and fill col $icol and got alignment $alm "
+    //%alm.min=-1 alm.max=1 alm.defl=0
     //%icol.shadow=colorindexpicker
     //%group="render"
     export function SetImage(input: string, iwidt: number = 0, tid: number = 0, icol: number = 0, alm: number = 0) {
@@ -212,7 +212,7 @@ namespace idxfont {
                 currentletter2 += 3
             }
         }
-        if (wie <= iwidt) {lnwit.push(wie)}
+        lnwit.push(wie)
         let hgi = 0; let limg = image.create(lnwit[hgi], heig); let scwidt = true;  let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); hie = 0; wie = 0; curwidt = 0;
         for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
             wie = 0
@@ -268,9 +268,9 @@ namespace idxfont {
                     if (alm > 0) {
                         drawTransparentImage(limg, output, 0, hie)
                     } else if (alm < 0) {
-                        drawTransparentImage(limg, output, output.width - limg.width, hie)
+                        drawTransparentImage(limg, output, Math.abs(output.width - limg.width), hie)
                     } else if (alm == 0) {
-                        drawTransparentImage(limg, output, (output.width / 2) - (limg.width / 2), hie)
+                        drawTransparentImage(limg, output, Math.abs((Math.floor(output.width / 2)) - (Math.floor(limg.width / 2))), hie)
                     }
                     hgi += 1
                     limg = image.create(lnwit[hgi], heig)
@@ -283,14 +283,12 @@ namespace idxfont {
                 currentletter3 += 3
             }
         }
-        if (curwidt <= widt) {
-            if (alm > 0) {
-                drawTransparentImage(limg, output, 0, hie)
-            } else if (alm < 0) {
-                drawTransparentImage(limg, output, output.width - limg.width, hie)
-            } else if (alm == 0) {
-                drawTransparentImage(limg, output, (output.width / 2) - (limg.width / 2), hie)
-            }
+        if (alm > 0) {
+            drawTransparentImage(limg, output, 0, hie)
+        } else if (alm < 0) {
+            drawTransparentImage(limg, output, Math.abs(output.width - limg.width), hie)
+        } else if (alm == 0) {
+            drawTransparentImage(limg, output, Math.abs((Math.floor(output.width / 2)) - (Math.floor(limg.width / 2))), hie)
         }
         if (icol > 0) {
             for (let ico = 1; ico < 16; ico++) {
