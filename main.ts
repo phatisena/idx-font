@@ -102,7 +102,7 @@ namespace idxfont {
     //%mcl.shadow=colorindexpicker
     //%ncl.shadow=colorindexpicker
     //%group="create"
-    export function setCharFromSheet(tid: number = 0, PngSheet: Image, GroupChar: string, StayChar: string, CharOnChar: string, twid: number, thei: number, bcl: number, scl: number, mcl: number, ncl: number) {
+    export function setCharFromSheet(tid: number, PngSheet: Image, GroupChar: string, StayChar: string, CharOnChar: string, twid: number, thei: number, bcl: number, scl: number, mcl: number, ncl: number) {
         let gwid = Math.round(PngSheet.width / twid); let uig = image.create(twid, thei); let txi = 0; let tyi = 0;
         for (let tvn = 0; tvn < GroupChar.length; tvn++) {
             uig = image.create(twid, thei); txi = twid * (tvn % gwid); tyi = thei * Math.floor(tvn / gwid); drawTransparentImage(PngSheet, uig, 0 - txi, 0 - tyi); setCharecter(tid, GroupChar.charAt(tvn), uig, StayChar.includes(GroupChar.charAt(tvn)),CharOnChar.includes(GroupChar.charAt(tvn)), bcl, scl, mcl, ncl);
@@ -110,23 +110,23 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_numofglyphs
-    //%block="number of glyphs in table id $tid ||"
+    //%block="number of glyphs in table id $tid"
     //%group="datainfo"
-    export function NumOfGlyphs(tid: number = 0): number {
+    export function NumOfGlyphs(tid: number): number {
         return ligs[tid].length
     }
 
     //%blockid=ixfont_arrofgypimg
-    //%block="array of glyph images in table id $tid ||"
+    //%block="array of glyph images in table id $tid"
     //%group="datainfo"
-    export function ImageArray(tid: number = 0): Image[] {
+    export function ImageArray(tid: number): Image[] {
         return ligages[tid]
     }
 
     //%blockid=ixfont_arrofglyphs
-    //%block="array of glyphs in table id $tid ||"
+    //%block="array of glyphs in table id $tid"
     //%group="datainfo"
-    export function GlyphArray(tid: number = 0): String[] {
+    export function GlyphArray(tid: number): String[] {
         return ligs[tid]
     }
 
@@ -135,7 +135,7 @@ namespace idxfont {
     //%alm.min=-1 alm.max=1 alm.defl=0
     //%icol.shadow=colorindexpicker
     //%group="render"
-    export function SetImage(input: string, iwidt: number = 0, tid: number = 0, icol: number = 0, alm: number = 0) {
+    export function SetImage(input: string, iwidt: number, tid: number, icol: number, alm: number) {
         let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
         for (let currentletter = 0; currentletter < input.length; currentletter++) {
             if (!(ligs[tid].indexOf(input.charAt(currentletter)) < 0)) {
@@ -236,7 +236,7 @@ namespace idxfont {
                     while (sc > 0) {
                         sc = 0
                         for (let yh = 0; yh < rimg.height; yh++) {
-                            if (output.getPixel((curwidt - letterspace) - wie, hie + yh) == rimg.getPixel(rimg.width - 1, yh) && (output.getPixel((curwidt - letterspace) - wie, hie + yh) != 0 && output.getPixel((curwidt - letterspace) - wie, hie + yh) != 0)) {
+                            if (limg.getPixel((curwidt - letterspace) - wie, hie + yh) == rimg.getPixel(rimg.width - 1, yh) && (limg.getPixel((curwidt - letterspace) - wie, hie + yh) != 0 && limg.getPixel((curwidt - letterspace) - wie, hie + yh) != 0)) {
                                 sc += 1
                             }
                         }
@@ -266,14 +266,13 @@ namespace idxfont {
             if (iwidt > 0) {
                 if (curwidt >= iwidt || findCommand(input, "n", currentletter3)) {
                     if (alm > 0) {
-                        drawTransparentImage(limg, output, 0, hie)
+                        drawTransparentImage(limg.clone(), output, 0, hie)
                     } else if (alm < 0) {
-                        drawTransparentImage(limg, output, Math.abs(output.width - limg.width), hie)
+                        drawTransparentImage(limg.clone(), output, Math.abs(output.width - limg.width), hie)
                     } else if (alm == 0) {
-                        drawTransparentImage(limg, output, Math.abs((Math.floor(output.width / 2)) - (Math.floor(limg.width / 2))), hie)
+                        drawTransparentImage(limg.clone(), output, Math.abs((Math.floor(output.width / 2)) - (Math.floor(limg.width / 2))), hie)
                     }
-                    hgi += 1
-                    limg = image.create(lnwit[hgi], heig)
+                    hgi += 1; limg = image.create(lnwit[hgi], heig);
                     curwidt = 0; hie += hvi;
                     if (findCommand(input, "n", currentletter3)) {
                         currentletter3 += 3
@@ -284,11 +283,11 @@ namespace idxfont {
             }
         }
         if (alm > 0) {
-            drawTransparentImage(limg, output, 0, hie)
+            drawTransparentImage(limg.clone(), output, 0, hie)
         } else if (alm < 0) {
-            drawTransparentImage(limg, output, Math.abs(output.width - limg.width), hie)
+            drawTransparentImage(limg.clone(), output, Math.abs(output.width - limg.width), hie)
         } else if (alm == 0) {
-            drawTransparentImage(limg, output, Math.abs((Math.floor(output.width / 2)) - (Math.floor(limg.width / 2))), hie)
+            drawTransparentImage(limg.clone(), output, Math.abs((Math.floor(output.width / 2)) - (Math.floor(limg.width / 2))), hie)
         }
         if (icol > 0) {
             for (let ico = 1; ico < 16; ico++) {
