@@ -203,7 +203,7 @@ namespace idxfont {
             if (iwidt > 0) {
                 if (wie >= iwidt || findCommand(input, "n", currentletter2)) {
                     if (findCommand(input, "n", currentletter2)) {
-                        wie -= 3 * letterspace
+                        wie += 3 * letterspace; widt = Math.max(widt, wie)
                     }
                     lnwit.push(wie); wie = 0; hix += 1
                     if (findCommand(input, "n", currentletter2)) {
@@ -289,7 +289,7 @@ namespace idxfont {
         } else if (alm > 0) {
             drawTransparentImage(limg.clone(), output, Math.abs(output.width - limg.width), hie)
         } else if (alm == 0) {
-            drawTransparentImage(limg.clone(), output, Math.abs((Math.floor(output.width / 2)) - (Math.floor(limg.width / 2))), hie)
+            drawTransparentImage(limg.clone(), output, Math.abs(Math.floor(output.width / 2) - Math.floor(limg.width / 2)), hie)
         }
         if (icol > 0) {
             for (let ico = 1; ico < 16; ico++) {
