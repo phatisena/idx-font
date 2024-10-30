@@ -211,7 +211,7 @@ namespace idxfont {
                 currentletter2 += 3
             }
         }
-        if (hix > 0) { wie += 3 * letterspace } ; lnwit.push(wie);
+        if (hix > 0 && false) { wie += 3 * letterspace } ; lnwit.push(wie);
         let hgi = 0; let limg = image.create(lnwit[hgi], heig); let scwidt = true;  let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); hie = 0; wie = 0; curwidt = 0;
         for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
             wie = 0
