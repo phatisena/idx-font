@@ -26,13 +26,13 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_setcharecter
-    //%block="set table id $gid and set letter $glyph to img $imgi=screen_image_picker and the letter can move? $notmove and stay on or under the letter? $onthechar erase col $bcol spacebar col $scol base col $mcol guard col $ncol"
+    //%block="set table id $gid and set letter $glyph to img $imgi=screen_image_picker ||and the letter can move? $notmove ||and stay on or under the letter? $onthechar ||erase col $bcol ||spacebar col $scol ||base col $mcol ||guard col $ncol"
     //%bcol.shadow=colorindexpicker
     //%scol.shadow=colorindexpicker
     //%mcol.shadow=colorindexpicker
     //%ncol.shadow=colorindexpicker
     //%group="create"
-    export function setCharecter(gid: number = 0, glyph: string, imgi: Image, notmove: boolean, onthechar: boolean, bcol: number, scol: number, mcol: number, ncol: number) {
+    export function setCharecter(gid: number = 0, glyph: string, imgi: Image, notmove: boolean = false, onthechar: boolean = false, bcol: number = 0, scol: number = 0, mcol: number = 0, ncol: number = 0) {
         let tid = 0
         if (storeid.indexOf(gid) < 0) {
             tid = newtableid()
@@ -96,13 +96,13 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_setcharfromimgsheet
-    //%block="set table id $tid and set img sheet $PngSheet=screen_image_picker with letters $GroupChar staying letters $StayChar letters on the letters $CharOnChar width $twid height $thei erase col $bcl space col $scl base col $mcl guard col $ncl"
+    //%block="set table id $tid and set img sheet $PngSheet=screen_image_picker with letters $GroupChar ||staying letters $StayChar ||letters on the letters $CharOnChar ||width $twid ||height $thei ||erase col $bcl ||space col $scl ||base col $mcl ||guard col $ncl||"
     //%bcl.shadow=colorindexpicker
     //%scl.shadow=colorindexpicker
     //%mcl.shadow=colorindexpicker
     //%ncl.shadow=colorindexpicker
     //%group="create"
-    export function setCharFromSheet(tid: number, PngSheet: Image, GroupChar: string, StayChar: string, CharOnChar: string, twid: number, thei: number, bcl: number, scl: number, mcl: number, ncl: number) {
+    export function setCharFromSheet(tid: number, PngSheet: Image, GroupChar: string, StayChar: string, CharOnChar: string, twid: number = 8, thei: number = 16, bcl: number = 0, scl: number = 0, mcl: number = 0, ncl: number = 0) {
         let gwid = Math.round(PngSheet.width / twid); let uig = image.create(twid, thei); let txi = 0; let tyi = 0;
         for (let tvn = 0; tvn < GroupChar.length; tvn++) {
             uig = image.create(twid, thei); txi = twid * (tvn % gwid); tyi = thei * Math.floor(tvn / gwid); drawTransparentImage(PngSheet, uig, 0 - txi, 0 - tyi); setCharecter(tid, GroupChar.charAt(tvn), uig, StayChar.includes(GroupChar.charAt(tvn)),CharOnChar.includes(GroupChar.charAt(tvn)), bcl, scl, mcl, ncl);
@@ -131,11 +131,11 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_setimgfromtext
-    //%block="create the image of text $input in page width $iwidt from table id $tid and fill col $icol and got alignment $alm "
+    //%block="create the image of text $input in page width $iwidt from table id $tid ||and fill col $icol ||and got alignment $alm"
     //%alm.min=-1 alm.max=1 alm.defl=0
     //%icol.shadow=colorindexpicker
     //%group="render"
-    export function SetImage(input: string, iwidt: number, tid: number, icol: number, alm: number) {
+    export function SetImage(input: string, iwidt: number, tid: number, icol: number = 0, alm: number = 0) {
         let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
         for (let currentletter = 0; currentletter < input.length; currentletter++) {
             if (!(ligs[tid].indexOf(input.charAt(currentletter)) < 0)) {
