@@ -26,7 +26,7 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_setcharecter
-    //%block="set table id $gid and set letter $glyph to img $imgi=screen_image_picker ||and the letter can move? $notmove and stay on or under the letter? $onthechar erase col $bcol spacebar col $scol base col $mcol guard col $ncol"
+    //%block="set |table id $gid and set letter $glyph to img $imgi=screen_image_picker ||and |the letter can move? $notmove and stay on or under the letter? $onthechar erase col $bcol spacebar col $scol base col $mcol guard col $ncol"
     //%bcol.shadow=colorindexpicker
     //%scol.shadow=colorindexpicker
     //%mcol.shadow=colorindexpicker
@@ -96,7 +96,7 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_setcharfromimgsheet
-    //%block="set table id $tid and set img sheet $PngSheet=screen_image_picker with letters $GroupChar ||staying letters $StayChar letters on the letters $CharOnChar width $twid height $thei erase col $bcl space col $scl base col $mcl guard col $ncl"
+    //%block="set |table id $tid and set img sheet $PngSheet=screen_image_picker with letters $GroupChar ||and |staying letters $StayChar letters on the letters $CharOnChar width $twid height $thei erase col $bcl space col $scl base col $mcl guard col $ncl"
     //%bcl.shadow=colorindexpicker
     //%scl.shadow=colorindexpicker
     //%mcl.shadow=colorindexpicker
@@ -131,11 +131,11 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_setimgfromtext
-    //%block="create the image of text $input in page width $iwidt from table id $tid ||and fill col $icol and got alignment $alm and get fixed $fixalm"
+    //%block="create the image of |text $input in page width $iwidt from table id $tid ||and |fill col $icol and got alignment $alm and get debugalm $debugalm"
     //%alm.min=-1 alm.max=1 alm.defl=0
     //%icol.shadow=colorindexpicker
     //%group="render"
-    export function SetImage(input: string, iwidt: number, tid: number, icol: number = 0, alm: number = 0, fixalm: boolean = true) {
+    export function SetImage(input: string, iwidt: number, tid: number, icol: number = 0, alm: number = 0, debugalm: boolean = false) {
         let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
         for (let currentletter = 0; currentletter < input.length; currentletter++) {
             if (!(ligs[tid].indexOf(input.charAt(currentletter)) < 0)) {
@@ -202,6 +202,9 @@ namespace idxfont {
             widt = Math.max(widt, wie)
             if (iwidt > 0) {
                 if (wie >= iwidt || findCommand(input, "n", currentletter2)) {
+                    if (findCommand(input, "n", currentletter2)) {
+                        wie -= 3 * letterspace
+                    }
                     lnwit.push(wie); wie = 0; hix += 1
                     if (findCommand(input, "n", currentletter2)) {
                         currentletter2 += 3
@@ -211,7 +214,7 @@ namespace idxfont {
                 currentletter2 += 3
             }
         }
-        if (hix > 0 && fixalm) { wie += 3 * letterspace } ; lnwit.push(wie);
+        if (hix > 0 && debugalm) { wie += 3 * letterspace } ; lnwit.push(wie);
         let hgi = 0; let limg = image.create(lnwit[hgi], heig); let scwidt = true;  let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); hie = 0; wie = 0; curwidt = 0;
         for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
             wie = 0
