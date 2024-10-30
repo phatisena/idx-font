@@ -26,7 +26,7 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_setcharecter
-    //%block="set table id $gid and set letter $glyph to img $imgi=screen_image_picker ||and the letter can move? $notmove ||and stay on or under the letter? $onthechar ||erase col $bcol ||spacebar col $scol ||base col $mcol ||guard col $ncol"
+    //%block="set table id $gid and set letter $glyph to img $imgi=screen_image_picker ||and the letter can move? $notmove and stay on or under the letter? $onthechar erase col $bcol spacebar col $scol base col $mcol guard col $ncol"
     //%bcol.shadow=colorindexpicker
     //%scol.shadow=colorindexpicker
     //%mcol.shadow=colorindexpicker
@@ -96,7 +96,7 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_setcharfromimgsheet
-    //%block="set table id $tid and set img sheet $PngSheet=screen_image_picker with letters $GroupChar ||staying letters $StayChar ||letters on the letters $CharOnChar ||width $twid ||height $thei ||erase col $bcl ||space col $scl ||base col $mcl ||guard col $ncl||"
+    //%block="set table id $tid and set img sheet $PngSheet=screen_image_picker with letters $GroupChar ||staying letters $StayChar letters on the letters $CharOnChar width $twid height $thei erase col $bcl space col $scl base col $mcl guard col $ncl"
     //%bcl.shadow=colorindexpicker
     //%scl.shadow=colorindexpicker
     //%mcl.shadow=colorindexpicker
@@ -131,7 +131,7 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_setimgfromtext
-    //%block="create the image of text $input in page width $iwidt from table id $tid ||and fill col $icol ||and got alignment $alm"
+    //%block="create the image of text $input in page width $iwidt from table id $tid ||and fill col $icol and got alignment $alm"
     //%alm.min=-1 alm.max=1 alm.defl=0
     //%icol.shadow=colorindexpicker
     //%group="render"
