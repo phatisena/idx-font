@@ -1,3 +1,5 @@
+[English Version](LICENSE.md)
+
 MIT License
 
 สงวนลิขสิทธิ์ (c) 2024 Phatisena
