@@ -199,19 +199,25 @@ namespace idxfont {
             } else {
                 wie += 2 * letterspace
             }
-            widt = Math.max(widt, wie)
+            if (false) { widt = Math.max(widt, wie) }
             if (iwidt > 0) {
                 if (wie >= iwidt || findCommand(input, "n", currentletter2)) {
-                    if (debugalm && findCommand(input, "n", currentletter2)) {
-                        wie += Math.round(1.5 * letterspace); widt = Math.max(widt, wie)
+                    if (findCommand(input, "n", currentletter2)) {
+                        wie -= (3 * letterspace) + letterspace; widt = Math.max(widt, wie)
+                    } else {
+                        widt = Math.max(widt, wie)
                     }
                     lnwit.push(wie); wie = 0; hix += 1
                     if (findCommand(input, "n", currentletter2)) {
                         currentletter2 += 3
                     }
+                } else {
+                    widt = Math.max(widt, wie)
                 }
             } else if (findCommand(input, "n", currentletter2)) {
-                currentletter2 += 3
+                widt = Math.max(widt, wie); currentletter2 += 3;
+            } else {
+                widt = Math.max(widt, wie)
             }
         }
         if (hix > 0 && debugalm) { wie += 3 * letterspace } ; lnwit.push(wie);
