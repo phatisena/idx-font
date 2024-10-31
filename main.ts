@@ -15,9 +15,9 @@ namespace idxfont {
     }
 
     export function findCommand(tvj: string, chj: string = "", nvj: number): boolean {
-        if (((nvj < tvj.length && tvj.charAt(nvj)) && (nvj + 1 < tvj.length && tvj.charAt(nvj + 1) == "\\")) && ((nvj + 2 < tvj.length && chj.length <= 0) && (nvj + 3 < tvj.length && tvj.charAt(nvj + 3) == " "))) { return true }
+        if (((nvj < tvj.length && tvj.charAt(nvj)) && (nvj + 1 < tvj.length && tvj.charAt(nvj + 1) == "\\")) && ((nvj + 2 < tvj.length && chj.length <= 0))) { return true }
         if (chj.length != 1) { return false }
-        if (((nvj < tvj.length && tvj.charAt(nvj) == " ") && (nvj + 1 < tvj.length && tvj.charAt(nvj + 1) == "\\")) && ((nvj + 2 < tvj.length && tvj.charAt(nvj + 2) == chj) && (nvj + 3 < tvj.length && tvj.charAt(nvj + 3) == " "))) { return true }
+        if (((nvj + 1 < tvj.length && tvj.charAt(nvj + 1) == "\\")) && ((nvj + 2 < tvj.length && tvj.charAt(nvj + 2) == chj))) { return true }
         return false
     }
 
@@ -167,11 +167,11 @@ namespace idxfont {
                 if (wie >= iwidt || findCommand(input, "n", currentletter)) {
                     hie += hvi; wie = 0;
                     if (findCommand(input, "n", currentletter)) {
-                        currentletter += 3
+                        currentletter += 2
                     }
                 }
             } else if (findCommand(input, "n", currentletter)) {
-                    currentletter += 3
+                currentletter += 2
             }
         }
         wie = 0; widt = 0; let hix = 0;
@@ -209,13 +209,13 @@ namespace idxfont {
                     }
                     lnwit.push(wie); wie = 0; hix += 1
                     if (findCommand(input, "n", currentletter2)) {
-                        currentletter2 += 3
+                        currentletter2 += 2
                     }
                 } else {
                     widt = Math.max(widt, wie)
                 }
             } else if (findCommand(input, "n", currentletter2)) {
-                widt = Math.max(widt, wie); currentletter2 += 3;
+                widt = Math.max(widt, wie); currentletter2 += 2;
             } else {
                 widt = Math.max(widt, wie)
             }
@@ -283,11 +283,11 @@ namespace idxfont {
                     hgi += 1; limg = image.create(lnwit[hgi], heig);
                     curwidt = 0; hie += hvi;
                     if (findCommand(input, "n", currentletter3)) {
-                        currentletter3 += 3
+                        currentletter3 += 2
                     }
                 }
             } else if (findCommand(input, "n", currentletter3)) {
-                currentletter3 += 3
+                currentletter3 += 2
             }
         }
         if (alm < 0) {
