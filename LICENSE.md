@@ -1,3 +1,5 @@
+[Thai Version](LICENSE.th.md)
+
 MIT License
 
 Copyright (c) 2024 Phatisena
