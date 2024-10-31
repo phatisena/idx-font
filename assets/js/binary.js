@@ -1,4 +1,4 @@
-// meta={"simUrl":"https://trg-arcade.userpxt.io/v1.12.56/---simulator","cdnUrl":"https://pxt.azureedge.net","version":"7.1.0","target":"arcade","targetVersion":"1.12.56","repo":"phatisena/idx-font"}
+// meta={"simUrl":"https://trg-arcade.userpxt.io/v1.12.56/---simulator","cdnUrl":"https://pxt.azureedge.net","version":"7.1.1","target":"arcade","targetVersion":"1.12.56","repo":"phatisena/idx-font"}
 // total=1268485 new=5.80% cached=88.59% other=5.61%
 (function (ectx) {
 'use strict';
@@ -423,7 +423,7 @@ const pxsim_pxtrt = pxsim.pxtrt;
 const pxsim_numops = pxsim.numops;
 
 
-function _main___P429249(s) {
+function _main___P439003(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -842,13 +842,13 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-_main___P429249.info = {"start":0,"length":0,"line":0,"column":0,"endLine":0,"endColumn":0,"fileName":"main.ts","functionName":"<main>","argumentNames":[]}
-_main___P429249.continuations = [ 5 ]
+_main___P439003.info = {"start":0,"length":0,"line":0,"column":0,"endLine":0,"endColumn":0,"fileName":"main.ts","functionName":"<main>","argumentNames":[]}
+_main___P439003.continuations = [ 5 ]
 
-function _main___P429249_mk(s) {
+function _main___P439003_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: _main___P429249, depth: s.depth + 1,
+        parent: s, fn: _main___P439003, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -42742,5 +42742,5 @@ const sprites_BaseSpriteSayRenderer__C398431_VT = mkVTable({
 
 const breakpoints = setupDebugger(1, ["transparency16___400516"])
 
-return _main___P429249
+return _main___P439003
 })
