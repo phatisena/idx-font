@@ -202,7 +202,7 @@ namespace idxfont {
             if (false) { widt = Math.max(widt, wie) }
             if (iwidt > 0) {
                 if (wie >= iwidt || findCommand(input, "n", currentletter2)) {
-                    if (findCommand(input, "n", currentletter2)) {
+                    if (debugalm && findCommand(input, "n", currentletter2)) {
                         wie -= (3 * letterspace) + letterspace; widt = Math.max(widt, wie)
                     } else {
                         widt = Math.max(widt, wie)
@@ -278,7 +278,7 @@ namespace idxfont {
                     } else if (alm > 0) {
                         drawTransparentImage(limg.clone(), output, Math.abs(output.width - limg.width), hie)
                     } else if (alm == 0) {
-                        drawTransparentImage(limg.clone(), output, Math.abs((Math.floor(output.width / 2)) - (Math.floor(limg.width / 2))), hie)
+                        drawTransparentImage(limg.clone(), output, Math.abs(Math.round(output.width / 2) - Math.round(limg.width / 2)), hie)
                     }
                     hgi += 1; limg = image.create(lnwit[hgi], heig);
                     curwidt = 0; hie += hvi;
@@ -295,7 +295,7 @@ namespace idxfont {
         } else if (alm > 0) {
             drawTransparentImage(limg.clone(), output, Math.abs(output.width - limg.width), hie)
         } else if (alm == 0) {
-            drawTransparentImage(limg.clone(), output, Math.abs(Math.floor(output.width / 2) - Math.floor(limg.width / 2)), hie)
+            drawTransparentImage(limg.clone(), output, Math.abs(Math.round(output.width / 2) - Math.round(limg.width / 2)), hie)
         }
         if (icol > 0) {
             for (let ico = 1; ico < 16; ico++) {
