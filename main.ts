@@ -202,7 +202,7 @@ namespace idxfont {
             widt = Math.max(widt, wie)
             if (iwidt > 0) {
                 if (wie >= iwidt || findCommand(input, "n", currentletter2)) {
-                    if (findCommand(input, "n", currentletter2)) {
+                    if (debugalm && findCommand(input, "n", currentletter2)) {
                         wie += Math.round(1.5 * letterspace); widt = Math.max(widt, wie)
                     }
                     lnwit.push(wie); wie = 0; hix += 1
