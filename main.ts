@@ -220,7 +220,7 @@ namespace idxfont {
                 widt = Math.max(widt, wie)
             }
         }
-        if (hix > 0) { wie += letterspace + (3 * letterspace) } ; lnwit.push(wie);
+        if (hix > 0 && debugalm) { wie += letterspace + (3 * letterspace) } ; lnwit.push(wie);
         let hgi = 0; let limg = image.create(lnwit[hgi], heig); let scwidt = true;  let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); hie = 0; wie = 0; curwidt = 0;
         for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
             wie = 0
@@ -278,7 +278,7 @@ namespace idxfont {
                     } else if (alm > 0) {
                         drawTransparentImage(limg.clone(), output, Math.abs(output.width - limg.width), hie)
                     } else if (alm == 0) {
-                        drawTransparentImage(limg.clone(), output, Math.abs(Math.round(output.width / 2) - Math.round(limg.width / 2)), hie)
+                        drawTransparentImage(limg.clone(), output, Math.abs((output.width / 2) - (limg.width / 2)), hie)
                     }
                     hgi += 1; limg = image.create(lnwit[hgi], heig);
                     curwidt = 0; hie += hvi;
@@ -295,7 +295,7 @@ namespace idxfont {
         } else if (alm > 0) {
             drawTransparentImage(limg.clone(), output, Math.abs(output.width - limg.width), hie)
         } else if (alm == 0) {
-            drawTransparentImage(limg.clone(), output, Math.abs(Math.round(output.width / 2) - Math.round(limg.width / 2)), hie)
+            drawTransparentImage(limg.clone(), output, Math.abs((output.width / 2) - (limg.width / 2)), hie)
         }
         if (icol > 0) {
             for (let ico = 1; ico < 16; ico++) {
