@@ -320,7 +320,7 @@ namespace idxfont {
         return output
     }
 
-//%blockid=ixfont_setimgfromtext
+//%blockid=ixfont_setimgframefromtext
     //%block="create the image frame of |text $input in page width $iwidt from table id $tid ||and |fill col $icol and got alignment $alm and get debugalm $debugalm"
     //%alm.min=-1 alm.max=1 alm.defl=0
     //%icol.shadow=colorindexpicker
@@ -495,13 +495,14 @@ namespace idxfont {
         } else if (alm == 0) {
             drawTransparentImage(limg.clone(), output, Math.abs((output.width / 2) - (limg.width / 2)), hie)
         }
+        outputarr.push(output.clone())
         if (icol > 0) {
             for (let ico = 1; ico < 16; ico++) {
                 output.replace(ico, icol)
             }
         }
         return outputarr
-}
+    }
 
 
     
