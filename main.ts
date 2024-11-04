@@ -469,9 +469,9 @@ namespace idxfont {
                         drawTransparentImage(limg.clone(), output, Math.abs((output.width / 2) - (limg.width / 2)), hie)
             }
             if (icol > 0) {
-            for (let ico = 1; ico < 16; ico++) {
-                output.replace(ico, icol)
-            }
+                for (let ico = 1; ico < 16; ico++) {
+                    output.replace(ico, icol)
+                }
             }
             outputarr.push(output.clone())
             if (iwidt > 0) {
