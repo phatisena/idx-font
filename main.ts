@@ -184,7 +184,7 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_setimgfromtext
-    //%block="create the image of |text $input in page width $iwidt from table id $tid ||and |fill col $icol and got alignment $alm and get img frame $imgframe really $bimgf and get debugalm $debugalm"
+    //%block="create the image of |text $input in page width $iwidt from table id $tid ||and |fill col $icol and got alignment $alm and get img frame $imgframe=screen_image_picker really $bimgf and get debugalm $debugalm"
     //%alm.min=-1 alm.max=1 alm.defl=0
     //%icol.shadow=colorindexpicker
     //%group="render"
@@ -274,7 +274,7 @@ namespace idxfont {
             }
         }
         if (hix > 0 && debugalm) { wie += letterspace + (3 * letterspace) } ; lnwit.push(wie);
-        let hgi = 0; let limg = image.create(lnwit[hgi], heig); let scwidt = true; let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); let froutput: Image = SetImgFrame(imgframe, output.width + (Twid * 2), output.height + (Thei * 2)) ; if(bimgf && imgframe != null) { drawTransparentImage(SetImgFrame(imgframe, output.width, output.height), output, 0, 0) }; hie = 0; wie = 0; curwidt = 0;
+        let hgi = 0; let limg = image.create(lnwit[hgi], heig); let scwidt = true; let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); let froutput: Image = SetImgFrame(imgframe, output.width + (Twid * 2), output.height + (Thei * 2)) ; if(bimgf) { drawTransparentImage(SetImgFrame(imgframe, output.width, output.height), output, Twid, Thei ) }; hie = 0; wie = 0; curwidt = 0;
         for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
             froutput = SetImgFrame(imgframe, output.width + (Twid * 2), output.height + (Thei * 2)); wie = 0
             if (!(ligs[tid].indexOf(input.charAt(currentletter3)) < 0)) {
@@ -363,7 +363,7 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_setimgframefromtext
-    //%block="create animatiom image frame of |text $input in page width $iwidt from table id $tid ||and |fill col $icol and got alignment $alm and get img frame $imgframe really $bimgf and get debugalm $debugalm"
+    //%block="create animatiom image frame of |text $input in page width $iwidt from table id $tid ||and |fill col $icol and got alignment $alm and get img frame $imgframe=screen_image_picker really $bimgf and get debugalm $debugalm"
     //%alm.min=-1 alm.max=1 alm.defl=0
     //%icol.shadow=colorindexpicker
     //%group="render"
@@ -520,7 +520,7 @@ namespace idxfont {
                 drawTransparentImage(output.clone(), froutput, Twid, Thei)
                 outputarr.push(froutput.clone())
             } else {
-            outputarr.push(output.clone())
+                outputarr.push(output.clone())
             }
             if (iwidt > 0) {
                 if (curwidt >= iwidt || findCommand(input, "n", currentletter3)) {
