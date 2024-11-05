@@ -189,7 +189,7 @@ namespace idxfont {
     //%icol.shadow=colorindexpicker
     //%group="render"
     export function SetImage(input: string = "", iwidt: number = 0, tid: number = 0, icol: number = 0, alm: number = 0, imgframe: Image = null, bimgf: boolean = false, debugalm: boolean = false) {
-        let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
+        let Twid = Math.floor(imgframe.width / 3); let Thei = Math.floor(imgframe.height / 3); let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
         for (let currentletter = 0; currentletter < input.length; currentletter++) {
             if (!(ligs[tid].indexOf(input.charAt(currentletter)) < 0)) {
                 uwidt = ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter)))]
@@ -274,9 +274,9 @@ namespace idxfont {
             }
         }
         if (hix > 0 && debugalm) { wie += letterspace + (3 * letterspace) } ; lnwit.push(wie);
-        let hgi = 0; let limg = image.create(lnwit[hgi], heig); let scwidt = true;  let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); if(bimgf && imgframe != null) { drawTransparentImage(SetImgFrame(imgframe, output.width, output.height), output, 0, 0) }; hie = 0; wie = 0; curwidt = 0;
+        let hgi = 0; let limg = image.create(lnwit[hgi], heig); let scwidt = true; let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); let froutput: Image = SetImgFrame(imgframe, output.width + (Twid * 2), output.height + (Thei * 2)) ; if(bimgf && imgframe != null) { drawTransparentImage(SetImgFrame(imgframe, output.width, output.height), output, 0, 0) }; hie = 0; wie = 0; curwidt = 0;
         for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
-            wie = 0
+            froutput = SetImgFrame(imgframe, output.width + (Twid * 2), output.height + (Thei * 2)); wie = 0
             if (!(ligs[tid].indexOf(input.charAt(currentletter3)) < 0)) {
                 hvi = ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))].height; uwidt = ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))];
                 if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))] <= 0) {
@@ -355,6 +355,10 @@ namespace idxfont {
                 output.replace(ico, icol)
             }
         }
+        if (bimgf) {
+            drawTransparentImage(output.clone(), froutput, Twid, Thei)
+            return froutput
+        }
         return output
     }
 
@@ -364,7 +368,7 @@ namespace idxfont {
     //%icol.shadow=colorindexpicker
     //%group="render"
     export function SetAnimImg(input: string = "", iwidt: number = 0, tid: number = 0, icol: number = 0, alm: number = 0, imgframe: Image = null, bimgf: boolean = false, debugalm: boolean = false) {
-        let outputarr: Image[] = []; let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
+        let Twid = Math.floor(imgframe.width / 3); let Thei = Math.floor(imgframe.height / 3); let outputarr: Image[] = []; let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
         for (let currentletter = 0; currentletter < input.length; currentletter++) {
             if (!(ligs[tid].indexOf(input.charAt(currentletter)) < 0)) {
                 uwidt = ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter)))]
@@ -449,8 +453,9 @@ namespace idxfont {
             }
         }
         if (hix > 0 && debugalm) { wie += letterspace + (3 * letterspace) } ; lnwit.push(wie);
-        let hgi = 0; let limg = image.create(lnwit[hgi], heig); let scwidt = true; let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); if (bimgf && imgframe != null) { drawTransparentImage(SetImgFrame(imgframe, output.width, output.height), output, 0, 0) }; hie = 0; wie = 0; curwidt = 0;
+        let hgi = 0; let limg = image.create(lnwit[hgi], heig); let scwidt = true; let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); let froutput: Image = SetImgFrame(imgframe, output.width + (Twid * 2), output.height + (Thei * 2)) ; hie = 0; wie = 0; curwidt = 0;
         for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
+            froutput = SetImgFrame(imgframe, output.width + (Twid * 2), output.height + (Thei * 2));
             wie = 0
             if (!(ligs[tid].indexOf(input.charAt(currentletter3)) < 0)) {
                 hvi = ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))].height; uwidt = ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))];
@@ -511,7 +516,12 @@ namespace idxfont {
                     output.replace(ico, icol)
                 }
             }
+            if (bimgf) {
+                drawTransparentImage(output.clone(), froutput, Twid, Thei)
+                outputarr.push(froutput.clone())
+            } else {
             outputarr.push(output.clone())
+            }
             if (iwidt > 0) {
                 if (curwidt >= iwidt || findCommand(input, "n", currentletter3)) {
                     if (alm < 0) {
@@ -543,7 +553,12 @@ namespace idxfont {
                 output.replace(ico, icol)
             }
         }
-        outputarr.push(output.clone())
+        if (bimgf) {
+            drawTransparentImage(output.clone(), froutput, Twid, Thei)
+            outputarr.push(froutput.clone())
+        } else {
+            outputarr.push(output.clone())
+        }
         return outputarr
     }
 
