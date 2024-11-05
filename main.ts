@@ -25,57 +25,19 @@ namespace idxfont {
         control.runInParallel(handler);      
     }
 
-    export function SetImgFrame(ImgF: Image, Wh: number, Ht: number) {
-        let ImgOutput = image.create(Wh, Ht)
-        let Twidt = Math.floor(ImgF.width / 3)
-        let Theig = Math.floor(ImgF.height / 3)
-        let ImgTable: Image[] = []
-        let Uimg: Image = null
-        let sw = 0
-        let sh = 0
-        for (let hj = 0; hj < 3; hj++) {
-            for (let wi = 0; wi < 3; wi++) {
-                Uimg = image.create(Twidt, Theig)
-                drawTransparentImage(ImgF, Uimg, 0 - wi * Twidt, 0 - hj * Theig)
-                ImgTable.push(Uimg.clone())
+    export function setFrameImg(FrameImg: Image, wi: number, he: number) {
+        let OuImg = image.create(wi, he)
+        let twit = Math.floor(FrameImg.width / 3)
+        let thih = Math.floor(FrameImg.height / 3)
+        let Uimg = image.create(twit, thih)
+        let FimgL: Image[] = []
+        for (let xw = 0; xw < 3; xw++) {
+            for (let yh = 0; yh < 3; yh++) {
+                drawTransparentImage(FrameImg, Uimg, 0 - (xw * twit), 0 - (yh * thih))
+                FimgL.push(Uimg)
+                Uimg = image.create(twit, thih)
             }
         }
-        for (let wi = 0; wi < Math.floor(Wh / Twidt); wi++) {
-            for (let hj = 0; hj < Math.floor(Ht / Theig); hj++) {
-                sw = Math.min(wi * Twidt, Wh - Twidt)
-                sh = Math.min(hj * Theig, Ht - Theig)
-                if (hj == 0 && wi == 0) {
-                    drawTransparentImage(ImgTable[0], ImgOutput, sw, sh)
-                } else if (hj == Math.floor(Ht / Theig) - 1 && wi == Math.floor(Wh / Twidt) - 1) {
-                    drawTransparentImage(ImgTable[8], ImgOutput, sw, sh)
-                } else if (hj == Math.floor(Ht / Theig) - 1 && wi == 0) {
-                    drawTransparentImage(ImgTable[6], ImgOutput, sw, sh)
-                } else if (hj == 0 && wi == Math.floor(Wh / Twidt) - 1) {
-                    drawTransparentImage(ImgTable[2], ImgOutput, sw, sh)
-                } else {
-                    if (wi > 0 && wi < Math.floor(Wh / Twidt) - 1) {
-                        if (hj == 0) {
-                            drawTransparentImage(ImgTable[1], ImgOutput, sw, sh)
-                        } else if (hj == Math.floor(Ht / Theig) - 1) {
-                            drawTransparentImage(ImgTable[7], ImgOutput, sw, sh)
-                        } else {
-                            drawTransparentImage(ImgTable[4], ImgOutput, sw, sh)
-                        }
-                    } else if (hj > 0 && hj < Math.floor(Ht / Theig) - 1) {
-                        if (wi == 0) {
-                            drawTransparentImage(ImgTable[3], ImgOutput, sw, sh)
-                        } else if (wi == Math.floor(Wh / Twidt) - 1) {
-                            drawTransparentImage(ImgTable[5], ImgOutput, sw, sh)
-                        } else {
-                            drawTransparentImage(ImgTable[4], ImgOutput, sw, sh)
-                        }
-                    } else {
-                        drawTransparentImage(ImgTable[4], ImgOutput, sw, sh)
-                    }
-                }
-            }
-        }
-        return ImgOutput
     }
 
     //%blockid=ixfont_setcharecter
@@ -184,12 +146,12 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_setimgfromtext
-    //%block="create the image of |text $input in page width $iwidt from table id $tid ||and |fill col $icol and got alignment $alm and get img frame $imgf=screen_image_picker really $bimgf and get debugalm $debugalm"
+    //%block="create the image of |text $input in page width $iwidt from table id $tid ||and |fill col $icol and got alignment $alm and get debugalm $debugalm"
     //%alm.min=-1 alm.max=1 alm.defl=0
     //%icol.shadow=colorindexpicker
     //%group="render"
-    export function SetImageStr(input: string = "", iwidt: number = 0, tid: number = 0, icol: number = 0, alm: number = 0, imgf: Image = image.create(15, 15), bimgf: boolean = false, debugalm: boolean = false) {
-        let Twid = Math.floor(imgf.width / 3); let Thei = Math.floor(imgf.height / 3); let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
+    export function SetImage(input: string, iwidt: number, tid: number, icol: number = 0, alm: number = 0, debugalm: boolean = false) {
+        let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
         for (let currentletter = 0; currentletter < input.length; currentletter++) {
             if (!(ligs[tid].indexOf(input.charAt(currentletter)) < 0)) {
                 uwidt = ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter)))]
@@ -274,9 +236,9 @@ namespace idxfont {
             }
         }
         if (hix > 0 && debugalm) { wie += letterspace + (3 * letterspace) } ; lnwit.push(wie);
-        let hgi = 0; let limg = image.create(lnwit[hgi], heig); let scwidt = true; let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); let froutput: Image = SetImgFrame(imgf, output.width + (Twid * 2), output.height + (Thei * 2)) ; if(bimgf) { drawTransparentImage(SetImgFrame(imgf, output.width, output.height), output, Twid, Thei ) }; hie = 0; wie = 0; curwidt = 0;
+        let hgi = 0; let limg = image.create(lnwit[hgi], heig); let scwidt = true;  let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); hie = 0; wie = 0; curwidt = 0;
         for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
-            froutput = SetImgFrame(imgf, output.width + (Twid * 2), output.height + (Thei * 2)); wie = 0
+            wie = 0
             if (!(ligs[tid].indexOf(input.charAt(currentletter3)) < 0)) {
                 hvi = ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))].height; uwidt = ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))];
                 if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))] <= 0) {
@@ -355,20 +317,16 @@ namespace idxfont {
                 output.replace(ico, icol)
             }
         }
-        if (bimgf) {
-            drawTransparentImage(output.clone(), froutput, Twid, Thei)
-            return froutput;
-        }
         return output
     }
 
-    //%blockid=ixfont_setimgframefromtext
-    //%block="create animatiom image frame of |text $input in page width $iwidt from table id $tid ||and |fill col $icol and got alignment $alm and get img frame $imgf=screen_image_picker really $bimgf and get debugalm $debugalm"
+//%blockid=ixfont_setimgframefromtext
+    //%block="create the image frame of |text $input in page width $iwidt from table id $tid ||and |fill col $icol and got alignment $alm and get debugalm $debugalm"
     //%alm.min=-1 alm.max=1 alm.defl=0
     //%icol.shadow=colorindexpicker
     //%group="render"
-    export function SetAnimImg(input: string = "", iwidt: number = 0, tid: number = 0, icol: number = 0, alm: number = 0, imgf: Image = image.create(15, 15), bimgf: boolean = false, debugalm: boolean = false) {
-        let Twid = Math.floor(imgf.width / 3); let Thei = Math.floor(imgf.height / 3); let outputarr: Image[] = []; let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
+    export function SetImageFrame(input: string, iwidt: number, tid: number, icol: number = 0, alm: number = 0, debugalm: boolean = false) {
+        let outputarr: Image[] = []; let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
         for (let currentletter = 0; currentletter < input.length; currentletter++) {
             if (!(ligs[tid].indexOf(input.charAt(currentletter)) < 0)) {
                 uwidt = ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter)))]
@@ -453,9 +411,8 @@ namespace idxfont {
             }
         }
         if (hix > 0 && debugalm) { wie += letterspace + (3 * letterspace) } ; lnwit.push(wie);
-        let hgi = 0; let limg = image.create(lnwit[hgi], heig); let scwidt = true; let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); let froutput: Image = SetImgFrame(imgf, output.width + (Twid * 2), output.height + (Thei * 2)) ; hie = 0; wie = 0; curwidt = 0;
+        let hgi = 0; let limg = image.create(lnwit[hgi], heig); let scwidt = true;  let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); hie = 0; wie = 0; curwidt = 0;
         for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
-            froutput = SetImgFrame(imgf, output.width + (Twid * 2), output.height + (Thei * 2));
             wie = 0
             if (!(ligs[tid].indexOf(input.charAt(currentletter3)) < 0)) {
                 hvi = ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))].height; uwidt = ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))];
@@ -505,23 +462,18 @@ namespace idxfont {
                 curwidt += 2 * letterspace
             }
             if (alm < 0) {
-                drawTransparentImage(limg.clone(), output, 0, hie)
-            } else if (alm > 0) {
-                drawTransparentImage(limg.clone(), output, Math.abs(output.width - limg.width), hie)
-            } else if (alm == 0) {
-                drawTransparentImage(limg.clone(), output, Math.abs((output.width / 2) - (limg.width / 2)), hie)
+                        drawTransparentImage(limg.clone(), output, 0, hie)
+                    } else if (alm > 0) {
+                        drawTransparentImage(limg.clone(), output, Math.abs(output.width - limg.width), hie)
+                    } else if (alm == 0) {
+                        drawTransparentImage(limg.clone(), output, Math.abs((output.width / 2) - (limg.width / 2)), hie)
             }
             if (icol > 0) {
                 for (let ico = 1; ico < 16; ico++) {
                     output.replace(ico, icol)
                 }
             }
-            if (bimgf) {
-                drawTransparentImage(output.clone(), froutput, Twid, Thei)
-                outputarr.push(froutput.clone())
-            } else {
-                outputarr.push(output.clone())
-            }
+            outputarr.push(output.clone())
             if (iwidt > 0) {
                 if (curwidt >= iwidt || findCommand(input, "n", currentletter3)) {
                     if (alm < 0) {
@@ -553,12 +505,7 @@ namespace idxfont {
                 output.replace(ico, icol)
             }
         }
-        if (bimgf) {
-            drawTransparentImage(output.clone(), froutput, Twid, Thei)
-            outputarr.push(froutput.clone())
-        } else {
-            outputarr.push(output.clone())
-        }
+        outputarr.push(output.clone())
         return outputarr
     }
 
