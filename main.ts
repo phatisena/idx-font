@@ -184,12 +184,13 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_setimgfromtext
-    //%block="create the image of |text $input in page width $iwidt from table id $tid ||and |fill col $icol and got alignment $alm and get img frame $imgframe=screen_image_picker really $bimgf and get debugalm $debugalm"
+    //%block="create the image of |text $input in page width $iwidt from table id $tid ||and |fill col $icol and got alignment $alm and get img frame $imgf=screen_image_picker really $bimgf and get debugalm $debugalm"
+    //%imgf.shadow=image.create(15,15)
     //%alm.min=-1 alm.max=1 alm.defl=0
     //%icol.shadow=colorindexpicker
     //%group="render"
-    export function SetImage(input: string = "", iwidt: number = 0, tid: number = 0, icol: number = 0, alm: number = 0, imgframe: Image = image.create(3, 3), bimgf: boolean = false, debugalm: boolean = false) {
-        let Twid = Math.floor(imgframe.width / 3); let Thei = Math.floor(imgframe.height / 3); let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
+    export function SetImageStr(input: string = "", iwidt: number = 0, tid: number = 0, icol: number = 0, alm: number = 0, imgf: Image = image.create(3, 3), bimgf: boolean = false, debugalm: boolean = false) {
+        let Twid = Math.floor(imgf.width / 3); let Thei = Math.floor(imgf.height / 3); let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
         for (let currentletter = 0; currentletter < input.length; currentletter++) {
             if (!(ligs[tid].indexOf(input.charAt(currentletter)) < 0)) {
                 uwidt = ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter)))]
@@ -274,9 +275,9 @@ namespace idxfont {
             }
         }
         if (hix > 0 && debugalm) { wie += letterspace + (3 * letterspace) } ; lnwit.push(wie);
-        let hgi = 0; let limg = image.create(lnwit[hgi], heig); let scwidt = true; let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); let froutput: Image = SetImgFrame(imgframe, output.width + (Twid * 2), output.height + (Thei * 2)) ; if(bimgf) { drawTransparentImage(SetImgFrame(imgframe, output.width, output.height), output, Twid, Thei ) }; hie = 0; wie = 0; curwidt = 0;
+        let hgi = 0; let limg = image.create(lnwit[hgi], heig); let scwidt = true; let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); let froutput: Image = SetImgFrame(imgf, output.width + (Twid * 2), output.height + (Thei * 2)) ; if(bimgf) { drawTransparentImage(SetImgFrame(imgf, output.width, output.height), output, Twid, Thei ) }; hie = 0; wie = 0; curwidt = 0;
         for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
-            froutput = SetImgFrame(imgframe, output.width + (Twid * 2), output.height + (Thei * 2)); wie = 0
+            froutput = SetImgFrame(imgf, output.width + (Twid * 2), output.height + (Thei * 2)); wie = 0
             if (!(ligs[tid].indexOf(input.charAt(currentletter3)) < 0)) {
                 hvi = ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))].height; uwidt = ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))];
                 if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))] <= 0) {
@@ -357,18 +358,19 @@ namespace idxfont {
         }
         if (bimgf) {
             drawTransparentImage(output.clone(), froutput, Twid, Thei)
-            return froutput
+            return froutput;
         }
         return output
     }
 
     //%blockid=ixfont_setimgframefromtext
-    //%block="create animatiom image frame of |text $input in page width $iwidt from table id $tid ||and |fill col $icol and got alignment $alm and get img frame $imgframe=screen_image_picker really $bimgf and get debugalm $debugalm"
+    //%block="create animatiom image frame of |text $input in page width $iwidt from table id $tid ||and |fill col $icol and got alignment $alm and get img frame $imgf=screen_image_picker really $bimgf and get debugalm $debugalm"
+    //%imgf.shadow=image.create(15,15)
     //%alm.min=-1 alm.max=1 alm.defl=0
     //%icol.shadow=colorindexpicker
     //%group="render"
-    export function SetAnimImg(input: string = "", iwidt: number = 0, tid: number = 0, icol: number = 0, alm: number = 0, imgframe: Image = image.create(3, 3), bimgf: boolean = false, debugalm: boolean = false) {
-        let Twid = Math.floor(imgframe.width / 3); let Thei = Math.floor(imgframe.height / 3); let outputarr: Image[] = []; let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
+    export function SetAnimImg(input: string = "", iwidt: number = 0, tid: number = 0, icol: number = 0, alm: number = 0, imgf: Image = image.create(3, 3), bimgf: boolean = false, debugalm: boolean = false) {
+        let Twid = Math.floor(imgf.width / 3); let Thei = Math.floor(imgf.height / 3); let outputarr: Image[] = []; let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
         for (let currentletter = 0; currentletter < input.length; currentletter++) {
             if (!(ligs[tid].indexOf(input.charAt(currentletter)) < 0)) {
                 uwidt = ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter)))]
@@ -453,9 +455,9 @@ namespace idxfont {
             }
         }
         if (hix > 0 && debugalm) { wie += letterspace + (3 * letterspace) } ; lnwit.push(wie);
-        let hgi = 0; let limg = image.create(lnwit[hgi], heig); let scwidt = true; let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); let froutput: Image = SetImgFrame(imgframe, output.width + (Twid * 2), output.height + (Thei * 2)) ; hie = 0; wie = 0; curwidt = 0;
+        let hgi = 0; let limg = image.create(lnwit[hgi], heig); let scwidt = true; let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); let froutput: Image = SetImgFrame(imgf, output.width + (Twid * 2), output.height + (Thei * 2)) ; hie = 0; wie = 0; curwidt = 0;
         for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
-            froutput = SetImgFrame(imgframe, output.width + (Twid * 2), output.height + (Thei * 2));
+            froutput = SetImgFrame(imgf, output.width + (Twid * 2), output.height + (Thei * 2));
             wie = 0
             if (!(ligs[tid].indexOf(input.charAt(currentletter3)) < 0)) {
                 hvi = ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))].height; uwidt = ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))];
