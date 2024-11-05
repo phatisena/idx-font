@@ -188,7 +188,7 @@ namespace idxfont {
     //%alm.min=-1 alm.max=1 alm.defl=0
     //%icol.shadow=colorindexpicker
     //%group="render"
-    export function SetImage(input: string = "", iwidt: number = 0, tid: number = 0, icol: number = 0, alm: number = 0, imgframe: Image = null, bimgf: boolean = false, debugalm: boolean = false) {
+    export function SetImage(input: string = "", iwidt: number = 0, tid: number = 0, icol: number = 0, alm: number = 0, imgframe: Image = image.create(3, 3), bimgf: boolean = false, debugalm: boolean = false) {
         let Twid = Math.floor(imgframe.width / 3); let Thei = Math.floor(imgframe.height / 3); let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
         for (let currentletter = 0; currentletter < input.length; currentletter++) {
             if (!(ligs[tid].indexOf(input.charAt(currentletter)) < 0)) {
@@ -367,7 +367,7 @@ namespace idxfont {
     //%alm.min=-1 alm.max=1 alm.defl=0
     //%icol.shadow=colorindexpicker
     //%group="render"
-    export function SetAnimImg(input: string = "", iwidt: number = 0, tid: number = 0, icol: number = 0, alm: number = 0, imgframe: Image = null, bimgf: boolean = false, debugalm: boolean = false) {
+    export function SetAnimImg(input: string = "", iwidt: number = 0, tid: number = 0, icol: number = 0, alm: number = 0, imgframe: Image = image.create(3, 3), bimgf: boolean = false, debugalm: boolean = false) {
         let Twid = Math.floor(imgframe.width / 3); let Thei = Math.floor(imgframe.height / 3); let outputarr: Image[] = []; let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
         for (let currentletter = 0; currentletter < input.length; currentletter++) {
             if (!(ligs[tid].indexOf(input.charAt(currentletter)) < 0)) {
@@ -505,11 +505,11 @@ namespace idxfont {
                 curwidt += 2 * letterspace
             }
             if (alm < 0) {
-                        drawTransparentImage(limg.clone(), output, 0, hie)
-                    } else if (alm > 0) {
-                        drawTransparentImage(limg.clone(), output, Math.abs(output.width - limg.width), hie)
-                    } else if (alm == 0) {
-                        drawTransparentImage(limg.clone(), output, Math.abs((output.width / 2) - (limg.width / 2)), hie)
+                drawTransparentImage(limg.clone(), output, 0, hie)
+            } else if (alm > 0) {
+                drawTransparentImage(limg.clone(), output, Math.abs(output.width - limg.width), hie)
+            } else if (alm == 0) {
+                drawTransparentImage(limg.clone(), output, Math.abs((output.width / 2) - (limg.width / 2)), hie)
             }
             if (icol > 0) {
                 for (let ico = 1; ico < 16; ico++) {
