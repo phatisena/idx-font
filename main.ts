@@ -185,11 +185,10 @@ namespace idxfont {
 
     //%blockid=ixfont_setimgfromtext
     //%block="create the image of |text $input in page width $iwidt from table id $tid ||and |fill col $icol and got alignment $alm and get img frame $imgf=screen_image_picker really $bimgf and get debugalm $debugalm"
-    //%imgf.shadow=image.create(15,15)
     //%alm.min=-1 alm.max=1 alm.defl=0
     //%icol.shadow=colorindexpicker
     //%group="render"
-    export function SetImageStr(input: string = "", iwidt: number = 0, tid: number = 0, icol: number = 0, alm: number = 0, imgf: Image = image.create(3, 3), bimgf: boolean = false, debugalm: boolean = false) {
+    export function SetImageStr(input: string = "", iwidt: number = 0, tid: number = 0, icol: number = 0, alm: number = 0, imgf: Image = image.create(15, 15), bimgf: boolean = false, debugalm: boolean = false) {
         let Twid = Math.floor(imgf.width / 3); let Thei = Math.floor(imgf.height / 3); let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
         for (let currentletter = 0; currentletter < input.length; currentletter++) {
             if (!(ligs[tid].indexOf(input.charAt(currentletter)) < 0)) {
@@ -365,11 +364,10 @@ namespace idxfont {
 
     //%blockid=ixfont_setimgframefromtext
     //%block="create animatiom image frame of |text $input in page width $iwidt from table id $tid ||and |fill col $icol and got alignment $alm and get img frame $imgf=screen_image_picker really $bimgf and get debugalm $debugalm"
-    //%imgf.shadow=image.create(15,15)
     //%alm.min=-1 alm.max=1 alm.defl=0
     //%icol.shadow=colorindexpicker
     //%group="render"
-    export function SetAnimImg(input: string = "", iwidt: number = 0, tid: number = 0, icol: number = 0, alm: number = 0, imgf: Image = image.create(3, 3), bimgf: boolean = false, debugalm: boolean = false) {
+    export function SetAnimImg(input: string = "", iwidt: number = 0, tid: number = 0, icol: number = 0, alm: number = 0, imgf: Image = image.create(15, 15), bimgf: boolean = false, debugalm: boolean = false) {
         let Twid = Math.floor(imgf.width / 3); let Thei = Math.floor(imgf.height / 3); let outputarr: Image[] = []; let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
         for (let currentletter = 0; currentletter < input.length; currentletter++) {
             if (!(ligs[tid].indexOf(input.charAt(currentletter)) < 0)) {
