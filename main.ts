@@ -25,21 +25,6 @@ namespace idxfont {
         control.runInParallel(handler);      
     }
 
-    export function setFrameImg(FrameImg: Image, wi: number, he: number) {
-        let OuImg = image.create(wi, he)
-        let twit = Math.floor(FrameImg.width / 3)
-        let thih = Math.floor(FrameImg.height / 3)
-        let Uimg = image.create(twit, thih)
-        let FimgL: Image[] = []
-        for (let xw = 0; xw < 3; xw++) {
-            for (let yh = 0; yh < 3; yh++) {
-                drawTransparentImage(FrameImg, Uimg, 0 - (xw * twit), 0 - (yh * thih))
-                FimgL.push(Uimg)
-                Uimg = image.create(twit, thih)
-            }
-        }
-    }
-
     //%blockid=ixfont_setcharecter
     //%block="set |table id $gid and set letter $glyph to img $imgi=screen_image_picker ||and |the letter can move? $notmove and stay on or under the letter? $onthechar erase col $bcol spacebar col $scol base col $mcol guard col $ncol"
     //%bcol.shadow=colorindexpicker
