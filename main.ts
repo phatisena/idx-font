@@ -25,6 +25,59 @@ namespace idxfont {
         control.runInParallel(handler);      
     }
 
+    export function SetImgFrame(ImgF: Image, Wh: number, Ht: number) {
+        let ImgOutput = image.create(Wh, Ht)
+        let Twidt = Math.floor(ImgF.width / 3)
+        let Theig = Math.floor(ImgF.height / 3)
+        let ImgTable: Image[] = []
+        let Uimg: Image = null
+        let sw = 0
+        let sh = 0
+        for (let hj = 0; hj < 3; hj++) {
+            for (let wi = 0; wi < 3; wi++) {
+                Uimg = image.create(Twidt, Theig)
+                drawTransparentImage(ImgF, Uimg, 0 - wi * Twidt, 0 - hj * Theig)
+                ImgTable.push(Uimg.clone())
+            }
+        }
+        for (let wi = 0; wi < Math.floor(Wh / Twidt); wi++) {
+            for (let hj = 0; hj < Math.floor(Ht / Theig); hj++) {
+                sw = Math.min(wi * Twidt, Wh - Twidt)
+                sh = Math.min(hj * Theig, Ht - Theig)
+                if (hj == 0 && wi == 0) {
+                    drawTransparentImage(ImgTable[0], ImgOutput, sw, sh)
+                } else if (hj == Math.floor(Ht / Theig) - 1 && wi == Math.floor(Wh / Twidt) - 1) {
+                    drawTransparentImage(ImgTable[8], ImgOutput, sw, sh)
+                } else if (hj == Math.floor(Ht / Theig) - 1 && wi == 0) {
+                    drawTransparentImage(ImgTable[6], ImgOutput, sw, sh)
+                } else if (hj == 0 && wi == Math.floor(Wh / Twidt) - 1) {
+                    drawTransparentImage(ImgTable[2], ImgOutput, sw, sh)
+                } else {
+                    if (wi > 0 && wi < Math.floor(Wh / Twidt) - 1) {
+                        if (hj == 0) {
+                            drawTransparentImage(ImgTable[1], ImgOutput, sw, sh)
+                        } else if (hj == Math.floor(Ht / Theig) - 1) {
+                            drawTransparentImage(ImgTable[7], ImgOutput, sw, sh)
+                        } else {
+                            drawTransparentImage(ImgTable[4], ImgOutput, sw, sh)
+                        }
+                    } else if (hj > 0 && hj < Math.floor(Ht / Theig) - 1) {
+                        if (wi == 0) {
+                            drawTransparentImage(ImgTable[3], ImgOutput, sw, sh)
+                        } else if (wi == Math.floor(Wh / Twidt) - 1) {
+                            drawTransparentImage(ImgTable[5], ImgOutput, sw, sh)
+                        } else {
+                            drawTransparentImage(ImgTable[4], ImgOutput, sw, sh)
+                        }
+                    } else {
+                        drawTransparentImage(ImgTable[4], ImgOutput, sw, sh)
+                    }
+                }
+            }
+        }
+        return ImgOutput
+    }
+
     //%blockid=ixfont_setcharecter
     //%block="set |table id $gid and set letter $glyph to img $imgi=screen_image_picker ||and |the letter can move? $notmove and stay on or under the letter? $onthechar erase col $bcol spacebar col $scol base col $mcol guard col $ncol"
     //%bcol.shadow=colorindexpicker
@@ -494,7 +547,33 @@ namespace idxfont {
         return outputarr
     }
 
+    //%blockid=ixfont_stamptexttoframe
+    //%block="StampStrImgToTheFrame $StrImg=screen_image_picker Frame $Fimg=screen_image_picker"
+    //%group="modify"
+    export function StampStrToFrame(StrImg: Image, Fimg: Image) {
+        let gapw = Math.floor(Fimg.width / 3)
+        let gaph = Math.floor(Fimg.height / 3)
+        let UfImg: Image = SetImgFrame(Fimg, StrImg.width + (gapw * 2), StrImg.height + (gaph * 2))
+        return drawTransparentImage(StrImg.clone(), Fimg.clone(), gapw, gaph)
+    }
 
+    //%blockid=ixfont_stamptextarrtoframe
+    //%block="StampStrAnimToTheFrame $StrImg=screen_image_picker Frame $Fimg=screen_image_picker"
+     //%StrImg.shadow="lists_create_with"
+    //%group="modify"
+    export function StampStrArrToFrame(StrImg: Image[], Fimg: Image) {
+        let gapw = Math.floor(Fimg.width / 3)
+        let gaph = Math.floor(Fimg.height / 3)
+        let UfImg: Image = SetImgFrame(Fimg, StrImg[0].width + (gapw * 2), StrImg[0].height + (gaph * 2))
+        let imgArr: Image[] = []
+        let uimg: Image = null
+        for (let mgi = 0 ; mgi < StrImg.length; mgi++) {
+        uimg = UfImg.clone()
+        drawTransparentImage(StrImg[mgi].clone(), uimg, gapw, gaph)
+        imgArr.push(uimg)
+        }
+        return imgArr
+    }
     
     //%blockid=ixfont_setletterspacing
     //%block="set letter spacing to $input"
