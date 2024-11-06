@@ -554,12 +554,13 @@ namespace idxfont {
         let gapw = Math.floor(Fimg.width / 3)
         let gaph = Math.floor(Fimg.height / 3)
         let UfImg: Image = SetImgFrame(Fimg, StrImg.width + (gapw * 2), StrImg.height + (gaph * 2))
-        return drawTransparentImage(StrImg.clone(), Fimg.clone(), gapw, gaph)
+        drawTransparentImage(StrImg.clone(), UfImg, gapw, gaph)
+        return UfImg
     }
 
     //%blockid=ixfont_stamptextarrtoframe
     //%block="StampStrAnimToTheFrame $StrImg=screen_image_picker Frame $Fimg=screen_image_picker"
-     //%StrImg.shadow="lists_create_with"
+     //%StrImg.shadow="lists_create_with" StrImg.defl=screen_image_picker
     //%group="modify"
     export function StampStrArrToFrame(StrImg: Image[], Fimg: Image) {
         let gapw = Math.floor(Fimg.width / 3)
