@@ -553,7 +553,7 @@ namespace idxfont {
     export function StampStrToFrame(StrImg: Image, Fimg: Image) {
         let gapw = Math.floor(Fimg.width / 3)
         let gaph = Math.floor(Fimg.height / 3)
-        let UfImg: Image = SetImgFrame(Fimg, StrImg.width + (gapw * 2), StrImg.height + (gaph * 2))
+        let UfImg: Image = SetImgFrame(Fimg, StrImg.width + (gapw * 3), StrImg.height + (gaph * 3))
         drawTransparentImage(StrImg.clone(), UfImg, gapw, gaph)
         return UfImg
     }
@@ -565,7 +565,7 @@ namespace idxfont {
     export function StampStrArrToFrame(StrImg: Image[], Fimg: Image) {
         let gapw = Math.floor(Fimg.width / 3)
         let gaph = Math.floor(Fimg.height / 3)
-        let UfImg: Image = SetImgFrame(Fimg, StrImg[0].width + (gapw * 2), StrImg[0].height + (gaph * 2))
+        let UfImg: Image = SetImgFrame(Fimg, StrImg[0].width + (gapw * 3), StrImg[0].height + (gaph * 3))
         let imgArr: Image[] = []
         let uimg: Image = null
         for (let mgi = 0 ; mgi < StrImg.length; mgi++) {
