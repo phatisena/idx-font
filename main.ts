@@ -604,7 +604,7 @@ namespace idxfont {
     //%block="SetupPresetFont $tempf || in table id $tid"
     //%group="create"
     export function SetupPresetFont(tempf: tempfont, tid: number = 0) {
-        switch tempf {
+        switch (tempf) {
         case tempfont.MainFont:
         setCharFromSheet(
         tid,
@@ -857,7 +857,8 @@ f1111f11f11f1f111f111f11f11f1f11f1f11111f1f111111f111f11f1f1f1f1f1f1f111ff11f111
         0,
         15,
         3
-        ); break;
+        )
+        break;
         case tempfont.ArcadeFont:
         idxfont.setCharFromSheet(
 1,
@@ -984,7 +985,8 @@ img`
 0,
 0,
 0
-); break;
+)
+break;
     default:
     setCharFromSheet(
         tid,
@@ -1237,7 +1239,8 @@ f1111f11f11f1f111f111f11f11f1f11f1f11111f1f111111f111f11f1f1f1f1f1f1f111ff11f111
         0,
         15,
         3
-        ); break;
+        )
+        break;
     }
     }
 }
