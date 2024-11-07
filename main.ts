@@ -548,9 +548,12 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_stamptexttoframe
-    //%block="StampStrImgToTheFrame $StrImg=screen_image_picker Frame $Fimg=screen_image_picker"
-    //%group="modify"
-    export function StampStrToFrame(StrImg: Image, Fimg: Image) {
+    //%block="StampStrImgToTheFrame $Fimg=screen_image_picker Text $Txt Text width $Wval TableId $arrid || Solid col $col Alignment $ualm"
+    //%ualm.min=-1 ualm.max=1 ualm.defl=0
+    //%ucol.shadow=colorindexpicker
+    //%group="Frame render"
+    export function StampStrToFrame(Fimg: Image , Txt: string = "", Wval: number = 0, arrid: number = 0, ucol: number = 0, ualm: number = 0) {
+        let StrImg: Image = SetImage(Txt , Wval, arrid, ucol, ualm)
         let gapw = Math.floor(Fimg.width / 3)
         let gaph = Math.floor(Fimg.height / 3)
         let UfImg: Image = SetImgFrame(Fimg, StrImg.width + (gapw * 3), StrImg.height + (gaph * 3))
@@ -559,19 +562,21 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_stamptextarrtoframe
-    //%block="StampStrAnimToTheFrame $StrImg=screen_image_picker Frame $Fimg=screen_image_picker"
-     //%StrImg.shadow="lists_create_with" StrImg.defl=screen_image_picker
-    //%group="modify"
-    export function StampStrArrToFrame(StrImg: Image[], Fimg: Image) {
+    //%block="StampStrAnimToTheFrame $Fimg=screen_image_picker"
+    //%ualm.min=-1 ualm.max=1 ualm.defl=0
+    //%ucol.shadow=colorindexpicker
+    //%group="Frame render"
+    export function StampStrArrToFrame(Fimg: Image, Txt: string = "", Wval: number = 0, arrid: number = 0, ucol: number = 0, ualm: number = 0) {
+        let StrImg: Image[] = SetImageFrame(Txt, Wval, arrid, ucol, ualm)
         let gapw = Math.floor(Fimg.width / 3)
         let gaph = Math.floor(Fimg.height / 3)
         let UfImg: Image = SetImgFrame(Fimg, StrImg[0].width + (gapw * 3), StrImg[0].height + (gaph * 3))
         let imgArr: Image[] = []
         let uimg: Image = null
         for (let mgi = 0 ; mgi < StrImg.length; mgi++) {
-        uimg = UfImg.clone()
-        drawTransparentImage(StrImg[mgi].clone(), uimg, gapw, gaph)
-        imgArr.push(uimg)
+            uimg = UfImg.clone()
+            drawTransparentImage(StrImg[mgi].clone(), uimg, gapw, gaph)
+            imgArr.push(uimg)
         }
         return imgArr
     }
