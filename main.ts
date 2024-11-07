@@ -3,6 +3,13 @@
 //% icon="\uf249"
 namespace idxfont {
 
+    export enum tempfont {
+        MainFont16,
+        MainFont14,
+        MakecodeFont8,
+        MakecodeFont5
+    }
+
     let ligs: string[][] = []; let ligages: Image[][] = []; let ligwidth: number[][] = []; let ligdir: number[][] = []; let ligcol: number[][] = []; let ligul: number[][] = []; let storeid: number[] = []; let letterspace: number = 1; let curid = 0;
     
     export function newtableid() {
@@ -562,7 +569,7 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_stamptextarrtoframe
-    //%block="StampStrAnimToTheFrame $Fimg=screen_image_picker"
+    //%block="StampStrAnimToTheFrame $Fimg=screen_image_picker Text input $Txt In text width $Wval At table id $arrid ||With text color $ucol And alignment $ualm "
     //%ualm.min=-1 ualm.max=1 ualm.defl=0
     //%ucol.shadow=colorindexpicker
     //%group="Frame render"
