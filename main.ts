@@ -555,7 +555,7 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_stamptexttoframe
-    //%block="StampStrImgToTheFrame $Fimg=screen_image_picker Text $Txt Text width $Wval TableId $arrid || Solid col $col Alignment $ualm"
+    //%block="StampStrImgToTheFrame $Fimg=screen_image_picker Text $Txt Text width $Wval TableId $arrid || Solid col $ucol Alignment $ualm"
     //%ualm.min=-1 ualm.max=1 ualm.defl=0
     //%ucol.shadow=colorindexpicker
     //%group="Frame render"
