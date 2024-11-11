@@ -28,6 +28,7 @@ namespace idxfont {
     }
 
     export function ImgOverlapImg(ImgI: Image, ImgO: Image, Ix: number, Iy: number, Dx: number, Dy: number) {
+        if (ImgI.width > ImgO.width || ImgI.height > ImgO.height) { return false }
         if (Dy == 0 && Dx != 0) {
             if (Dx > 0) {
                 for (let Nx = 0; Nx < ImgI.width; Nx++) {
