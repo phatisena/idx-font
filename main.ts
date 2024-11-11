@@ -32,7 +32,7 @@ namespace idxfont {
             if (Dx > 0) {
                 for (let Nx = 0; Nx < ImgI.width; Nx++) {
                     for (let Ny = 0; Ny < ImgI.height; Ny++) {
-                        if (ImgI.getPixel(Nx, Ny) > 0 && ImgI.getPixel(Ix + Nx, Iy + Ny) > 0) {
+                        if (ImgI.getPixel(Nx, Ny) > 0 && ImgO.getPixel(Ix + Nx, Iy + Ny) > 0) {
                             return true
                         }
                     }
@@ -40,7 +40,7 @@ namespace idxfont {
             } else if (Dx < 0) {
                 for (let Nx = ImgI.width; Nx >= 0; Nx--) {
                     for (let Ny = 0; Ny < ImgI.height; Ny++) {
-                        if (ImgI.getPixel(Nx, Ny) > 0 && ImgI.getPixel(Ix + Nx, Iy + Ny) > 0) {
+                        if (ImgI.getPixel(Nx, Ny) > 0 && ImgO.getPixel(Ix + Nx, Iy + Ny) > 0) {
                             return true
                         }
                     }
@@ -50,7 +50,7 @@ namespace idxfont {
             if (Dy > 0) {
                 for (let Ny = 0; Ny < ImgI.height; Ny++) {
                     for (let Nx = 0; Nx < ImgI.width; Nx++) {
-                        if (ImgI.getPixel(Nx, Ny) > 0 && ImgI.getPixel(Ix + Nx, Iy + Ny) > 0) {
+                        if (ImgI.getPixel(Nx, Ny) > 0 && ImgO.getPixel(Ix + Nx, Iy + Ny) > 0) {
                             return true
                         }
                     }
@@ -58,7 +58,7 @@ namespace idxfont {
             } else if (Dy < 0) {
                 for (let Ny = ImgI.height; Ny >= 0; Ny--) {
                     for (let Nx = 0; Nx < ImgI.width; Nx++) {
-                        if (ImgI.getPixel(Nx, Ny) > 0 && ImgI.getPixel(Ix + Nx, Iy + Ny) > 0) {
+                        if (ImgI.getPixel(Nx, Ny) > 0 && ImgO.getPixel(Ix + Nx, Iy + Ny) > 0) {
                             return true
                         }
                     }
@@ -388,26 +388,26 @@ namespace idxfont {
                 if (ligwidth[tid][ligs[tid].indexOf(input.charAt(currentletter3))] == 0 && Math.abs(ligdir[tid][ligs[tid].indexOf(input.charAt(currentletter3))]) > 0) {
                     if (ligdir[tid][ligs[tid].indexOf(input.charAt(currentletter3))] > 0) {
                         hih = 0;
-                        while (!(ImgOverlapImg(rimg, limg, curwidt - letterspace, hih, 0, -1)) && !(ImgOverlapImg(rimg, limg, curwidt - letterspace, hih + 1, 0, -1))) {
+                        while (!(ImgOverlapImg(rimg, limg, curwidt - letterspace, hih, 0, -1)) || !(ImgOverlapImg(rimg, limg, curwidt - letterspace, hih + 1, 0, -1))) {
                             hih += 1
                         }
                         wie = 0;
-                        while (!(ImgOverlapImg(rimg, limg, curwidt - letterspace - (wie + 1), hih, 0, -1)) && !(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - (wie + 1), hih, -1, 0))) {
+                        while (!(ImgOverlapImg(rimg, limg, curwidt - letterspace - (wie + 1), hih, 0, -1)) || !(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - (wie + 1), hih, -1, 0))) {
                             wie += 1
                         }
-                        while (!(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih, 0, -1)) && !(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih + 1, 0, -1))) {
+                        while (!(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih, 0, -1)) || !(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih + 1, 0, -1))) {
                             hih += 1
                         }
                     } else if (ligdir[tid][ligs[tid].indexOf(input.charAt(currentletter3))] < 0) {
                         hih = Math.abs(rimg.height - limg.height);
-                        while (!(ImgOverlapImg(rimg, limg, curwidt - letterspace, hih, 0, -1)) && !(ImgOverlapImg(rimg, limg, curwidt - letterspace, hih - 1, 0, -1))) {
+                        while (!(ImgOverlapImg(rimg, limg, curwidt - letterspace, hih, 0, -1)) || !(ImgOverlapImg(rimg, limg, curwidt - letterspace, hih - 1, 0, -1))) {
                             hih -= 1
                         }
                         sc = 1; wie = 0;
-                        while (!(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - (wie + 1), hih, 0, -1)) && !(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - (wie + 1), hih, -1, 0))) {
+                        while (!(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - (wie + 1), hih, 0, -1)) || !(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - (wie + 1), hih, -1, 0))) {
                             wie += 1
                         }
-                        while (!(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih, 0, -1)) && !(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih - 1, 0, -1))) {
+                        while (!(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih, 0, -1)) || !(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih - 1, 0, -1))) {
                             hih -= 1
                         }
                     }
@@ -603,26 +603,26 @@ namespace idxfont {
                 if (ligwidth[tid][ligs[tid].indexOf(input.charAt(currentletter3))] == 0 && Math.abs(ligdir[tid][ligs[tid].indexOf(input.charAt(currentletter3))]) > 0) {
                     if (ligdir[tid][ligs[tid].indexOf(input.charAt(currentletter3))] > 0) {
                         hih = 0;
-                        while (!(ImgOverlapImg(rimg, limg, curwidt - letterspace, hih, 0, -1)) && !(ImgOverlapImg(rimg, limg, curwidt - letterspace, hih + 1, 0, -1))) {
+                        while (!(ImgOverlapImg(rimg, limg, curwidt - letterspace, hih, 0, -1)) || !(ImgOverlapImg(rimg, limg, curwidt - letterspace, hih + 1, 0, -1))) {
                             hih += 1
                         }
                         wie = 0;
-                        while (!(ImgOverlapImg(rimg, limg, curwidt - letterspace - (wie + 1), hih, 0, -1)) && !(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - (wie + 1), hih, -1, 0))) {
+                        while (!(ImgOverlapImg(rimg, limg, curwidt - letterspace - (wie + 1), hih, 0, -1)) || !(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - (wie + 1), hih, -1, 0))) {
                             wie += 1
                         }
-                        while (!(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih, 0, -1)) && !(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih + 1, 0, -1))) {
+                        while (!(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih, 0, -1)) || !(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih + 1, 0, -1))) {
                             hih += 1
                         }
                     } else if (ligdir[tid][ligs[tid].indexOf(input.charAt(currentletter3))] < 0) {
                         hih = Math.abs(rimg.height - limg.height);
-                        while (!(ImgOverlapImg(rimg, limg, curwidt - letterspace, hih, 0, -1)) && !(ImgOverlapImg(rimg, limg, curwidt - letterspace, hih - 1, 0, -1))) {
+                        while (!(ImgOverlapImg(rimg, limg, curwidt - letterspace, hih, 0, -1)) || !(ImgOverlapImg(rimg, limg, curwidt - letterspace, hih - 1, 0, -1))) {
                             hih -= 1
                         }
                         sc = 1; wie = 0;
-                        while (!(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - (wie + 1), hih, 0, -1)) && !(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - (wie + 1), hih, -1, 0))) {
+                        while (!(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - (wie + 1), hih, 0, -1)) || !(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - (wie + 1), hih, -1, 0))) {
                             wie += 1
                         }
-                        while (!(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih, 0, -1)) && !(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih - 1, 0, -1))) {
+                        while (!(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih, 0, -1)) || !(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih - 1, 0, -1))) {
                             hih -= 1
                         }
                     }
