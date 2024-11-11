@@ -210,7 +210,9 @@ namespace idxfont {
                     ligdir[tid].push(-10)
                 }
                 ligwidth[tid].push(0)
+                ligsubw[tid].push(0)
             } else {
+                ligsubw[tid].push(uwid)
                 ligwidth[tid].push(imgj.width)
                 ligdir[tid].push(0)
             }
@@ -225,7 +227,9 @@ namespace idxfont {
                     ligdir[tid][ligs[tid].indexOf(glyph)] = -10
                 }
                 ligwidth[tid][ligs[tid].indexOf(glyph)] = 0
+                ligsubw[tid][ligs[tid].indexOf(glyph)] = 0
             } else {
+                ligsubw[tid][ligs[tid].indexOf(glyph)] = uwid
                 ligwidth[tid][ligs[tid].indexOf(glyph)] = imgj.width
                 ligdir[tid][ligs[tid].indexOf(glyph)] = 0
             }
