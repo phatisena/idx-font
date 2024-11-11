@@ -236,6 +236,7 @@ namespace idxfont {
 
     export function SetImageStr(input: string, iwidt: number, tid: number, icol: number = 0, alm: number = 0, debugalm: boolean = false, arimg: boolean = false): Image | Image[] {
         let outputarr: Image[] = []; let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
+        for (let currentletter = 0; currentletter < input.length; currentletter++)
             if (!(ligs[tid].indexOf(input.charAt(currentletter)) < 0)) {
                 uwidt = ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter)))]
                 if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter)))] <= 0) {
@@ -363,7 +364,7 @@ namespace idxfont {
                             hih -= 1
                         }
                         sc = 1; wie = 0;
-                        while (!(ImgOverlapImg(rimg, limg, curwidt - letterspace - (wie + 1), hih, 0, -1)) || !(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - (wie + 1), hih, -1, 0))) {
+                        while (!(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - (wie + 1), hih, 0, -1)) || !(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - (wie + 1), hih, -1, 0))) {
                             wie += 1
                         }
                         while (!(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih, 0, -1)) || !(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih - 1, 0, -1))) {
