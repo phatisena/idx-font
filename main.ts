@@ -7,11 +7,10 @@ namespace idxfont {
         MainFont,
         ArcadeFont
     }
+    let ligs: string[][] = []; let ligages: Image[][] = []; let ligwidth: number[][] = []; let ligsubw: number[][] = []; let ligdir: number[][] = []; let ligcol: number[][] = []; let ligul: number[][] = []; let storeid: number[] = []; let letterspace: number = 1; let curid = 0;
 
-    let ligs: string[][] = []; let ligages: Image[][] = []; let ligwidth: number[][] = []; let ligdir: number[][] = []; let ligcol: number[][] = []; let ligul: number[][] = []; let storeid: number[] = []; let letterspace: number = 1; let curid = 0;
-    
     export function newtableid() {
-        storeid.push(curid); ligs.push([]); ligages.push([]); ligwidth.push([]); ligdir.push([]); ligcol.push([]); ligul.push([]); curid += 1; return storeid.length - 1;
+        storeid.push(curid); ligs.push([]); ligages.push([]); ligwidth.push([]); ligsubw.push([]); ligdir.push([]); ligcol.push([]); ligul.push([]); curid += 1; return storeid.length - 1;
     }
 
     export function drawTransparentImage(src: Image, to: Image, x: number, y: number) {
@@ -131,7 +130,7 @@ namespace idxfont {
     //%mcol.shadow=colorindexpicker
     //%ncol.shadow=colorindexpicker
     //%group="create"
-    export function setCharecter(gid: number = 0, glyph: string = "", imgi: Image = image.create(5, 8), notmove: boolean = false, onthechar: boolean = false, bcol: number = 0, scol: number = 0, mcol: number = 0, ncol: number = 0) {
+    export function setCharecter(gid: number = 0, glyph: string = "", imgi: Image = image.create(5, 8), notmove: boolean = false, onthechar: boolean = false, inchar: boolean = false , bcol: number = 0, scol: number = 0, mcol: number = 0, ncol: number = 0) {
         let tid = 0
         if (storeid.indexOf(gid) < 0) {
             tid = newtableid()
@@ -143,6 +142,7 @@ namespace idxfont {
         if (bcol > 0 && bcol < 16) {
             imgi.replace(bcol, 0)
         }
+        let hi = 0; let hj = 0;
         for (let xw = 0; xw < imgi.width; xw++) {
             si = 0
             for (let yh = 0; yh < imgi.height; yh++) {
@@ -165,15 +165,37 @@ namespace idxfont {
                 }
                 if (scnwidt) {
                     if (scwidt) {
-                        if (si <= 0) { wj = yh; scnwidt = false; }
+                        if (si <= 0) { hj = yh; scnwidt = false; }
                     } else {
-                        if (si > 0) { wi = yh; scwidt = true; }
+                        if (si > 0) { hi = yh; scwidt = true; }
                     }
                 }
             }
         }
         if (scnwidt) { wj = imgi.width; scnwidt = false; }
-        imgj = image.create(Math.abs(wj - wi), imgi.height); drawTransparentImage(imgi, imgj, 0 - wi, 0);
+        if (notmove) {
+            imgj = image.create(Math.abs(wj - wi), Math.abs(hj - hi)); drawTransparentImage(imgi, imgj, 0 - wi, 0 - hi);
+        } else {
+            imgj = image.create(Math.abs(wj - wi), imgi.height); drawTransparentImage(imgi, imgj, 0 - wi, 0);
+        }
+        let uwid = 0
+        if (inchar) {
+            for (let xw = imgi.width; xw >= 0; xw--) {
+                si = 0
+                for (let yh = 0; yh < imgi.height; yh++) {
+                    if (imgi.getPixel(xw, yh) != 0) { si += 1 }
+                }
+                if (scnwidt) {
+                    if (scwidt) {
+                        if (si <= 0) { wj = xw; scnwidt = false; }
+                    } else {
+                        if (si > 0) { wi = xw; scwidt = true; }
+                    }
+                }
+            }
+            if (scnwidt) { wj = imgi.width; scnwidt = false; }
+            uwid = Math.abs(wj - wi)
+        }
         if (scol > 0 && scol < 16) {
             imgj.replace(scol, 0)
         }
@@ -217,10 +239,10 @@ namespace idxfont {
     //%mcl.shadow=colorindexpicker
     //%ncl.shadow=colorindexpicker
     //%group="create"
-    export function setCharFromSheet(tid: number = 0, PngSheet: Image = image.create(10, 16), GroupChar: string = "", StayChar: string = "", CharOnChar: string = "", twid: number = 5, thei: number = 8, bcl: number = 0, scl: number = 0, mcl: number = 0, ncl: number = 0) {
+    export function setCharFromSheet(tid: number = 0, PngSheet: Image = image.create(10, 16), GroupChar: string = "", StayChar: string = "", CharOnChar: string = "", CharSubW: string = "", twid: number = 5, thei: number = 8, bcl: number = 0, scl: number = 0, mcl: number = 0, ncl: number = 0) {
         let gwid = Math.round(PngSheet.width / twid); let uig = image.create(twid, thei); let txi = 0; let tyi = 0;
         for (let tvn = 0; tvn < GroupChar.length; tvn++) {
-            uig = image.create(twid, thei); txi = twid * (tvn % gwid); tyi = thei * Math.floor(tvn / gwid); drawTransparentImage(PngSheet, uig, 0 - txi, 0 - tyi); setCharecter(tid, GroupChar.charAt(tvn), uig, StayChar.includes(GroupChar.charAt(tvn)),CharOnChar.includes(GroupChar.charAt(tvn)), bcl, scl, mcl, ncl);
+            uig = image.create(twid, thei); txi = twid * (tvn % gwid); tyi = thei * Math.floor(tvn / gwid); drawTransparentImage(PngSheet, uig, 0 - txi, 0 - tyi); setCharecter(tid, GroupChar.charAt(tvn), uig, StayChar.includes(GroupChar.charAt(tvn)),CharOnChar.includes(GroupChar.charAt(tvn)), CharSubW.includes(GroupChar.charAt(tvn)), bcl, scl, mcl, ncl);
         }
     }
 
@@ -795,6 +817,7 @@ namespace idxfont {
         "§!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~°©®",
         "",
         "",
+        "",
         8,
         16,
         1,
@@ -921,6 +944,7 @@ f1111f11f11f1f111f111f11f11f1f11f1f11111f1f111111f111f11f1f1f1f1f1f1f111ff11f111
         "กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรลวศษสหฬอฮะาเแโใไฤฦๅั็ํิีึืุู์่้๊๋ำ฿๐๑๒๓๔๕๖๗๘๙",
         "ั็ํิีึืุู์่้๊๋",
         "ั็ํิีึื์่้๊๋",
+        "ำ",
         8,
         16,
         1,
@@ -1047,6 +1071,7 @@ f1111f11f11f1f111f111f11f11f1f11f1f11111f1f111111f111f11f1f1f1f1f1f1f111ff11f111
             111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
         `,
         "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~",
+        "",
         "",
         "",
         8,
@@ -1177,6 +1202,7 @@ f1111f11f11f1f111f111f11f11f1f11f1f11111f1f111111f111f11f1f1f1f1f1f1f111ff11f111
         "§!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~°©®",
         "",
         "",
+        "",
         8,
         16,
         1,
@@ -1303,6 +1329,7 @@ f1111f11f11f1f111f111f11f11f1f11f1f11111f1f111111f111f11f1f1f1f1f1f1f111ff11f111
         "กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรลวศษสหฬอฮะาเแโใไฤฦๅั็ํิีึืุู์่้๊๋ำ฿๐๑๒๓๔๕๖๗๘๙",
         "ั็ํิีึืุู์่้๊๋",
         "ั็ํิีึื์่้๊๋",
+        "ำ",
         8,
         16,
         1,
