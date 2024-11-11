@@ -236,7 +236,7 @@ namespace idxfont {
     }
     
     //%blockid=ixfont_setcharfromimgsheet
-    //%block="set |table id $tid and set img sheet $PngSheet=screen_image_picker with letters $GroupChar ||and |staying letters $StayChar letters on the letters $CharOnChar width $twid height $thei erase col $bcl space col $scl base col $mcl guard col $ncl"
+    //%block="set |table id $tid and set img sheet $PngSheet=screen_image_picker with letters $GroupChar ||and |staying letters $StayChar letters on the letters $CharOnChar and substact width $CharSubW width $twid height $thei erase col $bcl space col $scl base col $mcl guard col $ncl"
     //%bcl.shadow=colorindexpicker
     //%scl.shadow=colorindexpicker
     //%mcl.shadow=colorindexpicker
