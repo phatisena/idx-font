@@ -717,7 +717,7 @@ namespace idxfont {
     //%ucol.shadow=colorindexpicker
     //%group="Frame render"
     export function StampStrToFrame(Fimg: Image , Txt: string = "", Wval: number = 0, arrid: number = 0, ucol: number = 0, ualm: number = 0) {
-        let StrImg: Image = SetImage(Txt , Wval, arrid, ucol, ualm)
+        let StrImg: Image = SetTextImage(Txt , Wval, arrid, ucol, ualm)
         let gapw = Math.floor(Fimg.width / 3)
         let gaph = Math.floor(Fimg.height / 3)
         let UfImg: Image = SetImgFrame(Fimg, StrImg.width + (gapw * 3), StrImg.height + (gaph * 3))
@@ -731,7 +731,7 @@ namespace idxfont {
     //%ucol.shadow=colorindexpicker
     //%group="Frame render"
     export function StampStrArrToFrame(Fimg: Image, Txt: string = "", Wval: number = 0, arrid: number = 0, ucol: number = 0, ualm: number = 0) {
-        let StrImg: Image[] = SetImageFrame(Txt, Wval, arrid, ucol, ualm)
+        let StrImg: Image[] = SetTextImageArray(Txt, Wval, arrid, ucol, ualm)
         let gapw = Math.floor(Fimg.width / 3)
         let gaph = Math.floor(Fimg.height / 3)
         let UfImg: Image = SetImgFrame(Fimg, StrImg[0].width + (gapw * 3), StrImg[0].height + (gaph * 3))
