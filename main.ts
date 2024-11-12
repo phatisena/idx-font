@@ -218,6 +218,7 @@ namespace idxfont {
             heig = Math.max(heig, hie + hvi)
             if (iwidt > 0) {
                 if (wie >= iwidt || findCommand(input, "n", currentletter)) {
+                    wie -= letterspace
                     hie += hvi; wie = 0;
                     if (findCommand(input, "n", currentletter)) {
                         currentletter += 2
@@ -255,6 +256,7 @@ namespace idxfont {
             if (false) { widt = Math.max(widt, wie) }
             if (iwidt > 0) {
                 if (wie >= iwidt || findCommand(input, "n", currentletter2)) {
+                    wie -= letterspace
                     if (debugalm && findCommand(input, "n", currentletter2)) {
                         wie -= (3 * letterspace) + letterspace; widt = Math.max(widt, wie)
                     } else {
@@ -273,7 +275,7 @@ namespace idxfont {
                 widt = Math.max(widt, wie)
             }
         }
-        if (hix > 0 && debugalm) { wie += letterspace + (3 * letterspace) }; lnwit.push(wie);
+        if (hix > 0 && debugalm) { wie += letterspace + (3 * letterspace) }; wie -= letterspace ;  lnwit.push(wie);
         let hgi = 0; let limg = image.create(lnwit[hgi], heig); let scwidt = true; let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); hie = 0; wie = 0; curwidt = 0;
         for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
             wie = 0
@@ -393,6 +395,7 @@ namespace idxfont {
             heig = Math.max(heig, hie + hvi)
             if (iwidt > 0) {
                 if (wie >= iwidt || findCommand(input, "n", currentletter)) {
+                    wie -= letterspace 
                     hie += hvi; wie = 0;
                     if (findCommand(input, "n", currentletter)) {
                         currentletter += 2
@@ -430,6 +433,7 @@ namespace idxfont {
             if (false) { widt = Math.max(widt, wie) }
             if (iwidt > 0) {
                 if (wie >= iwidt || findCommand(input, "n", currentletter2)) {
+                    wie -= letterspace
                     if (debugalm && findCommand(input, "n", currentletter2)) {
                         wie -= (3 * letterspace) + letterspace; widt = Math.max(widt, wie)
                     } else {
@@ -448,7 +452,7 @@ namespace idxfont {
                 widt = Math.max(widt, wie)
             }
         }
-        if (hix > 0 && debugalm) { wie += letterspace + (3 * letterspace) }; lnwit.push(wie);
+        if (hix > 0 && debugalm) { wie += letterspace + (3 * letterspace) }; wie -= letterspace; lnwit.push(wie);
         let hgi = 0; let limg = image.create(lnwit[hgi], heig); let scwidt = true; let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); hie = 0; wie = 0; curwidt = 0;
         for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
             wie = 0
