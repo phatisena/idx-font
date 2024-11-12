@@ -598,7 +598,7 @@ namespace idxfont {
     export enum tempfont { MainFont, ArcadeFont }
 
     //%blockid=ixfont_presetfont
-    //%block="SetupPresetFont $tempf Temp ||with table id $tid"
+    //%block="SetupPresetFont $tempf ||with table id $tid"
     //%group="create"
     export function SetupPresetFont(tempf: tempfont, tid: number = 0) {
         switch (tempf) {
