@@ -355,7 +355,7 @@ namespace idxfont {
     //%icol.shadow=colorindexpicker
     //%group="render"
     export function SetTextImage(input: string, iwidt: number, tid: number, icol: number = 0, alm: number = 0, debugalm: boolean = false) {
-        let outputarr: Image[] = []; let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
+        let uhei = 0;let outputarr: Image[] = []; let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
         for (let currentletter = 0; currentletter < input.length; currentletter++) {
             if (!(ligs[tid].indexOf(input.charAt(currentletter)) < 0)) {
                 uwidt = ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter)))]
@@ -383,10 +383,16 @@ namespace idxfont {
             } else {
                 wie += 2 * letterspace
             }
+            uhei = Math.max(uhei, hvi)
             heig = Math.max(heig, hie + hvi)
             if (iwidt > 0) {
                 if (wie >= iwidt || findCommand(input, "n", currentletter)) {
-                    hie += hvi; wie = 0;
+                    if (uhei > hvi) {
+                        hie += uhei
+                    } else {
+                        hie += hvi
+                    }
+                    wie = 0;
                     if (findCommand(input, "n", currentletter)) {
                         currentletter += 2
                     }
@@ -522,6 +528,7 @@ namespace idxfont {
             } else {
                 curwidt += 2 * letterspace
             }
+            uhei = Math.max(uhei, hvi)
             if (alm < 0) {
                 drawTransparentImage(limg.clone(), output, 0, hie)
             } else if (alm > 0) {
@@ -545,7 +552,12 @@ namespace idxfont {
                         drawTransparentImage(limg.clone(), output, Math.abs((output.width / 2) - (limg.width / 2)), hie)
                     }
                     hgi += 1; limg = image.create(lnwit[hgi], heig);
-                    curwidt = 0; hie += hvi;
+                    curwidt = 0;
+                    if (uhei > hvi) {
+                        hie += uhei
+                    } else {
+                        hie += hvi
+                    }
                     if (findCommand(input, "n", currentletter3)) {
                         currentletter3 += 2
                     }
@@ -576,7 +588,7 @@ namespace idxfont {
     //%icol.shadow=colorindexpicker
     //%group="render"
     export function SetTextImageArray(input: string, iwidt: number, tid: number, icol: number = 0, alm: number = 0, debugalm: boolean = false) {
-        let outputarr: Image[] = []; let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
+        let uhei = 0; let outputarr: Image[] = []; let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
         for (let currentletter = 0; currentletter < input.length; currentletter++) {
             if (!(ligs[tid].indexOf(input.charAt(currentletter)) < 0)) {
                 uwidt = ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter)))]
@@ -604,10 +616,16 @@ namespace idxfont {
             } else {
                 wie += 2 * letterspace
             }
+            uhei = Math.max(uhei, hvi)
             heig = Math.max(heig, hie + hvi)
             if (iwidt > 0) {
                 if (wie >= iwidt || findCommand(input, "n", currentletter)) {
-                    hie += hvi; wie = 0;
+                    if (uhei > hvi) {
+                        hie += uhei
+                    } else {
+                        hie += hvi
+                    }
+                    wie = 0;
                     if (findCommand(input, "n", currentletter)) {
                         currentletter += 2
                     }
@@ -730,7 +748,9 @@ namespace idxfont {
                 } else {
                     swidt = 0
                 }
-                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))] > 0) {
+                if (Math.abs(ligsubw[tid][ligs[tid].indexOf(input.charAt(currentletter3))] - ligwidth[tid][ligs[tid].indexOf(input.charAt(currentletter3))]) > 0) {
+                    curwidt += ligsubw[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))]
+                } else if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))] > 0) {
                     curwidt += Math.abs(uwidt - nwidt)
                 }
                 if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] > 0) {
@@ -741,6 +761,7 @@ namespace idxfont {
             } else {
                 curwidt += 2 * letterspace
             }
+            uhei = Math.max(uhei, hvi)
             if (alm < 0) {
                 drawTransparentImage(limg.clone(), output, 0, hie)
             } else if (alm > 0) {
@@ -764,7 +785,12 @@ namespace idxfont {
                         drawTransparentImage(limg.clone(), output, Math.abs((output.width / 2) - (limg.width / 2)), hie)
                     }
                     hgi += 1; limg = image.create(lnwit[hgi], heig);
-                    curwidt = 0; hie += hvi;
+                    curwidt = 0;
+                    if (uhei > hvi) {
+                        hie += uhei
+                    } else {
+                        hie += hvi
+                    }
                     if (findCommand(input, "n", currentletter3)) {
                         currentletter3 += 2
                     }
