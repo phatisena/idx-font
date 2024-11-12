@@ -2,8 +2,6 @@
 //% color="#2dbded" 
 //% icon="\uf249"
 namespace idxfont {
-
-    export enum tempfont { MainFont, ArcadeFont }
     
     let ligs: string[][] = []; let ligages: Image[][] = []; let ligwidth: number[][] = []; let ligsubw: number[][] = []; let ligdir: number[][] = []; let ligcol: number[][] = []; let ligul: number[][] = []; let storeid: number[] = []; let letterspace: number = 1; let curid = 0;
 
@@ -28,13 +26,13 @@ namespace idxfont {
     }
 
     export function ImgOverlapImg(ImgI: Image, ImgO: Image, Ix: number, Iy: number, Dx: number, Dy: number) {
-        if (ImgI.width > ImgO.width || ImgI.height > ImgO.height) { return false }
+        if (ImgI.width > ImgO.width || ImgI.height > ImgO.height) { return true }
         if (Dy == 0 && Dx != 0) {
             if (Dx > 0) {
                 for (let Nx = 0; Nx < ImgI.width; Nx++) {
                     for (let Ny = 0; Ny < ImgI.height; Ny++) {
                         if (ImgI.getPixel(Nx, Ny) > 0 && ImgO.getPixel(Ix + Nx, Iy + Ny) > 0) {
-                            return true
+                            return false
                         }
                     }
                 }
@@ -42,7 +40,7 @@ namespace idxfont {
                 for (let Nx = ImgI.width; Nx >= 0; Nx--) {
                     for (let Ny = 0; Ny < ImgI.height; Ny++) {
                         if (ImgI.getPixel(Nx, Ny) > 0 && ImgO.getPixel(Ix + Nx, Iy + Ny) > 0) {
-                            return true
+                            return false
                         }
                     }
                 }
@@ -52,7 +50,7 @@ namespace idxfont {
                 for (let Ny = 0; Ny < ImgI.height; Ny++) {
                     for (let Nx = 0; Nx < ImgI.width; Nx++) {
                         if (ImgI.getPixel(Nx, Ny) > 0 && ImgO.getPixel(Ix + Nx, Iy + Ny) > 0) {
-                            return true
+                            return false
                         }
                     }
                 }
@@ -60,17 +58,17 @@ namespace idxfont {
                 for (let Ny = ImgI.height; Ny >= 0; Ny--) {
                     for (let Nx = 0; Nx < ImgI.width; Nx++) {
                         if (ImgI.getPixel(Nx, Ny) > 0 && ImgO.getPixel(Ix + Nx, Iy + Ny) > 0) {
-                            return true
+                            return false
                         }
                     }
                 }
             }
         }
-       return false
+       return true
     }
 
     export function ImgOverlapInNum(ImgI: Image, ImgO: Image, Ix: number = 0, Iy: number = 0, Dx: number = 0, Dy: number = 0, mh: number = 0) {
-        if (ImgI.width > ImgO.width || ImgI.height > ImgO.height) { return false }
+        if (ImgI.width > ImgO.width || ImgI.height > ImgO.height) { return true }
         let ci = 0; let cj = 0;
         if (Dy == 0 && Dx != 0) {
             if (Dx > 0) {
@@ -82,7 +80,7 @@ namespace idxfont {
                         }
                     }
                     if (cj >= mh) {
-                        return true
+                        return false
                     }
                     if (ci > 0) {
                         cj += 1
@@ -97,7 +95,7 @@ namespace idxfont {
                         }
                     }
                     if (cj >= mh) {
-                        return true
+                        return false
                     }
                     if (ci > 0) {
                         cj += 1
@@ -114,7 +112,7 @@ namespace idxfont {
                         }
                     }
                     if (cj >= mh) {
-                        return true
+                        return false
                     }
                     if (ci > 0) {
                         cj += 1
@@ -129,7 +127,7 @@ namespace idxfont {
                         }
                     }
                     if (cj >= mh) {
-                        return true
+                        return false
                     }
                     if (ci > 0) {
                         cj += 1
@@ -137,7 +135,7 @@ namespace idxfont {
                 }
             }
         }
-        return false
+        return true
     }
 
     export function SetImgFrame(ImgF: Image, Wh: number, Ht: number) {
@@ -474,30 +472,30 @@ namespace idxfont {
                 if (ligwidth[tid][ligs[tid].indexOf(input.charAt(currentletter3))] == 0 && Math.abs(ligdir[tid][ligs[tid].indexOf(input.charAt(currentletter3))]) > 0) {
                     if (ligdir[tid][ligs[tid].indexOf(input.charAt(currentletter3))] < 0) {
                         hih = 0;
-                        while ((ImgOverlapImg(rimg, limg, curwidt - letterspace, hih, 0, 1)) && (ImgOverlapImg(rimg, limg, curwidt - letterspace, hih + 1, 0, 1))) {
+                        while ((ImgOverlapImg(rimg, limg, curwidt, hih, 0, 1)) || (ImgOverlapImg(rimg, limg, curwidt, hih + 1, 0, 1))) {
                             hih += 1
                         }
                         wie = 0;
-                        while (!((ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih, 0, 1)) && !(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih + 1, 0, 1)))) {
+                        while (!((ImgOverlapImg(rimg, limg, (curwidt) - wie, hih, 0, 1)) && !(ImgOverlapImg(rimg, limg, (curwidt) - wie, hih + 1, 0, 1)))) {
                             hih += 1
                         }
                     } else if (ligdir[tid][ligs[tid].indexOf(input.charAt(currentletter3))] > 0) {
                         hih = Math.abs(rimg.height - limg.height);
-                        while ((ImgOverlapImg(rimg, limg, curwidt - letterspace, hih, 0, -1)) && (ImgOverlapImg(rimg, limg, curwidt - letterspace, hih - 1, 0, -1))) {
+                        while ((ImgOverlapImg(rimg, limg, curwidt, hih, 0, -1)) || (ImgOverlapImg(rimg, limg, curwidt, hih - 1, 0, -1))) {
                             hih -= 1
                         }
-                        while (!((ImgOverlapImg(rimg, limg, (curwidt - letterspace), hih, 0, -1)) && !(ImgOverlapImg(rimg, limg, (curwidt - letterspace), hih - 1, 0, -1)))) {
+                        while (!((ImgOverlapImg(rimg, limg, (curwidt), hih, 0, -1)) && !(ImgOverlapImg(rimg, limg, (curwidt), hih - 1, 0, -1)))) {
                             hih -= 1
                         }
-                        while ((ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih, 0, 1)) && (ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih + 1, 0, 1))) {
+                        while ((ImgOverlapImg(rimg, limg, (curwidt) - wie, hih, 0, 1)) || (ImgOverlapImg(rimg, limg, (curwidt) - wie, hih + 1, 0, 1))) {
                             hih += 1
                         }
                         sc = 1; wie = 0;
                         if ((ImgOverlapInNum(rimg, limg, curwidt - letterspace, hih, -1, 0, 1))) {
-                            while ((ImgOverlapImg(rimg, limg, (curwidt - letterspace) - (wie + 1), hih, -1, 0)) && (ImgOverlapImg(rimg, limg, (curwidt - letterspace) - (wie + 1), hih, -1, 0))) {
+                            while ((ImgOverlapImg(rimg, limg, (curwidt - letterspace) - (wie + 1), hih, -1, 0)) || (ImgOverlapImg(rimg, limg, (curwidt) - (wie + 1), hih, -1, 0))) {
                                 wie += 1
                             }
-                            while ((ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih, 0, 1)) && (ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih + 1, 0, 1))) {
+                            while ((ImgOverlapImg(rimg, limg, (curwidt) - wie, hih, 0, 1)) || (ImgOverlapImg(rimg, limg, (curwidt) - wie, hih + 1, 0, 1))) {
                                 hih += 1
                             }
                         }
@@ -708,30 +706,30 @@ namespace idxfont {
                 if (ligwidth[tid][ligs[tid].indexOf(input.charAt(currentletter3))] == 0 && Math.abs(ligdir[tid][ligs[tid].indexOf(input.charAt(currentletter3))]) > 0) {
                     if (ligdir[tid][ligs[tid].indexOf(input.charAt(currentletter3))] < 0) {
                         hih = 0;
-                        while ((ImgOverlapImg(rimg, limg, curwidt - letterspace, hih, 0, 1)) && (ImgOverlapImg(rimg, limg, curwidt - letterspace, hih + 1, 0, 1))) {
+                        while ((ImgOverlapImg(rimg, limg, curwidt, hih, 0, 1)) || (ImgOverlapImg(rimg, limg, curwidt, hih + 1, 0, 1))) {
                             hih += 1
                         }
                         wie = 0;
-                        while (!((ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih, 0, 1)) && !(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih + 1, 0, 1)))) {
+                        while (!((ImgOverlapImg(rimg, limg, (curwidt) - wie, hih, 0, 1)) && !(ImgOverlapImg(rimg, limg, (curwidt) - wie, hih + 1, 0, 1)))) {
                             hih += 1
                         }
                     } else if (ligdir[tid][ligs[tid].indexOf(input.charAt(currentletter3))] > 0) {
                         hih = Math.abs(rimg.height - limg.height);
-                        while ((ImgOverlapImg(rimg, limg, curwidt - letterspace, hih, 0, -1)) && (ImgOverlapImg(rimg, limg, curwidt - letterspace, hih - 1, 0, -1))) {
+                        while ((ImgOverlapImg(rimg, limg, curwidt, hih, 0, -1)) || (ImgOverlapImg(rimg, limg, curwidt, hih - 1, 0, -1))) {
                             hih -= 1
                         }
-                        while (!((ImgOverlapImg(rimg, limg, (curwidt - letterspace), hih, 0, -1)) && !(ImgOverlapImg(rimg, limg, (curwidt - letterspace), hih - 1, 0, -1)))) {
+                        while (!((ImgOverlapImg(rimg, limg, (curwidt), hih, 0, -1)) && !(ImgOverlapImg(rimg, limg, (curwidt), hih - 1, 0, -1)))) {
                             hih -= 1
                         }
-                        while ((ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih, 0, 1)) && (ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih + 1, 0, 1))) {
+                        while ((ImgOverlapImg(rimg, limg, (curwidt) - wie, hih, 0, 1)) || (ImgOverlapImg(rimg, limg, (curwidt) - wie, hih + 1, 0, 1))) {
                             hih += 1
                         }
                         sc = 1; wie = 0;
                         if ((ImgOverlapInNum(rimg, limg, curwidt - letterspace, hih, -1, 0, 1))) {
-                            while ((ImgOverlapImg(rimg, limg, (curwidt - letterspace) - (wie + 1), hih, -1, 0)) && (ImgOverlapImg(rimg, limg, (curwidt - letterspace) - (wie + 1), hih, -1, 0))) {
+                            while ((ImgOverlapImg(rimg, limg, (curwidt) - (wie + 1), hih, -1, 0)) || (ImgOverlapImg(rimg, limg, (curwidt) - (wie + 1), hih, -1, 0))) {
                                 wie += 1
                             }
-                            while ((ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih, 0, 1)) && (ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih + 1, 0, 1))) {
+                            while ((ImgOverlapImg(rimg, limg, (curwidt) - wie, hih, 0, 1)) || (ImgOverlapImg(rimg, limg, (curwidt) - wie, hih + 1, 0, 1))) {
                                 hih += 1
                             }
                         }
@@ -864,6 +862,8 @@ namespace idxfont {
     export function ChangeSpace(input: number) {
         letterspace += input
     }
+
+    export enum tempfont { MainFont, ArcadeFont }
 
     //%blockid=ixfont_presetfont
     //%block="SetupPresetFont $tempf Temp ||with table id $tid"
@@ -1514,3 +1514,7 @@ namespace idxfont {
         }
     }
 }
+
+idxfont.SetupPresetFont(idxfont.tempfont.MainFont, 0)
+scene.setBackgroundColor(1)
+let mySprite = sprites.create(idxfont.SetTextImage("สวัสดี", 160, 0), SpriteKind.Player)
