@@ -282,7 +282,11 @@ namespace idxfont {
                 ligwidth[tid].push(0)
                 ligsubw[tid].push(0)
             } else {
-                ligsubw[tid].push(uwid)
+                if (uwid == 0) {
+                    ligsubw[tid].push(imgj.width)
+                } else {
+                    ligsubw[tid].push(uwid)
+                }
                 ligwidth[tid].push(imgj.width)
                 ligdir[tid].push(0)
             }
@@ -299,7 +303,11 @@ namespace idxfont {
                 ligwidth[tid][ligs[tid].indexOf(glyph)] = 0
                 ligsubw[tid][ligs[tid].indexOf(glyph)] = 0
             } else {
-                ligsubw[tid][ligs[tid].indexOf(glyph)] = uwid
+                if (uwid == 0) {
+                    ligsubw[tid][ligs[tid].indexOf(glyph)] = imgj.width
+                } else {
+                    ligsubw[tid][ligs[tid].indexOf(glyph)] = uwid
+                }
                 ligwidth[tid][ligs[tid].indexOf(glyph)] = imgj.width
                 ligdir[tid][ligs[tid].indexOf(glyph)] = 0
             }
@@ -361,7 +369,7 @@ namespace idxfont {
                 } else {
                     swidt = 0
                 }
-                if (ligsubw[tid][(ligs[tid].indexOf(input.charAt(currentletter)))] > 0) {
+                if (Math.abs(ligsubw[tid][ligs[tid].indexOf(input.charAt(currentletter))] - ligwidth[tid][ligs[tid].indexOf(input.charAt(currentletter))]) > 0) {
                     wie += ligsubw[tid][(ligs[tid].indexOf(input.charAt(currentletter)))]
                 } else if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter)))] > 0) {
                     wie += Math.abs(uwidt - nwidt)
@@ -401,7 +409,7 @@ namespace idxfont {
                 } else {
                     swidt = 0
                 }
-                if (ligsubw[tid][(ligs[tid].indexOf(input.charAt(currentletter2)))] > 0) {
+                if (Math.abs(ligsubw[tid][ligs[tid].indexOf(input.charAt(currentletter2))] - ligwidth[tid][ligs[tid].indexOf(input.charAt(currentletter2))]) > 0) {
                     wie += ligsubw[tid][(ligs[tid].indexOf(input.charAt(currentletter2)))]
                 } else if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter2)))] > 0) {
                     wie += Math.abs(uwidt - nwidt)
@@ -464,7 +472,7 @@ namespace idxfont {
                             hih += 1
                         }
                         wie = 0;
-                        if (!(ImgOverlapInNum(rimg, limg, curwidt - letterspace, hih, -1, 0, 1))) {
+                        if ((ImgOverlapInNum(rimg, limg, curwidt - letterspace, hih, -1, 0, 1))) {
                         while (!(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih, -1, 0)) && !(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - (wie + 1), hih, -1, 0))) {
                             wie += 1
                         }
@@ -478,7 +486,7 @@ namespace idxfont {
                             hih -= 1
                         }
                         sc = 1; wie = 0;
-                        if (!(ImgOverlapInNum(rimg, limg, curwidt - letterspace, hih, -1, 0, 1))) {
+                        if ((ImgOverlapInNum(rimg, limg, curwidt - letterspace, hih, -1, 0, 1))) {
                         while (!(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - (wie + 1), hih, -1, 0)) && !(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - (wie + 1), hih, -1, 0))) {
                             wie += 1
                         }
@@ -501,7 +509,9 @@ namespace idxfont {
                 } else {
                     swidt = 0
                 }
-                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))] > 0) {
+                if (Math.abs(ligsubw[tid][ligs[tid].indexOf(input.charAt(currentletter3))] - ligwidth[tid][ligs[tid].indexOf(input.charAt(currentletter3))]) > 0) {
+                    curwidt += ligsubw[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))]
+                } else if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))] > 0) {
                     curwidt += Math.abs(uwidt - nwidt)
                 }
                 if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] > 0) {
@@ -580,7 +590,7 @@ namespace idxfont {
                 } else {
                     swidt = 0
                 }
-                if (ligsubw[tid][(ligs[tid].indexOf(input.charAt(currentletter)))] > 0) {
+                if (Math.abs(ligsubw[tid][ligs[tid].indexOf(input.charAt(currentletter))] - ligwidth[tid][ligs[tid].indexOf(input.charAt(currentletter))]) > 0) {
                     wie += ligsubw[tid][(ligs[tid].indexOf(input.charAt(currentletter)))]
                 } else if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter)))] > 0) {
                     wie += Math.abs(uwidt - nwidt)
@@ -620,7 +630,7 @@ namespace idxfont {
                 } else {
                     swidt = 0
                 }
-                if (ligsubw[tid][(ligs[tid].indexOf(input.charAt(currentletter2)))] > 0) {
+                if (Math.abs(ligsubw[tid][ligs[tid].indexOf(input.charAt(currentletter2))] - ligwidth[tid][ligs[tid].indexOf(input.charAt(currentletter2))]) > 0) {
                     wie += ligsubw[tid][(ligs[tid].indexOf(input.charAt(currentletter2)))]
                 } else if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter2)))] > 0) {
                     wie += Math.abs(uwidt - nwidt)
@@ -654,8 +664,8 @@ namespace idxfont {
                 widt = Math.max(widt, wie)
             }
         }
-        if (hix > 0 && debugalm) { wie += letterspace + (3 * letterspace) } ; lnwit.push(wie);
-        let hih = 0;let hgi = 0; let limg = image.create(lnwit[hgi], heig); let scwidt = true;  let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); hie = 0; wie = 0; curwidt = 0;
+        if (hix > 0 && debugalm) { wie += letterspace + (3 * letterspace) }; lnwit.push(wie);
+        let hih = 0; let hgi = 0; let limg = image.create(lnwit[hgi], heig); let scwidt = true; let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); hie = 0; wie = 0; curwidt = 0;
         for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
             wie = 0
             if (!(ligs[tid].indexOf(input.charAt(currentletter3)) < 0)) {
@@ -667,7 +677,7 @@ namespace idxfont {
                 }
                 scwidt = false; scnwidt = false; wie = 0; rimg = ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))].clone(); let ccol = ligul[tid][ligs[tid].indexOf(input.charAt(currentletter3))];
                 if (ligsubw[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] > 0 && Math.abs(ligsubw[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] - ligwidth[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))]) > 0) {
-                    drawTransparentImage( rimg, limg, (curwidt - nwidt) - Math.abs(ligsubw[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] - ligwidth[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))]), 0 + (hvi - ligages[tid][(ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))].height))
+                    drawTransparentImage(rimg, limg, (curwidt - nwidt) - Math.abs(ligsubw[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] - ligwidth[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))]), 0 + (hvi - ligages[tid][(ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))].height))
                 }
                 if (ligwidth[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] > 0 && ligdir[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] == 0) {
                     rimg.replace(ccol, ligcol[tid][ligs[tid].indexOf(input.charAt(currentletter3))])
@@ -683,7 +693,7 @@ namespace idxfont {
                             hih += 1
                         }
                         wie = 0;
-                        if (!(ImgOverlapInNum(rimg, limg, curwidt - letterspace, hih, -1, 0, 1))) {
+                        if ((ImgOverlapInNum(rimg, limg, curwidt - letterspace, hih, -1, 0, 1))) {
                             while (!(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - wie, hih, -1, 0)) && !(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - (wie + 1), hih, -1, 0))) {
                                 wie += 1
                             }
@@ -697,7 +707,7 @@ namespace idxfont {
                             hih -= 1
                         }
                         sc = 1; wie = 0;
-                        if (!(ImgOverlapInNum(rimg, limg, curwidt - letterspace, hih, -1, 0, 1))) {
+                        if ((ImgOverlapInNum(rimg, limg, curwidt - letterspace, hih, -1, 0, 1))) {
                             while (!(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - (wie + 1), hih, -1, 0)) && !(ImgOverlapImg(rimg, limg, (curwidt - letterspace) - (wie + 1), hih, -1, 0))) {
                                 wie += 1
                             }
@@ -709,11 +719,11 @@ namespace idxfont {
                 }
                 if (wie != 0) { wie = Math.abs(wie) }
                 if (ligsubw[tid][ligs[tid].indexOf(input.charAt(currentletter3))] > 0 && Math.abs(ligsubw[tid][ligs[tid].indexOf(input.charAt(currentletter3))] - ligwidth[tid][ligs[tid].indexOf(input.charAt(currentletter3))]) > 0) {
-                    drawTransparentImage( rimg, limg, (curwidt - nwidt) - Math.abs(ligsubw[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] - ligwidth[tid][ligs[tid].indexOf(input.charAt(currentletter3))]), 0 + (hvi - ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))].height))
+                    drawTransparentImage(rimg, limg, (curwidt - nwidt) - Math.abs(ligsubw[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] - ligwidth[tid][ligs[tid].indexOf(input.charAt(currentletter3))]), 0 + (hvi - ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))].height))
                 } else if (Math.abs(ligdir[tid][ligs[tid].indexOf(input.charAt(Math.max(currentletter3 - 1, 0)))]) > 0) {
-                    drawTransparentImage( rimg, limg, curwidt - (nwidt + wie), hih)
+                    drawTransparentImage(rimg, limg, curwidt - (nwidt + wie), hih)
                 } else {
-                    drawTransparentImage( rimg, limg, curwidt - (nwidt + wie), 0 + (hvi - ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))].height))
+                    drawTransparentImage(rimg, limg, curwidt - (nwidt + wie), 0 + (hvi - ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))].height))
                 }
                 if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] == 0) {
                     swidt = uwidt
