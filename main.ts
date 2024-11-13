@@ -79,7 +79,7 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_setcharecter
-    //%block="set |table id $gid and set letter $glyph to img $imgi=screen_image_picker ||and |the letter can move? $notmove and stay on or under the letter? $onthechar and sub width $inchar erase col $bcol spacebar col $scol base col $mcol guard col $ncol"
+    //%block="set |table id $gid and set letter $glyph to img $imgi=screen_image_picker ||and |the letter can move? $notmove and stay on or under the letter? $onthechar and substract width $inchar erase col $bcol spacebar col $scol base col $mcol guard col $ncol"
     //%bcol.shadow=colorindexpicker
     //%scol.shadow=colorindexpicker
     //%mcol.shadow=colorindexpicker
@@ -180,7 +180,7 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_setcharfromimgsheet
-    //%block="set |table id $tid and set img sheet $PngSheet=screen_image_picker with letters $GroupChar ||and |staying letters $StayChar letters on the letters $CharOnChar width $twid height $thei erase col $bcl space col $scl base col $mcl guard col $ncl"
+    //%block="set |table id $tid and set img sheet $PngSheet=screen_image_picker with letters $GroupChar ||and |staying letters $StayChar letters on the letters $CharOnChar and Char Substact $CharSubW width $twid height $thei erase col $bcl space col $scl base col $mcl guard col $ncl"
     //%bcl.shadow=colorindexpicker
     //%scl.shadow=colorindexpicker
     //%mcl.shadow=colorindexpicker
