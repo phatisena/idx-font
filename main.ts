@@ -3,10 +3,10 @@
 //% icon="\uf249"
 namespace idxfont {
 
-    let ligs: string[][] = []; let ligages: Image[][] = []; let ligwidth: number[][] = []; let ligdir: number[][] = []; let ligcol: number[][] = []; let ligul: number[][] = []; let storeid: number[] = []; let letterspace: number = 1; let curid = 0;
+    let ligs: string[][] = []; let ligages: Image[][] = []; let ligwidth: number[][] = []; let ligsubw: number[][] = []; let ligdir: number[][] = []; let ligcol: number[][] = []; let ligul: number[][] = []; let storeid: number[] = []; let letterspace: number = 1; let curid = 0;
 
     export function newtableid() {
-        storeid.push(curid); ligs.push([]); ligages.push([]); ligwidth.push([]); ligdir.push([]); ligcol.push([]); ligul.push([]); curid += 1; return storeid.length - 1;
+        storeid.push(curid); ligs.push([]); ligages.push([]); ligwidth.push([]); ligsubw.push([]); ligdir.push([]); ligcol.push([]); ligul.push([]); curid += 1; return storeid.length - 1;
     }
 
     export function drawTransparentImage(src: Image, to: Image, x: number, y: number) {
@@ -79,13 +79,13 @@ namespace idxfont {
     }
 
     //%blockid=ixfont_setcharecter
-    //%block="set |table id $gid and set letter $glyph to img $imgi=screen_image_picker ||and |the letter can move? $notmove and stay on or under the letter? $onthechar erase col $bcol spacebar col $scol base col $mcol guard col $ncol"
+    //%block="set |table id $gid and set letter $glyph to img $imgi=screen_image_picker ||and |the letter can move? $notmove and stay on or under the letter? $onthechar and sub width $inchar erase col $bcol spacebar col $scol base col $mcol guard col $ncol"
     //%bcol.shadow=colorindexpicker
     //%scol.shadow=colorindexpicker
     //%mcol.shadow=colorindexpicker
     //%ncol.shadow=colorindexpicker
     //%group="create"
-    export function setCharecter(gid: number = 0, glyph: string = "", imgi: Image = image.create(5, 8), notmove: boolean = false, onthechar: boolean = false, bcol: number = 0, scol: number = 0, mcol: number = 0, ncol: number = 0) {
+    export function setCharecter(gid: number = 0, glyph: string = "", imgi: Image = image.create(5, 8), notmove: boolean = false, onthechar: boolean = false, inchar: boolean = false, bcol: number = 0, scol: number = 0, mcol: number = 0, ncol: number = 0) {
         let tid = 0
         if (storeid.indexOf(gid) < 0) {
             tid = newtableid()
@@ -115,6 +115,25 @@ namespace idxfont {
         if (scol > 0 && scol < 16) {
             imgj.replace(scol, 0)
         }
+        let uwid = 0
+        if (inchar) {
+            for (let xw = imgi.width; xw >= 0; xw--) {
+                si = 0
+                for (let yh = 0; yh < imgi.height; yh++) {
+                    if (imgi.getPixel(xw, yh) != 0) { si += 1 }
+                }
+                if (scnwidt) {
+                    if (scwidt) {
+                        if (si <= 0) { wj = xw; scnwidt = false; }
+                    } else {
+                        if (si > 0) { wi = xw; scwidt = true; }
+                    }
+                }
+            }
+            if (scnwidt) { wj = imgi.width; scnwidt = false; }
+            uwid = Math.abs(wj - wi)
+        }
+
         if (ligs[tid].indexOf(glyph) < 0) {
             ligul[tid].push(ncol)
             ligcol[tid].push(mcol)
@@ -126,7 +145,13 @@ namespace idxfont {
                     ligdir[tid].push(-10)
                 }
                 ligwidth[tid].push(0)
+                ligsubw[tid].push(0)
             } else {
+                if (uwid == 0) {
+                    ligsubw[tid].push(imgj.width)
+                } else {
+                    ligsubw[tid].push(uwid)
+                }
                 ligwidth[tid].push(imgj.width)
                 ligdir[tid].push(0)
             }
@@ -141,7 +166,13 @@ namespace idxfont {
                     ligdir[tid][ligs[tid].indexOf(glyph)] = -10
                 }
                 ligwidth[tid][ligs[tid].indexOf(glyph)] = 0
+                ligsubw[tid][ligs[tid].indexOf(glyph)] = 0
             } else {
+                if (uwid == 0) {
+                    ligsubw[tid][ligs[tid].indexOf(glyph)] = imgj.width
+                } else {
+                    ligsubw[tid][ligs[tid].indexOf(glyph)] = uwid
+                }
                 ligwidth[tid][ligs[tid].indexOf(glyph)] = imgj.width
                 ligdir[tid][ligs[tid].indexOf(glyph)] = 0
             }
@@ -155,10 +186,10 @@ namespace idxfont {
     //%mcl.shadow=colorindexpicker
     //%ncl.shadow=colorindexpicker
     //%group="create"
-    export function setCharFromSheet(tid: number = 0, PngSheet: Image = image.create(10, 16), GroupChar: string = "", StayChar: string = "", CharOnChar: string = "", twid: number = 5, thei: number = 8, bcl: number = 0, scl: number = 0, mcl: number = 0, ncl: number = 0) {
+    export function setCharFromSheet(tid: number = 0, PngSheet: Image = image.create(10, 16), GroupChar: string = "", StayChar: string = "", CharOnChar: string = "", CharSubW: string = "", twid: number = 5, thei: number = 8, bcl: number = 0, scl: number = 0, mcl: number = 0, ncl: number = 0) {
         let gwid = Math.round(PngSheet.width / twid); let uig = image.create(twid, thei); let txi = 0; let tyi = 0;
         for (let tvn = 0; tvn < GroupChar.length; tvn++) {
-            uig = image.create(twid, thei); txi = twid * (tvn % gwid); tyi = thei * Math.floor(tvn / gwid); drawTransparentImage(PngSheet, uig, 0 - txi, 0 - tyi); setCharecter(tid, GroupChar.charAt(tvn), uig, StayChar.includes(GroupChar.charAt(tvn)), CharOnChar.includes(GroupChar.charAt(tvn)), bcl, scl, mcl, ncl);
+            uig = image.create(twid, thei); txi = twid * (tvn % gwid); tyi = thei * Math.floor(tvn / gwid); drawTransparentImage(PngSheet, uig, 0 - txi, 0 - tyi); setCharecter(tid, GroupChar.charAt(tvn), uig, StayChar.includes(GroupChar.charAt(tvn)), CharOnChar.includes(GroupChar.charAt(tvn)), CharSubW.includes(GroupChar.charAt(tvn)), bcl, scl, mcl, ncl);
         }
     }
 
@@ -189,7 +220,7 @@ namespace idxfont {
     //%icol.shadow=colorindexpicker
     //%group="render"
     export function SetTextImage(input: string, iwidt: number, tid: number, icol: number = 0, alm: number = 0, debugalm: boolean = false) {
-        let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
+        let uhei = 0; let outputarr: Image[] = []; let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
         for (let currentletter = 0; currentletter < input.length; currentletter++) {
             if (!(ligs[tid].indexOf(input.charAt(currentletter)) < 0)) {
                 uwidt = ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter)))]
@@ -203,7 +234,9 @@ namespace idxfont {
                 } else {
                     swidt = 0
                 }
-                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter)))] > 0) {
+                if (Math.abs(ligsubw[tid][ligs[tid].indexOf(input.charAt(currentletter))] - ligwidth[tid][ligs[tid].indexOf(input.charAt(currentletter))]) > 0) {
+                    wie += ligsubw[tid][(ligs[tid].indexOf(input.charAt(currentletter)))]
+                } else if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter)))] > 0) {
                     wie += Math.abs(uwidt - nwidt)
                 }
                 if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(Math.min(currentletter + 1, input.length - 1))))] > 0) {
@@ -215,188 +248,17 @@ namespace idxfont {
             } else {
                 wie += 2 * letterspace
             }
+            uhei = Math.max(uhei, hvi)
             heig = Math.max(heig, hie + hvi)
             if (iwidt > 0) {
                 if (wie >= iwidt || findCommand(input, "n", currentletter)) {
                     wie -= letterspace
-                    hie += hvi; wie = 0;
-                    if (findCommand(input, "n", currentletter)) {
-                        currentletter += 2
-                    }
-                }
-            } else if (findCommand(input, "n", currentletter)) {
-                currentletter += 2
-            }
-        }
-        wie = 0; widt = 0; let hix = 0;
-        for (let currentletter2 = 0; currentletter2 < input.length; currentletter2++) {
-            if (!(ligs[tid].indexOf(input.charAt(currentletter2)) < 0)) {
-                uwidt = ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter2)))]
-                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter2)))] <= 0) {
-                    nwidt = ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter2)))].width
-                } else {
-                    nwidt = 0
-                }
-                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] <= 0) {
-                    swidt = uwidt
-                } else {
-                    swidt = 0
-                }
-                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter2)))] > 0) {
-                    wie += Math.abs(uwidt - nwidt)
-                }
-                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] > 0) {
-                    wie += letterspace
-                }
-            } else if (input.charAt(currentletter2) == " ") {
-                wie += 3 * letterspace
-            } else {
-                wie += 2 * letterspace
-            }
-            if (false) { widt = Math.max(widt, wie) }
-            if (iwidt > 0) {
-                if (wie >= iwidt || findCommand(input, "n", currentletter2)) {
-                    wie -= letterspace
-                    if (debugalm && findCommand(input, "n", currentletter2)) {
-                        wie -= (3 * letterspace) + letterspace; widt = Math.max(widt, wie)
+                    if (uhei > hvi) {
+                        hie += uhei
                     } else {
-                        widt = Math.max(widt, wie)
+                        hie += hvi
                     }
-                    lnwit.push(wie); wie = 0; hix += 1
-                    if (findCommand(input, "n", currentletter2)) {
-                        currentletter2 += 2
-                    }
-                } else {
-                    widt = Math.max(widt, wie)
-                }
-            } else if (findCommand(input, "n", currentletter2)) {
-                widt = Math.max(widt, wie); currentletter2 += 2;
-            } else {
-                widt = Math.max(widt, wie)
-            }
-        }
-        if (hix > 0 && debugalm) { wie += letterspace + (3 * letterspace) }; wie -= letterspace ;  lnwit.push(wie);
-        let hgi = 0; let limg = image.create(lnwit[hgi], heig); let scwidt = true; let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); hie = 0; wie = 0; curwidt = 0;
-        for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
-            wie = 0
-            if (!(ligs[tid].indexOf(input.charAt(currentletter3)) < 0)) {
-                hvi = ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))].height; uwidt = ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))];
-                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))] <= 0) {
-                    nwidt = ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))].width
-                } else {
-                    nwidt = 0
-                }
-                scwidt = false; scnwidt = false; wie = 0; rimg = ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))].clone(); let ccol = ligul[tid][ligs[tid].indexOf(input.charAt(currentletter3))];
-                if (ligwidth[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] > 0 && ligdir[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] == 0) {
-                    rimg.replace(ccol, ligcol[tid][ligs[tid].indexOf(input.charAt(currentletter3))])
-                } else if (ligwidth[tid][ligs[tid].indexOf(input.charAt(currentletter3))] > 0 && ligdir[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] < 0) {
-                    rimg.replace(ccol, 0)
-                } else if (ligwidth[tid][ligs[tid].indexOf(input.charAt(currentletter3))] > 0 && ligdir[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] > 0) {
-                    rimg.replace(ccol, ligcol[tid][ligs[tid].indexOf(input.charAt(currentletter3))])
-                }
-                if (Math.abs(ligdir[tid][ligs[tid].indexOf(input.charAt(currentletter3))]) > 0 && Math.abs(ligdir[tid][ligs[tid].indexOf(input.charAt(Math.max(currentletter3 - 1, 0)))]) == 0) {
-                    sc = 1; wie = 0;
-                    while (sc > 0) {
-                        sc = 0
-                        for (let yh = 0; yh < rimg.height; yh++) {
-                            if (limg.getPixel((curwidt - letterspace) - wie, yh) == rimg.getPixel(rimg.width - 1, yh) && (limg.getPixel((curwidt - letterspace) - wie, yh) != 0 && limg.getPixel((curwidt - letterspace) - wie, yh) != 0)) {
-                                sc += 1
-                            }
-                        }
-                        if (sc > 0 || (sc == 0 && wie > 0)) {
-                            wie += 1
-                        }
-                    }
-                }
-                if (wie != 0) { wie = Math.abs(wie) }
-                drawTransparentImage(rimg, limg, curwidt - (nwidt + wie), 0 + (hvi - ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))].height))
-                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] == 0) {
-                    swidt = uwidt
-                } else {
-                    swidt = 0
-                }
-                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))] > 0) {
-                    curwidt += Math.abs(uwidt - nwidt)
-                }
-                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] > 0) {
-                    curwidt += letterspace
-                }
-            } else if (input.charAt(currentletter3) == " ") {
-                curwidt += 3 * letterspace
-            } else {
-                curwidt += 2 * letterspace
-            }
-            if (iwidt > 0) {
-                if (curwidt >= iwidt || findCommand(input, "n", currentletter3)) {
-                    if (alm < 0) {
-                        drawTransparentImage(limg.clone(), output, 0, hie)
-                    } else if (alm > 0) {
-                        drawTransparentImage(limg.clone(), output, Math.abs(output.width - limg.width), hie)
-                    } else if (alm == 0) {
-                        drawTransparentImage(limg.clone(), output, Math.abs((output.width / 2) - (limg.width / 2)), hie)
-                    }
-                    hgi += 1; limg = image.create(lnwit[hgi], heig);
-                    curwidt = 0; hie += hvi;
-                    if (findCommand(input, "n", currentletter3)) {
-                        currentletter3 += 2
-                    }
-                }
-            } else if (findCommand(input, "n", currentletter3)) {
-                currentletter3 += 2
-            }
-        }
-        if (alm < 0) {
-            drawTransparentImage(limg.clone(), output, 0, hie)
-        } else if (alm > 0) {
-            drawTransparentImage(limg.clone(), output, Math.abs(output.width - limg.width), hie)
-        } else if (alm == 0) {
-            drawTransparentImage(limg.clone(), output, Math.abs((output.width / 2) - (limg.width / 2)), hie)
-        }
-        if (icol > 0) {
-            for (let ico = 1; ico < 16; ico++) {
-                output.replace(ico, icol)
-            }
-        }
-        return output
-    }
-
-    //%blockid=ixfont_setimgframefromtext
-    //%block="create the image frame of |text $input in page width $iwidt from table id $tid ||and |fill col $icol and got alignment $alm and get debugalm $debugalm"
-    //%alm.min=-1 alm.max=1 alm.defl=0
-    //%icol.shadow=colorindexpicker
-    //%group="render"
-    export function SetTextImageArray(input: string, iwidt: number, tid: number, icol: number = 0, alm: number = 0, debugalm: boolean = false) {
-        let outputarr: Image[] = []; let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
-        for (let currentletter = 0; currentletter < input.length; currentletter++) {
-            if (!(ligs[tid].indexOf(input.charAt(currentletter)) < 0)) {
-                uwidt = ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter)))]
-                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter)))] <= 0) {
-                    nwidt = ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter)))].width
-                } else {
-                    nwidt = 0
-                }
-                if (uwidt > 0) {
-                    swidt = uwidt
-                } else {
-                    swidt = 0
-                }
-                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter)))] > 0) {
-                    wie += Math.abs(uwidt - nwidt)
-                }
-                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(Math.min(currentletter + 1, input.length - 1))))] > 0) {
-                    wie += letterspace
-                }
-                hvi = ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter)))].height
-            } else if (input.charAt(currentletter) == " ") {
-                wie += 3 * letterspace
-            } else {
-                wie += 2 * letterspace
-            }
-            heig = Math.max(heig, hie + hvi)
-            if (iwidt > 0) {
-                if (wie >= iwidt || findCommand(input, "n", currentletter)) {
-                    wie -= letterspace 
-                    hie += hvi; wie = 0;
+                    wie = 0;
                     if (findCommand(input, "n", currentletter)) {
                         currentletter += 2
                     }
@@ -419,7 +281,9 @@ namespace idxfont {
                 } else {
                     swidt = 0
                 }
-                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter2)))] > 0) {
+                if (Math.abs(ligsubw[tid][ligs[tid].indexOf(input.charAt(currentletter2))] - ligwidth[tid][ligs[tid].indexOf(input.charAt(currentletter2))]) > 0) {
+                    wie += ligsubw[tid][(ligs[tid].indexOf(input.charAt(currentletter2)))]
+                } else if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter2)))] > 0) {
                     wie += Math.abs(uwidt - nwidt)
                 }
                 if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] > 0) {
@@ -486,13 +350,19 @@ namespace idxfont {
                     }
                 }
                 if (wie != 0) { wie = Math.abs(wie) }
-                drawTransparentImage(rimg, limg, curwidt - (nwidt + wie), 0 + (hvi - ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))].height))
+                if (ligsubw[tid][ligs[tid].indexOf(input.charAt(currentletter3))] > 0 && Math.abs(ligsubw[tid][ligs[tid].indexOf(input.charAt(currentletter3))] - ligwidth[tid][ligs[tid].indexOf(input.charAt(currentletter3))]) > 0) {
+                    drawTransparentImage(rimg, limg, (curwidt - nwidt) - Math.abs(ligsubw[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] - ligwidth[tid][ligs[tid].indexOf(input.charAt(currentletter3))]), 0 + (hvi - ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))].height))
+                } else {
+                    drawTransparentImage(rimg, limg, curwidt - (nwidt + wie), 0 + (hvi - ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))].height))
+                }
                 if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] == 0) {
                     swidt = uwidt
                 } else {
                     swidt = 0
                 }
-                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))] > 0) {
+                if (Math.abs(ligsubw[tid][ligs[tid].indexOf(input.charAt(currentletter3))] - ligwidth[tid][ligs[tid].indexOf(input.charAt(currentletter3))]) > 0) {
+                    curwidt += ligsubw[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))]
+                } else if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))] > 0) {
                     curwidt += Math.abs(uwidt - nwidt)
                 }
                 if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] > 0) {
@@ -503,6 +373,7 @@ namespace idxfont {
             } else {
                 curwidt += 2 * letterspace
             }
+            uhei = Math.max(uhei, hvi)
             if (alm < 0) {
                 drawTransparentImage(limg.clone(), output, 0, hie)
             } else if (alm > 0) {
@@ -525,8 +396,224 @@ namespace idxfont {
                     } else if (alm == 0) {
                         drawTransparentImage(limg.clone(), output, Math.abs((output.width / 2) - (limg.width / 2)), hie)
                     }
-                    hgi += 1; limg = image.create(lnwit[hgi], heig);
-                    curwidt = 0; hie += hvi;
+                    hgi += 1; limg = image.create(lnwit[hgi], heig); curwidt = 0;
+                    if (uhei > hvi) {
+                        hie += uhei
+                    } else {
+                        hie += hvi
+                    }
+                    if (findCommand(input, "n", currentletter3)) {
+                        currentletter3 += 2
+                    }
+                }
+            } else if (findCommand(input, "n", currentletter3)) {
+                currentletter3 += 2
+            }
+        }
+        if (alm < 0) {
+            drawTransparentImage(limg.clone(), output, 0, hie)
+        } else if (alm > 0) {
+            drawTransparentImage(limg.clone(), output, Math.abs(output.width - limg.width), hie)
+        } else if (alm == 0) {
+            drawTransparentImage(limg.clone(), output, Math.abs((output.width / 2) - (limg.width / 2)), hie)
+        }
+        if (icol > 0) {
+            for (let ico = 1; ico < 16; ico++) {
+                output.replace(ico, icol)
+            }
+        }
+        outputarr.push(output.clone())
+        return output
+    }
+
+    //%blockid=ixfont_setimgframefromtext
+    //%block="create the image frame of |text $input in page width $iwidt from table id $tid ||and |fill col $icol and got alignment $alm and get debugalm $debugalm"
+    //%alm.min=-1 alm.max=1 alm.defl=0
+    //%icol.shadow=colorindexpicker
+    //%group="render"
+    export function SetTextImageArray(input: string, iwidt: number, tid: number, icol: number = 0, alm: number = 0, debugalm: boolean = false) {
+        let uhei = 0; let outputarr: Image[] = []; let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
+        for (let currentletter = 0; currentletter < input.length; currentletter++) {
+            if (!(ligs[tid].indexOf(input.charAt(currentletter)) < 0)) {
+                uwidt = ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter)))]
+                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter)))] <= 0) {
+                    nwidt = ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter)))].width
+                } else {
+                    nwidt = 0
+                }
+                if (uwidt > 0) {
+                    swidt = uwidt
+                } else {
+                    swidt = 0
+                }
+                if (Math.abs(ligsubw[tid][ligs[tid].indexOf(input.charAt(currentletter))] - ligwidth[tid][ligs[tid].indexOf(input.charAt(currentletter))]) > 0) {
+                    wie += ligsubw[tid][(ligs[tid].indexOf(input.charAt(currentletter)))]
+                } else if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter)))] > 0) {
+                    wie += Math.abs(uwidt - nwidt)
+                }
+                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(Math.min(currentletter + 1, input.length - 1))))] > 0) {
+                    wie += letterspace
+                }
+                hvi = ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter)))].height
+            } else if (input.charAt(currentletter) == " ") {
+                wie += 3 * letterspace
+            } else {
+                wie += 2 * letterspace
+            }
+            uhei = Math.max(uhei, hvi)
+            heig = Math.max(heig, hie + hvi)
+            if (iwidt > 0) {
+                if (wie >= iwidt || findCommand(input, "n", currentletter)) {
+                    wie -= letterspace 
+                    if (uhei > hvi) {
+                        hie += uhei
+                    } else {
+                        hie += hvi
+                    }
+                    wie = 0;
+                    if (findCommand(input, "n", currentletter)) {
+                        currentletter += 2
+                    }
+                }
+            } else if (findCommand(input, "n", currentletter)) {
+                currentletter += 2
+            }
+        }
+        wie = 0; widt = 0; let hix = 0;
+        for (let currentletter2 = 0; currentletter2 < input.length; currentletter2++) {
+            if (!(ligs[tid].indexOf(input.charAt(currentletter2)) < 0)) {
+                uwidt = ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter2)))]
+                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter2)))] <= 0) {
+                    nwidt = ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter2)))].width
+                } else {
+                    nwidt = 0
+                }
+                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] <= 0) {
+                    swidt = uwidt
+                } else {
+                    swidt = 0
+                }
+                if (Math.abs(ligsubw[tid][ligs[tid].indexOf(input.charAt(currentletter2))] - ligwidth[tid][ligs[tid].indexOf(input.charAt(currentletter2))]) > 0) {
+                    wie += ligsubw[tid][(ligs[tid].indexOf(input.charAt(currentletter2)))]
+                } else if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter2)))] > 0) {
+                    wie += Math.abs(uwidt - nwidt)
+                }
+                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(Math.min(currentletter2 + 1, input.length - 1))))] > 0) {
+                    wie += letterspace
+                }
+            } else if (input.charAt(currentletter2) == " ") {
+                wie += 3 * letterspace
+            } else {
+                wie += 2 * letterspace
+            }
+            if (false) { widt = Math.max(widt, wie) }
+            if (iwidt > 0) {
+                if (wie >= iwidt || findCommand(input, "n", currentletter2)) {
+                    wie -= letterspace
+                    if (debugalm && findCommand(input, "n", currentletter2)) {
+                        wie -= (3 * letterspace) + letterspace; widt = Math.max(widt, wie)
+                    } else {
+                        widt = Math.max(widt, wie)
+                    }
+                    lnwit.push(wie); wie = 0; hix += 1
+                    if (findCommand(input, "n", currentletter2)) {
+                        currentletter2 += 2
+                    }
+                } else {
+                    widt = Math.max(widt, wie)
+                }
+            } else if (findCommand(input, "n", currentletter2)) {
+                widt = Math.max(widt, wie); currentletter2 += 2;
+            } else {
+                widt = Math.max(widt, wie)
+            }
+        }
+        if (hix > 0 && debugalm) { wie += letterspace + (3 * letterspace) }; wie -= letterspace; lnwit.push(wie);
+        let hgi = 0; let limg = image.create(lnwit[hgi], heig); let scwidt = true; let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); hie = 0; wie = 0; curwidt = 0;
+        for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
+            wie = 0
+            if (!(ligs[tid].indexOf(input.charAt(currentletter3)) < 0)) {
+                hvi = ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))].height; uwidt = ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))];
+                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))] <= 0) {
+                    nwidt = ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))].width
+                } else {
+                    nwidt = 0
+                }
+                scwidt = false; scnwidt = false; wie = 0; rimg = ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))].clone(); let ccol = ligul[tid][ligs[tid].indexOf(input.charAt(currentletter3))];
+                if (ligwidth[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] > 0 && ligdir[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] == 0) {
+                    rimg.replace(ccol, ligcol[tid][ligs[tid].indexOf(input.charAt(currentletter3))])
+                } else if (ligwidth[tid][ligs[tid].indexOf(input.charAt(currentletter3))] > 0 && ligdir[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] < 0) {
+                    rimg.replace(ccol, 0)
+                } else if (ligwidth[tid][ligs[tid].indexOf(input.charAt(currentletter3))] > 0 && ligdir[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] > 0) {
+                    rimg.replace(ccol, ligcol[tid][ligs[tid].indexOf(input.charAt(currentletter3))])
+                }
+                if (Math.abs(ligdir[tid][ligs[tid].indexOf(input.charAt(currentletter3))]) > 0 && Math.abs(ligdir[tid][ligs[tid].indexOf(input.charAt(Math.max(currentletter3 - 1, 0)))]) == 0) {
+                    sc = 1; wie = 0;
+                    while (sc > 0) {
+                        sc = 0
+                        for (let yh = 0; yh < rimg.height; yh++) {
+                            if (limg.getPixel((curwidt - letterspace) - wie, yh) == rimg.getPixel(rimg.width - 1, yh) && (limg.getPixel((curwidt - letterspace) - wie, yh) != 0 && limg.getPixel((curwidt - letterspace) - wie, yh) != 0)) {
+                                sc += 1
+                            }
+                        }
+                        if (sc > 0 || (sc == 0 && wie > 0)) {
+                            wie += 1
+                        }
+                    }
+                }
+                if (wie != 0) { wie = Math.abs(wie) }
+                if (ligsubw[tid][ligs[tid].indexOf(input.charAt(currentletter3))] > 0 && Math.abs(ligsubw[tid][ligs[tid].indexOf(input.charAt(currentletter3))] - ligwidth[tid][ligs[tid].indexOf(input.charAt(currentletter3))]) > 0) {
+                    drawTransparentImage(rimg, limg, (curwidt - nwidt) - Math.abs(ligsubw[tid][ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1)))] - ligwidth[tid][ligs[tid].indexOf(input.charAt(currentletter3))]), 0 + (hvi - ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))].height))
+                } else {
+                    drawTransparentImage(rimg, limg, curwidt - (nwidt + wie), 0 + (hvi - ligages[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))].height))
+                }
+                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] == 0) {
+                    swidt = uwidt
+                } else {
+                    swidt = 0
+                }
+                if (Math.abs(ligsubw[tid][ligs[tid].indexOf(input.charAt(currentletter3))] - ligwidth[tid][ligs[tid].indexOf(input.charAt(currentletter3))]) > 0) {
+                    curwidt += ligsubw[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))]
+                } else if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(currentletter3)))] > 0) {
+                    curwidt += Math.abs(uwidt - nwidt)
+                }
+                if (ligwidth[tid][(ligs[tid].indexOf(input.charAt(Math.min(currentletter3 + 1, input.length - 1))))] > 0) {
+                    curwidt += letterspace
+                }
+            } else if (input.charAt(currentletter3) == " ") {
+                curwidt += 3 * letterspace
+            } else {
+                curwidt += 2 * letterspace
+            }
+            uhei = Math.max(uhei, hvi)
+            if (alm < 0) {
+                drawTransparentImage(limg.clone(), output, 0, hie)
+            } else if (alm > 0) {
+                drawTransparentImage(limg.clone(), output, Math.abs(output.width - limg.width), hie)
+            } else if (alm == 0) {
+                drawTransparentImage(limg.clone(), output, Math.abs((output.width / 2) - (limg.width / 2)), hie)
+            }
+            if (icol > 0) {
+                for (let ico = 1; ico < 16; ico++) {
+                    output.replace(ico, icol)
+                }
+            }
+            outputarr.push(output.clone())
+            if (iwidt > 0) {
+                if (curwidt >= iwidt || findCommand(input, "n", currentletter3)) {
+                    if (alm < 0) {
+                        drawTransparentImage(limg.clone(), output, 0, hie)
+                    } else if (alm > 0) {
+                        drawTransparentImage(limg.clone(), output, Math.abs(output.width - limg.width), hie)
+                    } else if (alm == 0) {
+                        drawTransparentImage(limg.clone(), output, Math.abs((output.width / 2) - (limg.width / 2)), hie)
+                    }
+                    hgi += 1; limg = image.create(lnwit[hgi], heig); curwidt = 0;
+                    if (uhei > hvi) {
+                        hie += uhei
+                    } else {
+                        hie += hvi
+                    }
                     if (findCommand(input, "n", currentletter3)) {
                         currentletter3 += 2
                     }
@@ -726,6 +813,7 @@ namespace idxfont {
                     "§!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~°©®",
                     "",
                     "",
+                    "",
                     8,
                     16,
                     1,
@@ -736,122 +824,123 @@ namespace idxfont {
                 setCharFromSheet(
                     tid,
                     img`
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-11fff1111ff11f111f1f1f1111fff11111f1f1111f1f11f11111ff1111fff1111fff11111ff11f111f1f1f111ff11f111ff11f1111fff11
-1f111f111f1f1f111fff1f111f111f111f1f1f111fff11f111111f111f111f11f111f1111f1f1f111fff1f11f11f1f11f11f1f111f111f1
-11f11f11111f1f11111f1f111f111f111f111f11111f11f11f111f1111111f111111f111111ff111111ff1111f1f1f111f1f1f1111f11f1
-1f111f1111f11f1111f11f111fff1f111fff1f11111f11f111f11f1111ff1f11ff11f11111f11f1111f11f11f11f1f11f11f1f1111f11f1
-1f111f111f111f111f111f111f111f111f111f11111f11f1111f1f11111f1f111f11f1111f111f111f111f11f11f1f11f11f1f1111f11f1
-1f111f111f111f111f111f111f111f111f111f1111fff1f11111ff11111f1f111f1fff111f111f111f111f11f1ffff11ff1f1f111ff11f1
-1f111f1111fff11111fff1111f111f111f111f1111ff1ff111111f111111ff111ff1ff1111fff11111fff111f1ff1f11ff1fff111ff11f1
-1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f1
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111113113111fffff1
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111113331111fff1f1
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f111111111
-11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f111111111
-11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f111111111
-11fff11111fff111f1f1ff11f11f1f111ff11f1111fff11111f1f11111fff111ff1ff11111ffff11ff11f111ff111f11ff111f111ff11f1
-1f111f111fff1111ffff11f1ffff1f11f11f1f111f111f111f1f1f111f111f111ff11f111f1111111f11f1111f111f111f111f111f111f1
-11f11f111111f11111f111f1f11f1f111f1f1f111f111f111f111f1111f11f111f111f1111ffff111f11f1111f111f111f111f111f111f1
-11f11f111ff1f11111f111f1f11f1f11f11f1f111fff1f111fff1f111f111f111f111f1111111f111f11f1111f111f111f111f111f111f1
-11f11f1111f1f11111f111f1f11f1f11f11f1f111f1f1f111f1f1f111f111f111f111f1111f11f111f11f1111f111f111f111f111f1f1f1
-1ff11f1111f1f11111f111f1f1ffff11ff1ffff11f1f1f111f1f1f111ff11f111f111f1111f11f111f1fff111f111f111f111f111ff1ff1
-1ff11f1111ff111111f111f1f1ff1f11ff1f1ff11ff11f111ff11f111ff11f111f111f1111ffff111ff1ff111fffff111fffff111f111f1
-11111f111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-1ff1ff111331311111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-1f1f1f111313311111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-11111f111111111111111f11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-11111f111111111111111f1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f
-11111f111111111111111f1111111111111111111111111111111111111111111111111111111f111111111111111f111111111111111f1
-1ff11f11ff111f11ff111f1111fff111ff11f111ff11f11111ff111111fff11111fff11111fff111ff111f1111fff111ff11ff11ff11ff1
-1f111f111f111f111f111f111f111f111f11f111f111f1111f11f1111f111f111f111f111f1f1f111f111f111f1f1f111f11f1111f111f1
-1f111f111f1f1f111f1f1f1111f11f111f11f111f111f11111f1111111111f1111111f111f111f111f1f1f1111111f111f1f1f111f1f1f1
-1f111f111f1f1f111f1f1f1111f11f111f11f1111ff1f111111f111111ff1f1111111f111fff1f111f1ffff111ff1f111ff11f111f1f1f1
-1f1f1f111ff1ff111ff1ff1111f11f111f11f111f111f111111f11111f11ff1111111f111f111f111f111f111f11ff111f111f111ff1ff1
-1ff1ff111ff1ff111ff1ff111ff11f11fff1f111f111f111111f11111f111f111111ff111f111f111f111f111f111f111f111f111ff1ff1
-1f111f111f111f111f111f111ff11f11ff1ff111fffff11111ff11111ff11f111111ff111f111f111fffff111ff11f111f111f111f111f1
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-11111111111111111111111111111111111111111111111111fff11111ff11111f11f111111111111111111111111111111111111111111
-1111111111111111111111111111111111111111111111111f1111111f11f1111f1ff1111111111111111111111111111111111111111f1
-11111111111111111111111111111111111111111111111111f111111f11f11111f1f1111111111111111111111111111f111f111ffff11
-111111111111111111111111111111111111111111111111111f111111f1f1111111f1111111111111111111111111111ffff1111ff1ff1
-1111111111111f1111111111111111111111111111111111111f11111111f1111111f111111111111111111111111111111111111111111
-11fff1111ffff1111111111111fff1111111f1111f11f111111f11111111f1111111f11111fff11111fff11111fff111111111111111111
-1f111f111fff1f111ff11f111f111f111111f1111f11f111111f11111111f1111111f1111f111f111f111f111f111f11111111111111111
-11111f1111111f1111fff11111111f111111f1111f11f111111f11111111f1111111f11111f11f1111f11f1111111f11111111111111111
-1ff11f111ff11f111111111111111f111111f1111f11f111111f11111111f1111111f1111f111f1111f11f1111111f11111111111111111
-1f111f111f111f111ff11f1111111f111111f1111f11f111111f11111111f1111111f1111f111f1111f11f1111111f11111111111111111
-1f111f111f111f1111fff11111111f111111ff111ff1ff11111ff1111111ff111111ff111ff11f111ff11f1111111f11111111111111111
-1fffff111fffff111111111111111f111111ff111ff1ff11111ff1111111ff111111ff111ff11f111ff11f1111111f11111111111111111
-11111111111111111111111111111111111111111111111111111111111111111111111111111f1111111f1111111f11111111111111111
-11111111111111111111111111111111111111111111111111111111111111111111111111111f1111111f1111111f11111111111111111
-11111111111111111111111111111111111111111111111111111111111111111111111111111f1111111f1111111f11111111111111111
-11111111111111111111111111111111111111111111111111111111111ff111111f111111ff11111fff1f11111f1111111111111111111
-11111111111111111111111111111111111111111111111111111111111f1111111f1111111ff1111f1ff11111fff111111111111111111
-1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f1111111111111111111
-11ff11111111111111111f111111ff11111f1f1111111111111111111111111111111111111111111111111111111111ff1111111111111
-11ff11111fffff111fffff111fffff111fffff1111111111111111111111111111111111111111111111111111111111ff1111111111111
-11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111fff111ffff11
-11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f111f11f1f1f1
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f11f1f1f1
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f11ffff11
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f11f1f1f1
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f11f1f1f1
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f11ffff11
-11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f111
-111111111111111111111111111111111111111111ff111111f1f1111111111111111111111111111111111111111111111111111111111
-1111111111111111111111111111111111111111111f1111111ff1111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-1111111111111111f1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-11111111111111111f111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-11111111111111111f111111111111111111f11111f1f1111f111111111111f111111f1111111f111111111111111111111111111111111
-1ffff1111ffff1111f1f1f111ff1f1111fff11111fff111111f111111f1f11f111fff1111111f1111111111111111111111111111111111
-f1111f11f1111f111f1fff11f11f1f11f1111111f1111111111ff111f1f1f1f11f1111111fff11111111111111111111111111111111111
-f1111f11f1ff1f111f111f11f11f1f11f1111111f111111111111f11f1f1f1f1f1111111f11f11111111111111111111111111111111111
-f1111f11f1ff1f111f111f11f11f1f11f1ff1111f1ff11111ff11f11f1f1f1f1f111f111f111f1111111111111111111111111111111111
-f1111f11f11f1f111f111f11f11f1f11f1f11111f1f111111f111f11f1f1f1f1f1f1f111ff11f1111111111111111111111111111111111
-1ffff1111ff11f111fffff11ff1f1f111ffff1111ffff11111fff111f1f1ff111f1ff111ff111f111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-`,
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        11fff1111ff11f111f1f1f1111fff11111f1f1111f1f11f11111ff1111fff1111fff11111ff11f111f1f1f111ff11f111ff11f1111fff11
+                        1f111f111f1f1f111fff1f111f111f111f1f1f111fff11f111111f111f111f11f111f1111f1f1f111fff1f11f11f1f11f11f1f111f111f1
+                        11f11f11111f1f11111f1f111f111f111f111f11111f11f11f111f1111111f111111f111111ff111111ff1111f1f1f111f1f1f1111f11f1
+                        1f111f1111f11f1111f11f111fff1f111fff1f11111f11f111f11f1111ff1f11ff11f11111f11f1111f11f11f11f1f11f11f1f1111f11f1
+                        1f111f111f111f111f111f111f111f111f111f11111f11f1111f1f11111f1f111f11f1111f111f111f111f11f11f1f11f11f1f1111f11f1
+                        1f111f111f111f111f111f111f111f111f111f1111fff1f11111ff11111f1f111f1fff111f111f111f111f11f1ffff11ff1f1f111ff11f1
+                        1f111f1111fff11111fff1111f111f111f111f1111ff1ff111111f111111ff111ff1ff1111fff11111fff111f1ff1f11ff1fff111ff11f1
+                        1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f1
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111113113111fffff1
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111113331111fff1f1
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f111111111
+                        11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f111111111
+                        11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f111111111
+                        11fff11111fff111f1f1ff11f11f1f111ff11f1111fff11111f1f11111fff111ff1ff11111ffff11ff11f111ff111f11ff111f111ff11f1
+                        1f111f111fff1111ffff11f1ffff1f11f11f1f111f111f111f1f1f111f111f111ff11f111f1111111f11f1111f111f111f111f111f111f1
+                        11f11f111111f11111f111f1f11f1f111f1f1f111f111f111f111f1111f11f111f111f1111ffff111f11f1111f111f111f111f111f111f1
+                        11f11f111ff1f11111f111f1f11f1f11f11f1f111fff1f111fff1f111f111f111f111f1111111f111f11f1111f111f111f111f111f111f1
+                        11f11f1111f1f11111f111f1f11f1f11f11f1f111f1f1f111f1f1f111f111f111f111f1111f11f111f11f1111f111f111f111f111f1f1f1
+                        1ff11f1111f1f11111f111f1f1ffff11ff1ffff11f1f1f111f1f1f111ff11f111f111f1111f11f111f1fff111f111f111f111f111ff1ff1
+                        1ff11f1111ff111111f111f1f1ff1f11ff1f1ff11ff11f111ff11f111ff11f111f111f1111ffff111ff1ff111fffff111fffff111f111f1
+                        11111f111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        1ff1ff111331311111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        1f1f1f111313311111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        11111f111111111111111f11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        11111f111111111111111f1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f
+                        11111f111111111111111f1111111111111111111111111111111111111111111111111111111f111111111111111f111111111111111f1
+                        1ff11f11ff111f11ff111f1111fff111ff11f111ff11f11111ff111111fff11111fff11111fff111ff111f1111fff111ff11ff11ff11ff1
+                        1f111f111f111f111f111f111f111f111f11f111f111f1111f11f1111f111f111f111f111f1f1f111f111f111f1f1f111f11f1111f111f1
+                        1f111f111f1f1f111f1f1f1111f11f111f11f111f111f11111f1111111111f1111111f111f111f111f1f1f1111111f111f1f1f111f1f1f1
+                        1f111f111f1f1f111f1f1f1111f11f111f11f1111ff1f111111f111111ff1f1111111f111fff1f111f1ffff111ff1f111ff11f111f1f1f1
+                        1f1f1f111ff1ff111ff1ff1111f11f111f11f111f111f111111f11111f11ff1111111f111f111f111f111f111f11ff111f111f111ff1ff1
+                        1ff1ff111ff1ff111ff1ff111ff11f11fff1f111f111f111111f11111f111f111111ff111f111f111f111f111f111f111f111f111ff1ff1
+                        1f111f111f111f111f111f111ff11f11ff1ff111fffff11111ff11111ff11f111111ff111f111f111fffff111ff11f111f111f111f111f1
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        11111111111111111111111111111111111111111111111111fff11111ff11111f11f111111111111111111111111111111111111111111
+                        1111111111111111111111111111111111111111111111111f1111111f11f1111f1ff1111111111111111111111111111111111111111f1
+                        11111111111111111111111111111111111111111111111111f111111f11f11111f1f1111111111111111111111111111f111f111ffff11
+                        111111111111111111111111111111111111111111111111111f111111f1f1111111f1111111111111111111111111111ffff1111ff1ff1
+                        1111111111111f1111111111111111111111111111111111111f11111111f1111111f111111111111111111111111111111111111111111
+                        11fff1111ffff1111111111111fff1111111f1111f11f111111f11111111f1111111f11111fff11111fff11111fff111111111111111111
+                        1f111f111fff1f111ff11f111f111f111111f1111f11f111111f11111111f1111111f1111f111f111f111f111f111f11111111111111111
+                        11111f1111111f1111fff11111111f111111f1111f11f111111f11111111f1111111f11111f11f1111f11f1111111f11111111111111111
+                        1ff11f111ff11f111111111111111f111111f1111f11f111111f11111111f1111111f1111f111f1111f11f1111111f11111111111111111
+                        1f111f111f111f111ff11f1111111f111111f1111f11f111111f11111111f1111111f1111f111f1111f11f1111111f11111111111111111
+                        1f111f111f111f1111fff11111111f111111ff111ff1ff11111ff1111111ff111111ff111ff11f111ff11f1111111f11111111111111111
+                        1fffff111fffff111111111111111f111111ff111ff1ff11111ff1111111ff111111ff111ff11f111ff11f1111111f11111111111111111
+                        11111111111111111111111111111111111111111111111111111111111111111111111111111f1111111f1111111f11111111111111111
+                        11111111111111111111111111111111111111111111111111111111111111111111111111111f1111111f1111111f11111111111111111
+                        11111111111111111111111111111111111111111111111111111111111111111111111111111f1111111f1111111f11111111111111111
+                        11111111111111111111111111111111111111111111111111111111111ff111111f111111ff11111fff1f11111f1111111111111111111
+                        11111111111111111111111111111111111111111111111111111111111f1111111f1111111ff1111f1ff11111fff111111111111111111
+                        1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f1111111111111111111
+                        11ff11111111111111111f111111ff11111f1f1111111111111111111111111111111111111111111111111111111111ff1111111111111
+                        11ff11111fffff111fffff111fffff111fffff1111111111111111111111111111111111111111111111111111111111ff1111111111111
+                        11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f111
+                        1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111fff11ffff11
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f111f1f1f1f1
+                        1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f1f1f1f1
+                        1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f1ffff11
+                        1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f1f1f1f1
+                        1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f1f1f1f1
+                        1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f1ffff11
+                        11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f111
+                        111111111111111111111111111111111111111111ff111111f1f1111111111111111111111111111111111111111111111111111111111
+                        1111111111111111111111111111111111111111111f1111111ff1111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        1111111111111111f1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        11111111111111111f111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        11111111111111111f111111111111111111f11111f1f1111f111111111111f111111f1111111f111111111111111111111111111111111
+                        1ffff1111ffff1111f1f1f111ff1f1111fff11111fff111111f111111f1f11f111fff1111111f1111111111111111111111111111111111
+                        f1111f11f1111f111f1fff11f11f1f11f1111111f1111111111ff111f1f1f1f11f1111111fff11111111111111111111111111111111111
+                        f1111f11f1ff1f111f111f11f11f1f11f1111111f111111111111f11f1f1f1f1f1111111f11f11111111111111111111111111111111111
+                        f1111f11f1ff1f111f111f11f11f1f11f1ff1111f1ff11111ff11f11f1f1f1f1f111f111f111f1111111111111111111111111111111111
+                        f1111f11f11f1f111f111f11f11f1f11f1f11111f1f111111f111f11f1f1f1f1f1f1f111ff11f1111111111111111111111111111111111
+                        1ffff1111ff11f111fffff11ff1f1f111ffff1111ffff11111fff111f1f1ff111f1ff111ff111f111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                    `,
                     "กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรลวศษสหฬอฮะาเแโใไฤฦๅั็ํิีึืุู์่้๊๋ำ฿๐๑๒๓๔๕๖๗๘๙",
                     "ั็ํิีึืุู์่้๊๋",
                     "ั็ํิีึื์่้๊๋",
+                    "ำ",
                     8,
                     16,
                     1,
@@ -978,6 +1067,7 @@ f1111f11f11f1f111f111f11f11f1f11f1f11111f1f111111f111f11f1f1f1f1f1f1f111ff11f111
             111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
         `,
                     "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~",
+                    "",
                     "",
                     "",
                     8,
@@ -1108,6 +1198,7 @@ f1111f11f11f1f111f111f11f11f1f11f1f11111f1f111111f111f11f1f1f1f1f1f1f111ff11f111
                     "§!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~°©®",
                     "",
                     "",
+                    "",
                     8,
                     16,
                     1,
@@ -1118,122 +1209,123 @@ f1111f11f11f1f111f111f11f11f1f11f1f11111f1f111111f111f11f1f1f1f1f1f1f111ff11f111
                 setCharFromSheet(
                     tid,
                     img`
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-11fff1111ff11f111f1f1f1111fff11111f1f1111f1f11f11111ff1111fff1111fff11111ff11f111f1f1f111ff11f111ff11f1111fff11
-1f111f111f1f1f111fff1f111f111f111f1f1f111fff11f111111f111f111f11f111f1111f1f1f111fff1f11f11f1f11f11f1f111f111f1
-11f11f11111f1f11111f1f111f111f111f111f11111f11f11f111f1111111f111111f111111ff111111ff1111f1f1f111f1f1f1111f11f1
-1f111f1111f11f1111f11f111fff1f111fff1f11111f11f111f11f1111ff1f11ff11f11111f11f1111f11f11f11f1f11f11f1f1111f11f1
-1f111f111f111f111f111f111f111f111f111f11111f11f1111f1f11111f1f111f11f1111f111f111f111f11f11f1f11f11f1f1111f11f1
-1f111f111f111f111f111f111f111f111f111f1111fff1f11111ff11111f1f111f1fff111f111f111f111f11f1ffff11ff1f1f111ff11f1
-1f111f1111fff11111fff1111f111f111f111f1111ff1ff111111f111111ff111ff1ff1111fff11111fff111f1ff1f11ff1fff111ff11f1
-1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f1
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111113113111fffff1
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111113331111fff1f1
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f111111111
-11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f111111111
-11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f111111111
-11fff11111fff111f1f1ff11f11f1f111ff11f1111fff11111f1f11111fff111ff1ff11111ffff11ff11f111ff111f11ff111f111ff11f1
-1f111f111fff1111ffff11f1ffff1f11f11f1f111f111f111f1f1f111f111f111ff11f111f1111111f11f1111f111f111f111f111f111f1
-11f11f111111f11111f111f1f11f1f111f1f1f111f111f111f111f1111f11f111f111f1111ffff111f11f1111f111f111f111f111f111f1
-11f11f111ff1f11111f111f1f11f1f11f11f1f111fff1f111fff1f111f111f111f111f1111111f111f11f1111f111f111f111f111f111f1
-11f11f1111f1f11111f111f1f11f1f11f11f1f111f1f1f111f1f1f111f111f111f111f1111f11f111f11f1111f111f111f111f111f1f1f1
-1ff11f1111f1f11111f111f1f1ffff11ff1ffff11f1f1f111f1f1f111ff11f111f111f1111f11f111f1fff111f111f111f111f111ff1ff1
-1ff11f1111ff111111f111f1f1ff1f11ff1f1ff11ff11f111ff11f111ff11f111f111f1111ffff111ff1ff111fffff111fffff111f111f1
-11111f111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-1ff1ff111331311111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-1f1f1f111313311111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-11111f111111111111111f11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-11111f111111111111111f1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f
-11111f111111111111111f1111111111111111111111111111111111111111111111111111111f111111111111111f111111111111111f1
-1ff11f11ff111f11ff111f1111fff111ff11f111ff11f11111ff111111fff11111fff11111fff111ff111f1111fff111ff11ff11ff11ff1
-1f111f111f111f111f111f111f111f111f11f111f111f1111f11f1111f111f111f111f111f1f1f111f111f111f1f1f111f11f1111f111f1
-1f111f111f1f1f111f1f1f1111f11f111f11f111f111f11111f1111111111f1111111f111f111f111f1f1f1111111f111f1f1f111f1f1f1
-1f111f111f1f1f111f1f1f1111f11f111f11f1111ff1f111111f111111ff1f1111111f111fff1f111f1ffff111ff1f111ff11f111f1f1f1
-1f1f1f111ff1ff111ff1ff1111f11f111f11f111f111f111111f11111f11ff1111111f111f111f111f111f111f11ff111f111f111ff1ff1
-1ff1ff111ff1ff111ff1ff111ff11f11fff1f111f111f111111f11111f111f111111ff111f111f111f111f111f111f111f111f111ff1ff1
-1f111f111f111f111f111f111ff11f11ff1ff111fffff11111ff11111ff11f111111ff111f111f111fffff111ff11f111f111f111f111f1
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-11111111111111111111111111111111111111111111111111fff11111ff11111f11f111111111111111111111111111111111111111111
-1111111111111111111111111111111111111111111111111f1111111f11f1111f1ff1111111111111111111111111111111111111111f1
-11111111111111111111111111111111111111111111111111f111111f11f11111f1f1111111111111111111111111111f111f111ffff11
-111111111111111111111111111111111111111111111111111f111111f1f1111111f1111111111111111111111111111ffff1111ff1ff1
-1111111111111f1111111111111111111111111111111111111f11111111f1111111f111111111111111111111111111111111111111111
-11fff1111ffff1111111111111fff1111111f1111f11f111111f11111111f1111111f11111fff11111fff11111fff111111111111111111
-1f111f111fff1f111ff11f111f111f111111f1111f11f111111f11111111f1111111f1111f111f111f111f111f111f11111111111111111
-11111f1111111f1111fff11111111f111111f1111f11f111111f11111111f1111111f11111f11f1111f11f1111111f11111111111111111
-1ff11f111ff11f111111111111111f111111f1111f11f111111f11111111f1111111f1111f111f1111f11f1111111f11111111111111111
-1f111f111f111f111ff11f1111111f111111f1111f11f111111f11111111f1111111f1111f111f1111f11f1111111f11111111111111111
-1f111f111f111f1111fff11111111f111111ff111ff1ff11111ff1111111ff111111ff111ff11f111ff11f1111111f11111111111111111
-1fffff111fffff111111111111111f111111ff111ff1ff11111ff1111111ff111111ff111ff11f111ff11f1111111f11111111111111111
-11111111111111111111111111111111111111111111111111111111111111111111111111111f1111111f1111111f11111111111111111
-11111111111111111111111111111111111111111111111111111111111111111111111111111f1111111f1111111f11111111111111111
-11111111111111111111111111111111111111111111111111111111111111111111111111111f1111111f1111111f11111111111111111
-11111111111111111111111111111111111111111111111111111111111ff111111f111111ff11111fff1f11111f1111111111111111111
-11111111111111111111111111111111111111111111111111111111111f1111111f1111111ff1111f1ff11111fff111111111111111111
-1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f1111111111111111111
-11ff11111111111111111f111111ff11111f1f1111111111111111111111111111111111111111111111111111111111ff1111111111111
-11ff11111fffff111fffff111fffff111fffff1111111111111111111111111111111111111111111111111111111111ff1111111111111
-11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111fff111ffff11
-11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f111f11f1f1f1
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f11f1f1f1
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f11ffff11
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f11f1f1f1
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f11f1f1f1
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f11ffff11
-11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f111
-111111111111111111111111111111111111111111ff111111f1f1111111111111111111111111111111111111111111111111111111111
-1111111111111111111111111111111111111111111f1111111ff1111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-1111111111111111f1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-11111111111111111f111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-11111111111111111f111111111111111111f11111f1f1111f111111111111f111111f1111111f111111111111111111111111111111111
-1ffff1111ffff1111f1f1f111ff1f1111fff11111fff111111f111111f1f11f111fff1111111f1111111111111111111111111111111111
-f1111f11f1111f111f1fff11f11f1f11f1111111f1111111111ff111f1f1f1f11f1111111fff11111111111111111111111111111111111
-f1111f11f1ff1f111f111f11f11f1f11f1111111f111111111111f11f1f1f1f1f1111111f11f11111111111111111111111111111111111
-f1111f11f1ff1f111f111f11f11f1f11f1ff1111f1ff11111ff11f11f1f1f1f1f111f111f111f1111111111111111111111111111111111
-f1111f11f11f1f111f111f11f11f1f11f1f11111f1f111111f111f11f1f1f1f1f1f1f111ff11f1111111111111111111111111111111111
-1ffff1111ff11f111fffff11ff1f1f111ffff1111ffff11111fff111f1f1ff111f1ff111ff111f111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-`,
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        11fff1111ff11f111f1f1f1111fff11111f1f1111f1f11f11111ff1111fff1111fff11111ff11f111f1f1f111ff11f111ff11f1111fff11
+                        1f111f111f1f1f111fff1f111f111f111f1f1f111fff11f111111f111f111f11f111f1111f1f1f111fff1f11f11f1f11f11f1f111f111f1
+                        11f11f11111f1f11111f1f111f111f111f111f11111f11f11f111f1111111f111111f111111ff111111ff1111f1f1f111f1f1f1111f11f1
+                        1f111f1111f11f1111f11f111fff1f111fff1f11111f11f111f11f1111ff1f11ff11f11111f11f1111f11f11f11f1f11f11f1f1111f11f1
+                        1f111f111f111f111f111f111f111f111f111f11111f11f1111f1f11111f1f111f11f1111f111f111f111f11f11f1f11f11f1f1111f11f1
+                        1f111f111f111f111f111f111f111f111f111f1111fff1f11111ff11111f1f111f1fff111f111f111f111f11f1ffff11ff1f1f111ff11f1
+                        1f111f1111fff11111fff1111f111f111f111f1111ff1ff111111f111111ff111ff1ff1111fff11111fff111f1ff1f11ff1fff111ff11f1
+                        1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f1
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111113113111fffff1
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111113331111fff1f1
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f111111111
+                        11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f111111111
+                        11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f111111111
+                        11fff11111fff111f1f1ff11f11f1f111ff11f1111fff11111f1f11111fff111ff1ff11111ffff11ff11f111ff111f11ff111f111ff11f1
+                        1f111f111fff1111ffff11f1ffff1f11f11f1f111f111f111f1f1f111f111f111ff11f111f1111111f11f1111f111f111f111f111f111f1
+                        11f11f111111f11111f111f1f11f1f111f1f1f111f111f111f111f1111f11f111f111f1111ffff111f11f1111f111f111f111f111f111f1
+                        11f11f111ff1f11111f111f1f11f1f11f11f1f111fff1f111fff1f111f111f111f111f1111111f111f11f1111f111f111f111f111f111f1
+                        11f11f1111f1f11111f111f1f11f1f11f11f1f111f1f1f111f1f1f111f111f111f111f1111f11f111f11f1111f111f111f111f111f1f1f1
+                        1ff11f1111f1f11111f111f1f1ffff11ff1ffff11f1f1f111f1f1f111ff11f111f111f1111f11f111f1fff111f111f111f111f111ff1ff1
+                        1ff11f1111ff111111f111f1f1ff1f11ff1f1ff11ff11f111ff11f111ff11f111f111f1111ffff111ff1ff111fffff111fffff111f111f1
+                        11111f111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        1ff1ff111331311111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        1f1f1f111313311111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        11111f111111111111111f11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        11111f111111111111111f1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f
+                        11111f111111111111111f1111111111111111111111111111111111111111111111111111111f111111111111111f111111111111111f1
+                        1ff11f11ff111f11ff111f1111fff111ff11f111ff11f11111ff111111fff11111fff11111fff111ff111f1111fff111ff11ff11ff11ff1
+                        1f111f111f111f111f111f111f111f111f11f111f111f1111f11f1111f111f111f111f111f1f1f111f111f111f1f1f111f11f1111f111f1
+                        1f111f111f1f1f111f1f1f1111f11f111f11f111f111f11111f1111111111f1111111f111f111f111f1f1f1111111f111f1f1f111f1f1f1
+                        1f111f111f1f1f111f1f1f1111f11f111f11f1111ff1f111111f111111ff1f1111111f111fff1f111f1ffff111ff1f111ff11f111f1f1f1
+                        1f1f1f111ff1ff111ff1ff1111f11f111f11f111f111f111111f11111f11ff1111111f111f111f111f111f111f11ff111f111f111ff1ff1
+                        1ff1ff111ff1ff111ff1ff111ff11f11fff1f111f111f111111f11111f111f111111ff111f111f111f111f111f111f111f111f111ff1ff1
+                        1f111f111f111f111f111f111ff11f11ff1ff111fffff11111ff11111ff11f111111ff111f111f111fffff111ff11f111f111f111f111f1
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        11111111111111111111111111111111111111111111111111fff11111ff11111f11f111111111111111111111111111111111111111111
+                        1111111111111111111111111111111111111111111111111f1111111f11f1111f1ff1111111111111111111111111111111111111111f1
+                        11111111111111111111111111111111111111111111111111f111111f11f11111f1f1111111111111111111111111111f111f111ffff11
+                        111111111111111111111111111111111111111111111111111f111111f1f1111111f1111111111111111111111111111ffff1111ff1ff1
+                        1111111111111f1111111111111111111111111111111111111f11111111f1111111f111111111111111111111111111111111111111111
+                        11fff1111ffff1111111111111fff1111111f1111f11f111111f11111111f1111111f11111fff11111fff11111fff111111111111111111
+                        1f111f111fff1f111ff11f111f111f111111f1111f11f111111f11111111f1111111f1111f111f111f111f111f111f11111111111111111
+                        11111f1111111f1111fff11111111f111111f1111f11f111111f11111111f1111111f11111f11f1111f11f1111111f11111111111111111
+                        1ff11f111ff11f111111111111111f111111f1111f11f111111f11111111f1111111f1111f111f1111f11f1111111f11111111111111111
+                        1f111f111f111f111ff11f1111111f111111f1111f11f111111f11111111f1111111f1111f111f1111f11f1111111f11111111111111111
+                        1f111f111f111f1111fff11111111f111111ff111ff1ff11111ff1111111ff111111ff111ff11f111ff11f1111111f11111111111111111
+                        1fffff111fffff111111111111111f111111ff111ff1ff11111ff1111111ff111111ff111ff11f111ff11f1111111f11111111111111111
+                        11111111111111111111111111111111111111111111111111111111111111111111111111111f1111111f1111111f11111111111111111
+                        11111111111111111111111111111111111111111111111111111111111111111111111111111f1111111f1111111f11111111111111111
+                        11111111111111111111111111111111111111111111111111111111111111111111111111111f1111111f1111111f11111111111111111
+                        11111111111111111111111111111111111111111111111111111111111ff111111f111111ff11111fff1f11111f1111111111111111111
+                        11111111111111111111111111111111111111111111111111111111111f1111111f1111111ff1111f1ff11111fff111111111111111111
+                        1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f1111111111111111111
+                        11ff11111111111111111f111111ff11111f1f1111111111111111111111111111111111111111111111111111111111ff1111111111111
+                        11ff11111fffff111fffff111fffff111fffff1111111111111111111111111111111111111111111111111111111111ff1111111111111
+                        11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f111
+                        1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111fff11ffff11
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f111f1f1f1f1
+                        1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f1f1f1f1
+                        1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f1ffff11
+                        1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f1f1f1f1
+                        1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f1f1f1f1
+                        1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f1ffff11
+                        11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111f111
+                        111111111111111111111111111111111111111111ff111111f1f1111111111111111111111111111111111111111111111111111111111
+                        1111111111111111111111111111111111111111111f1111111ff1111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        1111111111111111f1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        11111111111111111f111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        11111111111111111f111111111111111111f11111f1f1111f111111111111f111111f1111111f111111111111111111111111111111111
+                        1ffff1111ffff1111f1f1f111ff1f1111fff11111fff111111f111111f1f11f111fff1111111f1111111111111111111111111111111111
+                        f1111f11f1111f111f1fff11f11f1f11f1111111f1111111111ff111f1f1f1f11f1111111fff11111111111111111111111111111111111
+                        f1111f11f1ff1f111f111f11f11f1f11f1111111f111111111111f11f1f1f1f1f1111111f11f11111111111111111111111111111111111
+                        f1111f11f1ff1f111f111f11f11f1f11f1ff1111f1ff11111ff11f11f1f1f1f1f111f111f111f1111111111111111111111111111111111
+                        f1111f11f11f1f111f111f11f11f1f11f1f11111f1f111111f111f11f1f1f1f1f1f1f111ff11f1111111111111111111111111111111111
+                        1ffff1111ff11f111fffff11ff1f1f111ffff1111ffff11111fff111f1f1ff111f1ff111ff111f111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                        111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                    `,
                     "กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรลวศษสหฬอฮะาเแโใไฤฦๅั็ํิีึืุู์่้๊๋ำ฿๐๑๒๓๔๕๖๗๘๙",
                     "ั็ํิีึืุู์่้๊๋",
                     "ั็ํิีึื์่้๊๋",
+                    "ำ",
                     8,
                     16,
                     1,
