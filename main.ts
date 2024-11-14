@@ -1,6 +1,3 @@
-namespace SpriteKind {
-    export const IdxFont = SpriteKind.create()
-}
 
 //% block="Idx Font"
 //% color="#2dbded" 
@@ -1341,10 +1338,4 @@ namespace idxfont {
         }
     }
     
-    //%blockid=sprite_idxfont
-    //%block="IdxFontSprite"
-    export namespace IdxFontSprite {
-    
-        
-    }
 }
