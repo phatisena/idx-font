@@ -1,3 +1,7 @@
+namespace SpriteKind {
+    export const IdxFont = SpriteKind.create()
+}
+
 //% block="Idx Font"
 //% color="#2dbded" 
 //% icon="\uf249"
@@ -1336,25 +1340,11 @@ namespace idxfont {
                 break;
         }
     }
-
-    //% shim=ENUM_GET
-    //% blockId=color_enum_shim
-    //% block="$arg"
-    //% enumName="FontSprite"
-    //% enumMemberName="member"
-    //% enumInitialMembers="myMember"
-    //% enumPromptHint="Enter your member name here..."
-    //% blockSetVariable="myMember"
-    /**
-     * Method that returns enum member
-     */
-    export function _colorEnumShim(arg: number) {
-        return arg;
-    }
     
     //%blockid=sprite_idxfont
-    //%block="FontSprite"
+    //%block="IdxFontSprite"
     export namespace IdxFontSprite {
-
+    
+        
     }
 }
