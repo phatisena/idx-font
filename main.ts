@@ -210,11 +210,10 @@ namespace idxfont {
 
     export function makeWord(_tid: number = 0, _idx: number = 0, _str: string = "") {
         let _ustr = ""
-        let _i =  _idx
+        let _i = 0
         while (ligs[_tid].indexOf(_ustr + _str.charAt(_idx + _i)) >= 0) {
-            if (ligs[_tid].indexOf(_ustr + _str.charAt(_idx + _i)) < 0) { break; }
             _ustr = "" + _ustr + _str.charAt(_idx + _i)
-            _i++
+            _i += 1
         }
         return _ustr
     }
