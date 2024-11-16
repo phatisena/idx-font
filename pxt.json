@@ -1,6 +1,6 @@
 {
     "name": "idx-font",
-    "version": "14.2.4",
+    "version": "14.2.5",
     "description": "",
     "dependencies": {
         "device": "*"
