@@ -196,10 +196,10 @@ namespace idxfont {
 
     //%blockid=ixfont_setchararrfromimgsheet
     //%block="set |table id $tid and set img sheet $PngSheet=screen_image_picker with letters $GroupChar ||and |staying letters $StayChar letters on the letters $CharOnChar and Char Substact $CharSubW width $twid height $thei erase col $bcl space col $scl base col $mcl guard col $ncl"
-    //%GroupChar.shadow="lists_create_with" GroupChar.defl="string"
-    //%StayChar.shadow="lists_create_with" StayChar.defl="string"
-    //%CharOnChar.shadow="lists_create_with" CharOnChar.defl="string"
-    //%CharSubW.shadow="lists_create_with" CharSubW.defl="string"
+    //%GroupChar.shadow="lists_create_with_string"
+    //%StayChar.shadow="lists_create_with_string"
+    //%CharOnChar.shadow="lists_create_with_string"
+    //%CharSubW.shadow="lists_create_with_string"
     //%bcl.shadow=colorindexpicker
     //%scl.shadow=colorindexpicker
     //%mcl.shadow=colorindexpicker
