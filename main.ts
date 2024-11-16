@@ -194,6 +194,20 @@ namespace idxfont {
         }
     }
 
+    //%blockid=ixfont_setchararrfromimgsheet
+    //%block="set |table id $tid and set img sheet $PngSheet=screen_image_picker with letters $GroupChar ||and |staying letters $StayChar letters on the letters $CharOnChar and Char Substact $CharSubW width $twid height $thei erase col $bcl space col $scl base col $mcl guard col $ncl"
+    //%bcl.shadow=colorindexpicker
+    //%scl.shadow=colorindexpicker
+    //%mcl.shadow=colorindexpicker
+    //%ncl.shadow=colorindexpicker
+    //%group="create"
+    export function setCharArrayFromSheet(tid: number = 0, PngSheet: Image = image.create(10, 16), GroupChar: string[] = [], StayChar: string[] = [], CharOnChar: string[] = [], CharSubW: string = [], twid: number = 5, thei: number = 8, bcl: number = 0, scl: number = 0, mcl: number = 0, ncl: number = 0) {
+        let gwid = Math.round(PngSheet.width / twid); let uig = image.create(twid, thei); let txi = 0; let tyi = 0;
+        for (let tvn = 0; tvn < GroupChar.length; tvn++) {
+            uig = image.create(twid, thei); txi = twid * (tvn % gwid); tyi = thei * Math.floor(tvn / gwid); drawTransparentImage(PngSheet, uig, 0 - txi, 0 - tyi); setCharecter(tid, GroupChar[tvn], uig, StayChar.indexOf(GroupChar[tvn]) >= 0, CharOnChar.indexOf(GroupChar[tvn]) >= 0, CharSubW.indexOf(GroupChar[tvn]) >= 0, bcl, scl, mcl, ncl);
+        }
+                                     }
+
     //%blockid=ixfont_numofglyphs
     //%block="number of glyphs ||in table id $tid"
     //%group="datainfo"
