@@ -209,10 +209,12 @@ namespace idxfont {
     }
 
     export function makeWord(_tid: number = 0, _idx: number = 0, _str: string = "") {
-        let _ustr = _str.charAt(_idx)
-        for (let _i = _idx + 1; _i < _str.length; _i++) {
-            if (ligs[_tid].indexOf(_ustr + _str.charAt(_idx + _i)) < 0) { break }
+        let _ustr = ""
+        let _i =  _idx
+        while (ligs[_tid].indexOf(_ustr + _str.charAt(_idx + _i)) >= 0) {
+            if (ligs[_tid].indexOf(_ustr + _str.charAt(_idx + _i)) < 0) { break; }
             _ustr = "" + _ustr + _str.charAt(_idx + _i)
+            _i++
         }
         return _ustr
     }
