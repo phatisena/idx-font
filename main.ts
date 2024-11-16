@@ -249,8 +249,8 @@ namespace idxfont {
     export function SetTextImage(input: string, iwidt: number, tid: number, icol: number = 0, alm: number = 0, debugalm: boolean = false) {
         let char = ""; let uhei = 0; let outputarr: Image[] = []; let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
         for (let currentletter = 0; currentletter < input.length; currentletter++) {
-            if (!(ligs[tid].indexOf(input.charAt(currentletter)) < 0)) {
-                char = makeWord(tid, currentletter, input)
+            char = makeWord(tid, currentletter, input)
+            if (!(ligs[tid].indexOf(char) < 0)) {
                 uwidt = ligwidth[tid][(ligs[tid].indexOf(char))]
                 if (ligwidth[tid][(ligs[tid].indexOf(char))] <= 0) {
                     nwidt = ligages[tid][(ligs[tid].indexOf(char))].width
@@ -298,8 +298,8 @@ namespace idxfont {
         }
         wie = 0; widt = 0; let hix = 0;
         for (let currentletter2 = 0; currentletter2 < input.length; currentletter2++) {
-            if (!(ligs[tid].indexOf(input.charAt(currentletter2)) < 0)) {
-                char = makeWord(tid, currentletter2, input)
+            char = makeWord(tid, currentletter2, input)
+            if (!(ligs[tid].indexOf(char) < 0)) {
                 uwidt = ligwidth[tid][(ligs[tid].indexOf(char))]
                 if (ligwidth[tid][(ligs[tid].indexOf(char))] <= 0) {
                     nwidt = ligages[tid][(ligs[tid].indexOf(char))].width
@@ -351,8 +351,8 @@ namespace idxfont {
         let hgi = 0; let limg = image.create(lnwit[hgi], heig); let scwidt = true; let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); hie = 0; wie = 0; curwidt = 0;
         for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
             wie = 0
-            if (!(ligs[tid].indexOf(input.charAt(currentletter3)) < 0)) {
-                char = makeWord(tid, currentletter3, input)
+            char = makeWord(tid, currentletter3, input)
+            if (!(ligs[tid].indexOf(char) < 0)) {
                 hvi = ligages[tid][(ligs[tid].indexOf(char))].height; uwidt = ligwidth[tid][(ligs[tid].indexOf(char))];
                 if (ligwidth[tid][(ligs[tid].indexOf(char))] <= 0) {
                     nwidt = ligages[tid][(ligs[tid].indexOf(char))].width
@@ -467,8 +467,8 @@ namespace idxfont {
     export function SetTextImageArray(input: string, iwidt: number, tid: number, icol: number = 0, alm: number = 0, debugalm: boolean = false) {
         let char = ""; let uhei = 0; let outputarr: Image[] = []; let lnwit: number[] = []; let heig = 0; let widt = 0; let curwidt = 0; let uwidt = 0; let swidt = 0; let nwidt = 0; let wie = 0; let hie = 0; let hvi = 0;
         for (let currentletter = 0; currentletter < input.length; currentletter++) {
-            if (!(ligs[tid].indexOf(input.charAt(currentletter)) < 0)) {
-                char = makeWord(tid, currentletter, input)
+            char = makeWord(tid, currentletter, input)
+            if (!(ligs[tid].indexOf(char) < 0)) {
                 uwidt = ligwidth[tid][(ligs[tid].indexOf(char))]
                 if (ligwidth[tid][(ligs[tid].indexOf(char))] <= 0) {
                     nwidt = ligages[tid][(ligs[tid].indexOf(char))].width
@@ -516,8 +516,8 @@ namespace idxfont {
         }
         wie = 0; widt = 0; let hix = 0;
         for (let currentletter2 = 0; currentletter2 < input.length; currentletter2++) {
-            if (!(ligs[tid].indexOf(input.charAt(currentletter2)) < 0)) {
-                char = makeWord(tid, currentletter2, input)
+            char = makeWord(tid, currentletter2, input)
+            if (!(ligs[tid].indexOf(char) < 0)) {
                 uwidt = ligwidth[tid][(ligs[tid].indexOf(char))]
                 if (ligwidth[tid][(ligs[tid].indexOf(char))] <= 0) {
                     nwidt = ligages[tid][(ligs[tid].indexOf(char))].width
@@ -569,8 +569,8 @@ namespace idxfont {
         let hgi = 0; let limg = image.create(lnwit[hgi], heig); let scwidt = true; let underc = false; let sc = 0; let scnwidt = false; let rimg = image.create(8, 8); let output = image.create(widt, heig); hie = 0; wie = 0; curwidt = 0;
         for (let currentletter3 = 0; currentletter3 < input.length; currentletter3++) {
             wie = 0
-            if (!(ligs[tid].indexOf(input.charAt(currentletter3)) < 0)) {
-                char = makeWord(tid, currentletter3, input)
+            char = makeWord(tid, currentletter3, input)
+            if (!(ligs[tid].indexOf(char) < 0)) {
                 hvi = ligages[tid][(ligs[tid].indexOf(char))].height; uwidt = ligwidth[tid][(ligs[tid].indexOf(char))];
                 if (ligwidth[tid][(ligs[tid].indexOf(char))] <= 0) {
                     nwidt = ligages[tid][(ligs[tid].indexOf(char))].width
