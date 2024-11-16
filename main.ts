@@ -212,9 +212,11 @@ namespace idxfont {
         let _ustr = ""
         let _i = 0
         while (ligs[_tid].indexOf(_ustr + _str.charAt(_idx + _i)) >= 0) {
+            if (ligs[_tid].indexOf(_ustr + _str.charAt(_idx + _i)) < 0) { break; }
             _ustr = "" + _ustr + _str.charAt(_idx + _i)
             _i += 1
         }
+        if (_ustr.isEmpty) { _ustr = _str.charAt(_idx)}
         return _ustr
     }
 
