@@ -1,4 +1,4 @@
-
+//% blockid=idxfont_extension
 //% block="Idx Font"
 //% color="#2dbded" 
 //% icon="\uf249"
@@ -216,7 +216,7 @@ namespace idxfont {
             _ustr = "" + _ustr + _str.charAt(_idx + _i)
             _i += 1
         }
-        if (_ustr.isEmpty) { _ustr = _str.charAt(_idx)}
+        if (_ustr.isEmpty()) { _ustr = _str.charAt(_idx)}
         return _ustr
     }
 
