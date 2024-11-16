@@ -208,14 +208,15 @@ namespace idxfont {
         }
     }
 
-    export function makeWord(_tid: number = 0, _idx: number = 0, _str: string = "") {
-        let _ustr = ""
-        let _i = 0
-        while (ligs[_tid].indexOf(_ustr + _str.charAt(_idx + _i)) >= 0) {
-            _ustr = "" + _ustr + _str.charAt(_idx + _i)
-            _i += 1
+    export function makeWord(tid: number = 0, uidx: number = 0, istr: string = "") {
+        let ustr = ""
+        let id = 0
+        while (ligs[tid].indexOf(ustr + istr.charAt(uidx + id)) >= 0) {
+            ustr = "" + ustr + istr.charAt(uidx + id)
+            id++
         }
-        return _ustr
+        if (ustr.isEmpty()) { return istr.charAt(uidx) }
+        return ustr
     }
 
     //%blockid=ixfont_numofglyphs
