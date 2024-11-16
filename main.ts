@@ -1,4 +1,4 @@
-//% blockid=idxfont_extension
+
 //% block="Idx Font"
 //% color="#2dbded" 
 //% icon="\uf249"
