@@ -986,7 +986,7 @@ namespace idxfont {
                     15,
                     3
                 )
-                idxfont.setCharArrayFromSheet(
+                setCharArrayFromSheet(
 tid,
 img`
     111f1111111ff111111ff1111111f1111111f111111ff111111ff1111111f111111f111111ff111111ff1111111f1111111f1111111ff11
@@ -1213,7 +1213,7 @@ img`
 )
                 break;
             case tempfont.ArcadeFont:
-                idxfont.setCharFromSheet(
+                setCharFromSheet(
                     tid,
                     img`
             111111111f1f11111f1f111111f11111ff11f111111111111f1111111f111111f1111111f111f1111111111111111111111111111111111
@@ -1596,7 +1596,7 @@ img`
                     15,
                     3
                 )
-                idxfont.setCharArrayFromSheet(
+                setCharArrayFromSheet(
 tid,
 img`
     111f1111111ff111111ff1111111f1111111f111111ff111111ff1111111f111111f111111ff111111ff1111111f1111111f1111111ff11
