@@ -26,6 +26,17 @@ namespace idxfont {
         control.runInParallel(handler);
     }
 
+    export function makeWord(tid: number = 0, uidx: number = 0, istr: string = "") {
+        let ustr = ""
+        let id = 0
+        while (ligs[tid].indexOf(ustr + istr.charAt(uidx + id)) >= 0) {
+            ustr = "" + ustr + istr.charAt(uidx + id)
+            id++
+        }
+        if (ustr.isEmpty()) { return istr.charAt(uidx) }
+        return ustr
+    }
+    
     export function SetImgFrame(ImgF: Image, Wh: number, Ht: number) {
         let ImgOutput = image.create(Wh, Ht)
         let Twidt = Math.floor(ImgF.width / 3)
@@ -79,6 +90,12 @@ namespace idxfont {
         return ImgOutput
     }
 
+    /**
+     * setup single font from single letter
+     * or longest letter and single image
+     * and set detail color image manage
+     * and store to table id
+     */
     //%blockid=ixfont_setcharecter
     //%block="set |table id $gid and set letter $glyph to img $imgi=screen_image_picker ||and |the letter can move? $notmove and stay on or under the letter? $onthechar and substract width $inchar erase col $bcol spacebar col $scol base col $mcol guard col $ncol"
     //%bcol.shadow=colorindexpicker
@@ -180,6 +197,12 @@ namespace idxfont {
         }
     }
 
+    /**
+     * setup font array from single letter
+     * and sprite sheet image 
+     * or set main detail color manage
+     * and store in the table id
+     */
     //%blockid=ixfont_setcharfromimgsheet
     //%block="set |table id $tid and set img sheet $PngSheet=screen_image_picker with letters $GroupChar ||and |staying letters $StayChar letters on the letters $CharOnChar and Char Substact $CharSubW width $twid height $thei erase col $bcl space col $scl base col $mcl guard col $ncl"
     //%bcl.shadow=colorindexpicker
@@ -194,6 +217,12 @@ namespace idxfont {
         }
     }
 
+    /**
+     * setup font arrays from long letters
+     * and sprite sheet image 
+     * or set main detail color manage
+     * and store to table id
+     */
     //%blockid=ixfont_setchararrfromimgsheet
     //%block="set |table id $tid and set img sheet $PngSheet=screen_image_picker with array letters $GroupChar ||and |staying letters of array $StayChar letters on the letters in array $CharOnChar and Char array Substact $CharSubW width $twid height $thei erase col $bcl space col $scl base col $mcl guard col $ncl"
     //%bcl.shadow=colorindexpicker
@@ -208,17 +237,10 @@ namespace idxfont {
         }
     }
 
-    export function makeWord(tid: number = 0, uidx: number = 0, istr: string = "") {
-        let ustr = ""
-        let id = 0
-        while (ligs[tid].indexOf(ustr + istr.charAt(uidx + id)) >= 0) {
-            ustr = "" + ustr + istr.charAt(uidx + id)
-            id++
-        }
-        if (ustr.isEmpty()) { return istr.charAt(uidx) }
-        return ustr
-    }
-
+    /**
+     * get All text data 
+     * in number amount
+     */
     //%blockid=ixfont_numofglyphs
     //%block="number of glyphs ||in table id $tid"
     //%group="datainfo"
@@ -226,6 +248,10 @@ namespace idxfont {
         return ligs[tid].length
     }
 
+    /**
+     * get font image array 
+     * from table id
+     */
     //%blockid=ixfont_arrofgypimg
     //%block="array of glyph images ||in table id $tid"
     //%group="datainfo"
@@ -233,6 +259,10 @@ namespace idxfont {
         return ligages[tid]
     }
 
+    /**
+     * get text array data
+     * from table id
+     */
     //%blockid=ixfont_arrofglyphs
     //%block="array of glyphs ||in table id $tid"
     //%group="datainfo"
@@ -240,6 +270,11 @@ namespace idxfont {
         return ligs[tid]
     }
 
+    /**
+     * render text image from input
+     * and render to the font from table id
+     * and get result in single image
+     */
     //%blockid=ixfont_setimgfromtext
     //%block="create the image of |text $input in page width $iwidt from table id $tid ||and |fill col $icol and got alignment $alm and get debugalm $debugalm"
     //%alm.min=-1 alm.max=1 alm.defl=0
@@ -458,6 +493,11 @@ namespace idxfont {
         return output
     }
 
+    /**
+     * render text animation frame
+     * and render to the font from table id
+     * and get result to the array image
+     */
     //%blockid=ixfont_setimgframefromtext
     //%block="create the image frame of |text $input in page width $iwidt from table id $tid ||and |fill col $icol and got alignment $alm and get debugalm $debugalm"
     //%alm.min=-1 alm.max=1 alm.defl=0
@@ -676,6 +716,10 @@ namespace idxfont {
         return outputarr
     }
 
+    /**
+     * render text
+     * to the unique dialog frame image
+     */
     //%blockid=ixfont_stamptexttoframe
     //%block="StampStrImgToTheFrame $Fimg=screen_image_picker Text $Txt Text width $Wval TableId $arrid || Solid col $ucol Alignment $ualm"
     //%ualm.min=-1 ualm.max=1 ualm.defl=0
@@ -690,6 +734,10 @@ namespace idxfont {
         return UfImg
     }
 
+    /**
+     * render text animation frame
+     * to the unique dialog frame image
+     */
     //%blockid=ixfont_stamptextarrtoframe
     //%block="StampStrAnimToTheFrame $Fimg=screen_image_picker Text input $Txt In text width $Wval At table id $arrid ||With text color $ucol And alignment $ualm "
     //%ualm.min=-1 ualm.max=1 ualm.defl=0
@@ -710,6 +758,9 @@ namespace idxfont {
         return imgArr
     }
 
+    /**
+     * set the letterspace value
+     */
     //%blockid=ixfont_setletterspacing
     //%block="set letter spacing to $input"
     //%group="modify"
@@ -717,6 +768,9 @@ namespace idxfont {
         letterspace = input
     }
 
+    /**
+     * change the letterspace value
+     */
     //%blockid=ixfont_changeletterspacing
     //%block="change letter spacing by $input"
     //%group="modify"
@@ -726,6 +780,9 @@ namespace idxfont {
 
     export enum tempfont { MainFont, ArcadeFont }
 
+    /**
+     * setup font template to the table id
+     */
     //%blockid=ixfont_presetfont
     //%block="SetupPresetFont $tempf ||with table id $tid"
     //%group="create"
